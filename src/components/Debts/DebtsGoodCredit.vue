@@ -4,15 +4,10 @@
       <span class="fs-12 text-gray-500">Good Credit</span>
     </div>
 
-    <common-button
-      @click.native="$store.commit('addCaseModal', true)"
-      class="right-22 w-full max-w-28 position-absolute top-22 z-index-0"
-    >
-      <div class="d-flex align-items-center p-4">
-        <div class="bg-15 w-10 h-10 bg-contain bg-no-repeat me-3"></div>
-        <span> Ավելացնել</span>
-      </div>
-    </common-button>
+    <common-show
+      @click.native="dropdown = !dropdown"
+      :dropdown="dropdown"
+    ></common-show>
     <!-- Modals -->
     <transition name="fade">
       <builder-add-case
@@ -92,6 +87,7 @@ import BuilderAddCase from "../Builder/BuilderAddCase.vue";
 import BuilderFile from "../Builder/BuilderFile.vue";
 import CommonAcbaList from "./CommonDebts/CommonAcbaList.vue";
 import BuilderAcbaModal from "./BuilderDebts/BuilderAcbaModal.vue";
+import CommonShow from "./CommonDebts/CommonShow.vue";
 export default {
   components: {
     CommonCheckbox,
@@ -103,9 +99,11 @@ export default {
     BuilderFile,
     CommonAcbaList,
     BuilderAcbaModal,
+    CommonShow,
   },
   data() {
     return {
+      dropdown: false,
       CaseData: [
         {
           id: 1,
