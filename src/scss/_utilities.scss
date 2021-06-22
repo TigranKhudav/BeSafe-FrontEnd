@@ -1,0 +1,216 @@
+$utilities: (
+    "max-width": (
+        property: max-width,
+        class: max-w,
+        values: $spacers
+      ),
+      "min-width": (
+        property: min-width,
+        class: min-w,
+        values: $spacers
+      ),
+      "max-height": (
+        property: max-height,
+        class: max-h,
+        values: $spacers
+      ),
+      "min-height": (
+        property: min-height,
+        class: min-h,
+        values: $spacers
+      ),
+      "height": (
+        property: height,
+        class: h,
+        values: $spacers
+      ),
+      "width": (
+        property: width,
+        class: w,
+        values: $spacers
+      ),
+      "font-size": (
+        property: font-size,
+        class: fs,
+        values: $spacers
+      ),
+      "font-weight": (
+        property: font-weight,
+        class: fw,
+        values: $fw
+      ),
+      "color": (
+        property: color,
+        class: text,
+        values: $colors
+      ),
+      "opacity": (
+        property: opacity,
+        class: opacity,
+        values: 0 1
+      ),
+      "outline": (
+        property: outline,
+        class: outline,
+        values: (none: none)
+      ),
+      "text-decoration": (
+        property: text-decoration,
+        class: text-dec,
+        values: none underline line-through
+      ),
+      "text-align": (
+        property: text-align,
+        class: text-align,
+        values: center
+      ),
+      "list-style": (
+        property: list-style,
+        class: ls,
+        values: none
+      ),
+      "rounded": (
+        property: border-radius,
+        class: rounded,
+        values: $spacers
+      ),
+      "shadow": (
+        property: box-shadow,
+        class: shadow,
+        values: (1: (0 2px 6px rgba(0, 0, 0, 0.25), 0 2px 6px rgba(0, 0, 0, 0.25)))
+      ),
+      "padding-y": (
+        responsive: true,
+        property: padding-top padding-bottom,
+        class: py,
+        values: $spacers
+      ),
+      "margin-right": (
+        responsive: true,
+        property: margin-right,
+        class: mr,
+        values: $spacers
+      ),
+      "padding": (
+        responsive: true,
+        property: padding,
+        class: p,
+        values: $spacers
+      ),
+      "top": (
+        property: top,
+        values: $spacers
+      ),
+      "bottom": (
+        property: bottom,
+        values: $spacers
+      ),
+      "left": (
+        property: left,
+        values: $spacers
+      ),
+      "right": (
+        property: right,
+        values: $spacers
+      ),
+      "background-color": (
+        property: background-color,
+        class: bg,
+        values:$colors
+      ),
+      "background-image": (
+        property: background-image,
+        class: bg,
+        values: map-merge($bg , ("part":$part))
+      ),
+      "background-position": (
+        property: background-position,
+        class: bg,
+        values: $bg-position
+      ),
+      "background-size": (
+        property: background-size,
+        class: bg,
+        values: cover contain
+      ),
+      "background-repeat": (
+        property:  background-repeat,
+        class: bg,
+        values: no-repeat
+      ),
+      "border": (
+        property: border,
+        values: (
+          null: 2px solid $pink,
+          0: 0,
+          1:1px solid $pink
+        )
+      ),
+      "border-top": (
+        property: border-top,
+        values: (
+          null: 2px solid $pink,
+          0: 0,
+        )
+      ),
+      "border-end": (
+        property: border-right,
+        class: border-end,
+        values: (
+          null: 2px solid $pink,
+          0: 0,
+        )
+      ),
+      "border-bottom": (
+        property: border-bottom,
+        class: border-bottom,
+        values: (
+          null: 2px solid $pink,
+          0: 0,
+        )
+      ),
+      "border-start": (
+        property: border-left,
+        class: border-start,
+        values: (
+          null: 2px solid $pink,
+          0: 0,
+        )
+      ),
+      "overflow-y": (
+        property: overflow-y,
+        values: auto hidden visible scroll,
+      ),
+      "z-index": (
+        property: z-index,
+        values: 0 1 2 3 4,
+      ),
+ );
+
+// @mixin sm($var) {
+//         font-size: $var;
+// }
+
+//  @each $name, $var in $spacers{
+//   @media (min-width: 640px) { 
+
+// }
+// }
+
+// $sizes: ("xs":320px, "sm":576px, "md":768px, "lg":992px, "xl":1200px);
+
+// @mixin media($media) {
+//   @each $size, $resolution in $sizes {
+//     @if $media == $size {
+//       @media only screen and (min-width: $resolution) {
+//         @each $var in $spacers{
+//         font-size: $var;
+//         }
+//       }
+//     }
+//   }
+// }
+
+//  .fs-#{$name}-{
+//    @include media($name)
+//  }

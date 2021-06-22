@@ -1,22 +1,55 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+  // {
+  //   path: '/',
+  //   name: 'Home',
+  //   component: () => import('@/views/Home.vue')
+  // },
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Profile',
+    component: () => import('@/views/Profile.vue')
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/debts',
+    name: 'Debts',
+    component: () => import('@/views/Debts.vue'),
+    children: [
+      {
+        path: '',
+        name: 'DebtsHome',
+        component: () => import('@/components/Debts/DebtsHomeModal.vue')
+      },
+      {
+        path: 'partners',
+        name: 'Partners',
+        component: () => import('@/components/Debts/DebtsPartners.vue')
+      },
+      {
+        path: 'partners/1',
+        name: 'Acba',
+        component: () => import('@/components/Debts/DebtsAcba.vue')
+      },
+      {
+        path: 'partners/2',
+        name: 'Ucom',
+        component: () => import('@/components/Debts/DebtsUcom.vue')
+      },
+      {
+        path: 'partners/3',
+        name: 'GoodCredit',
+        component: () => import('@/components/Debts/DebtsGoodCredit.vue')
+      },
+    ]
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/Login.vue')
   }
 ]
 
