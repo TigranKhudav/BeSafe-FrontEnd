@@ -4,11 +4,11 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const routes = [
-  // {
-  //   path: '/',
-  //   name: 'Home',
-  //   component: () => import('@/views/Home.vue')
-  // },
+  {
+    path: '/',
+    name: 'Home',
+    component: () => import('@/views/Login.vue')
+  },
   {
     path: '/',
     name: 'Profile',
@@ -46,11 +46,10 @@ const routes = [
       },
     ]
   },
-  {
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/views/Login.vue')
-  }
+  // {
+  //   path: '/login',
+  //   name: 'Login',
+  // }
 ]
 
 const router = new VueRouter({

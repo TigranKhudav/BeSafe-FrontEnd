@@ -10,6 +10,10 @@
     ></common-show>
     <!-- Modals -->
     <transition name="fade">
+      <builder-debts-select-head :selHead="selHead"></builder-debts-select-head>
+    </transition>
+
+    <transition name="fade">
       <builder-add-case
         :prioritys="Prioritys"
         v-if="$store.state.showAddCase"
@@ -88,6 +92,7 @@ import BuilderFile from "../Builder/BuilderFile.vue";
 import CommonAcbaList from "./CommonDebts/CommonAcbaList.vue";
 import BuilderAcbaModal from "./BuilderDebts/BuilderAcbaModal.vue";
 import CommonShow from "./CommonDebts/CommonShow.vue";
+import BuilderDebtsSelectHead from "./BuilderDebts/BuilderDebtsSelectHead.vue";
 export default {
   components: {
     CommonCheckbox,
@@ -100,10 +105,48 @@ export default {
     CommonAcbaList,
     BuilderAcbaModal,
     CommonShow,
+    BuilderDebtsSelectHead,
   },
   data() {
     return {
       dropdown: false,
+      selHead: [
+        {
+          id: 1,
+          checked: false,
+          name: "Մասնաճյուղ",
+        },
+        {
+          id: 2,
+          checked: false,
+          name: "Հաճախորդի համար",
+        },
+        {
+          id: 3,
+          checked: false,
+          name: "Անուն Ազգանուն / Անվանում",
+        },
+        {
+          id: 4,
+          checked: false,
+          name: "Հաճախորդի դաս",
+        },
+        {
+          id: 5,
+          checked: false,
+          name: "Վարկի տեսակ",
+        },
+        {
+          id: 6,
+          checked: false,
+          name: "Արժույթ",
+        },
+        {
+          id: 7,
+          checked: false,
+          name: "Կարգավիճակ",
+        },
+      ],
       CaseData: [
         {
           id: 1,
