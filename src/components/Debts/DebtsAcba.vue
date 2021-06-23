@@ -13,6 +13,7 @@
       <builder-debts-select-head
         v-if="dropdown"
         :selHead="selHead"
+        @renderHead="renderHead"
       ></builder-debts-select-head>
     </transition>
 
@@ -56,11 +57,15 @@
             <div></div>
             <div></div>
             <div></div>
-            <common-clients-data-head>Մասնաճյուղեր</common-clients-data-head>
-            <common-clients-data-head>Հաճախորդի համար</common-clients-data-head>
+            <common-clients-data-head
+              v-for="item in (header = defaultHead)"
+              :key="item.id"
+              >{{ item.name }}</common-clients-data-head
+            >
+            <!-- <common-clients-data-head>Հաճախորդի համար</common-clients-data-head>
             <common-clients-data-head>Անուն Ազգանուն</common-clients-data-head>
             <common-clients-data-head>Հաճախորդի դաս</common-clients-data-head>
-            <common-clients-data-head>Վարկի տեսակ</common-clients-data-head>
+            <common-clients-data-head>Վարկի տեսակ</common-clients-data-head> -->
           </div>
           <div class="overflow-hidden">
             <common-acba-list
@@ -117,30 +122,31 @@ export default {
   data() {
     return {
       dropdown: false,
+      header: [],
       selHead: [
         {
           id: 1,
-          checked: false,
+          checked: true,
           name: "Մասնաճյուղ",
         },
         {
           id: 2,
-          checked: false,
+          checked: true,
           name: "Հաճախորդի համար",
         },
         {
           id: 3,
-          checked: false,
+          checked: true,
           name: "Անուն Ազգանուն / Անվանում",
         },
         {
           id: 4,
-          checked: false,
+          checked: true,
           name: "Հաճախորդի դաս",
         },
         {
           id: 5,
-          checked: false,
+          checked: true,
           name: "Վարկի տեսակ",
         },
         {
@@ -210,6 +216,11 @@ export default {
       files: [],
     };
   },
+  computed: {
+    defaultHead() {
+      return this.selHead.filter((v) => v.checked);
+    },
+  },
   methods: {
     check(e) {
       this.CaseData.forEach((i) => (i.checked = e.target.checked));
@@ -225,10 +236,12 @@ export default {
     getInfo(id) {
       this.$store.commit("getInfoModal", true);
     },
+    renderHead(item) {
+      this.header = item;
+    },
   },
 };
 </script>
-
 <style scoped>
 .grid {
   display: grid;

@@ -7,20 +7,6 @@
         :img="'bg-2'"
         :placeholder="'Մուտքանուն'"
       ></common-input>
-      <!-- <input
-        class="
-          w-full
-          border-0 border-bottom
-          h-14
-          outline-none
-          ps-14
-          py-10
-          plac
-          bg-2 bg-no-repeat
-        "
-        type="text"
-        placeholder="Մուտքանուն"
-      /> -->
     </div>
     <div class="my-14">
       <common-input
@@ -31,7 +17,6 @@
     <common-button class="w-full p-6">Մուտք Գործել</common-button>
   </div>
 </template>
-
 <script>
 import CommonButton from "@/common/CommonButton.vue";
 import CommonInput from "@/common/CommonInput.vue";
@@ -47,7 +32,6 @@ export default {
   },
 };
 </script>
-
 <style scoped lang="scss">
 .plac {
   background-size: 1.5rem 1.5rem;

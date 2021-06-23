@@ -113,12 +113,12 @@ export default {
       selHead: [
         {
           id: 1,
-          checked: false,
-          name: "Մասնաճյուղ",
+          checked: true,
+          name: "Մասնաճյուղեր",
         },
         {
           id: 2,
-          checked: false,
+          checked: true,
           name: "Հաճախորդի համար",
         },
         {
