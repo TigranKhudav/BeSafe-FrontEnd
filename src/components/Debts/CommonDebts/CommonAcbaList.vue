@@ -77,7 +77,6 @@ export default {
   components: { CommonCheckbox },
   props: {
     data: { type: Object },
-    prioritys: { type: Array },
   },
   data() {
     return {
