@@ -1,6 +1,6 @@
 <template>
   <common-button
-    class="right-22 w-full max-w-28 position-absolute top-22 z-index-0"
+    class="right-21 w-full max-w-28 position-absolute top-22 z-index-0"
   >
     <div class="d-flex align-items-center justify-content-center p-3">
       <span class="fs-9">Ցուցադրել</span>

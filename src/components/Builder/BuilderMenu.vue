@@ -71,12 +71,8 @@ export default {
         title2: "Պարտքերի հավաքագրման ենթաբաժին",
         menuItems2: [
           { id: 1, name: "Գործընկերներ", path: "partners" },
-          { id: 2, name: "Օրվա ենթակա", path: "day" },
-          {
-            id: 3,
-            name: "Հաշվետվություններ",
-            path: "partners",
-          },
+          { id: 2, name: "Օրվա ենթակա", path: "subjectday" },
+          { id: 3, name: "Հաշվետվություններ", path: "reports" },
           {
             id: 4,
             name: "Կարգավիճակներ",

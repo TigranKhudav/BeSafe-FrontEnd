@@ -41,15 +41,31 @@ const routes = [
       },
       {
         path: 'partners/3',
+        name: 'GlobalCredit',
+        component: () => import('@/components/Debts/DebtsGlobalCredit.vue')
+      },
+      {
+        path: 'partners/4',
         name: 'GoodCredit',
         component: () => import('@/components/Debts/DebtsGoodCredit.vue')
       },
+      {
+        path: 'reports',
+        name: 'Reports',
+        component: () => import('@/components/Debts/Reports/Reports.vue')
+      },
+      {
+        path: 'subjectday',
+        name: 'SubjectDay',
+        component: () => import('@/components/Debts/SubjectDay/SubjectDay.vue')
+      },
+      {
+        path: 'archive',
+        name: 'Archive',
+        component: () => import('@/components/Debts/SubjectDay/Archive.vue')
+      },
     ]
   },
-  // {
-  //   path: '/login',
-  //   name: 'Login',
-  // }
 ]
 
 const router = new VueRouter({

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="position-absolute left-23 top-22">
-      <span class="fs-12 text-gray-500">GoodCredit</span>
+      <span class="fs-12 text-gray-500">GlobalCredit</span>
     </div>
 
     <common-show
@@ -110,7 +110,7 @@ export default {
         {
           id: 1,
           checked: true,
-          name: "Պայմանագիր",
+          name: "Պայմանագրի N",
         },
         {
           id: 2,
@@ -125,172 +125,302 @@ export default {
         {
           id: 4,
           checked: true,
-          name: "Total Debt",
+          name: "Գումար",
         },
         {
           id: 5,
           checked: true,
-          name: "Գումար",
+          name: "Ժամկետանց գումար",
         },
         {
           id: 6,
           checked: false,
-          name: "Ժամկետանց գումար",
+          name: "Տոկոս",
         },
         {
           id: 7,
           checked: false,
-          name: "Տոկոս",
+          name: "Ժամկետանց տոկոս",
         },
         {
           id: 8,
           checked: false,
-          name: "Ժամկետանց տոկոս",
+          name: "ԲՏՀԴ տոկ.",
         },
         {
           id: 9,
           checked: false,
-          name: "ԲՏՀԴ տոկ.",
+          name: "Ժամկետանց գումարի տույժ",
         },
         {
           id: 10,
           checked: false,
-          name: "Ժամկետանց գումարի տույժ",
+          name: "Ժամկետանց տոկոսի տույժ",
         },
         {
           id: 11,
           checked: false,
-          name: "Ժամկետանց տոկոսի տույժ",
+          name: "Վարձավճար",
         },
         {
           id: 12,
           checked: false,
-          name: "Վարձավճար",
+          name: "Ժամկետանց գումարի տոկոս",
         },
         {
           id: 13,
           checked: false,
-          name: "Ժամկետանց գումարի տոկոս",
+          name: "Գրավի արժեք",
         },
         {
           id: 14,
           checked: false,
-          name: "Ձևանմուշի տեսակ",
+          name: "Երաշխավորության արժեքը",
         },
         {
           id: 15,
           checked: false,
-          name: "Մարզ",
+          name: "Գրավի առարկա",
         },
         {
           id: 16,
           checked: false,
-          name: "Պայմանագրի գումար",
+          name: "Տոկոսադրույք",
         },
         {
           id: 17,
           checked: false,
-          name: "Կնքման ամսաթիվ",
+          name: "Փաստ. տոկոս.",
         },
         {
           id: 18,
           checked: false,
-          name: "Մարման ժամկետ",
+          name: "Օրացույցի հաշվարկման ձև",
         },
         {
           id: 19,
           checked: false,
-          name: "Ժամկետանց դառնալու օրը",
+          name: "Ռ.դ.",
         },
         {
           id: 20,
           checked: false,
-          name: "Ժամկ.օ.ք",
+          name: "Նպատակ",
         },
         {
           id: 21,
           checked: false,
-          name: "Ընդհ.ժամկ.օ.ք.",
+          name: "Ծր.",
         },
         {
           id: 22,
           checked: false,
-          name: "Մաքս.ժամկ.օ.ք",
+          name: "Երշ.",
         },
         {
           id: 23,
           checked: false,
-          name: "Բնակավայրի անուն",
+          name: "Ձևանմ. տեսակ",
         },
         {
           id: 24,
           checked: false,
-          name: "Մարզի անուն",
+          name: "Մարզ",
         },
         {
           id: 25,
           checked: false,
-          name: "Գրանցման հասցե",
+          name: "Սահմանաչափ",
         },
         {
           id: 26,
           checked: false,
-          name: "Հեռախոս",
+          name: "Պայմանագրի գումար",
         },
         {
           id: 27,
           checked: false,
-          name: "Բջջային",
+          name: "Կնքման ամսաթիվ",
         },
         {
           id: 28,
           checked: false,
-          name: "Անձը հաստ.փաստթղթ.կոդ",
+          name: "Հատկացման ամսաթիվ",
         },
         {
           id: 29,
           checked: false,
-          name: "Ա.հ.փ. Տրված",
+          name: "Վերջին տրման ամսաթիվ",
         },
         {
           id: 30,
           checked: false,
-          name: "Ա.հ.փ. Ամսաթիվ",
+          name: "Սկզբ.մարման ժամկետ",
         },
         {
           id: 31,
           checked: false,
-          name: "Ա.հ.փ. Տիպ",
+          name: "Մարման ժամկետ",
         },
         {
           id: 32,
           checked: false,
-          name: "ՀՎՀՀ",
+          name: "Ժամկետանց դառնալու օրը",
         },
         {
           id: 33,
           checked: false,
-          name: "Գրանցման N",
+          name: "Ժամկ. օ.ք",
         },
         {
           id: 34,
           checked: false,
-          name: "Սեռը",
+          name: "Ընդ. ժամկ.օ.ք",
         },
         {
           id: 35,
           checked: false,
-          name: "Ծննդյան ամսաթիվ",
+          name: "Անընդ. ժամկ.լ.ք",
         },
         {
           id: 36,
           checked: false,
-          name: "Էլ.փոստ",
+          name: "Հաճախորդ",
         },
         {
           id: 37,
           checked: false,
-          name: "Վճարման ենթակա մինիմալ գումար",
+          name: "Իրավ. կ.",
+        },
+        {
+          id: 38,
+          checked: false,
+          name: "Ոլորտ",
+        },
+        {
+          id: 39,
+          checked: false,
+          name: "Բ. աշխ.",
+        },
+        {
+          id: 40,
+          checked: false,
+          name: "Գրանցման հասցե",
+        },
+        {
+          id: 41,
+          checked: false,
+          name: "Փաստացի Հասցե",
+        },
+        {
+          id: 42,
+          checked: false,
+          name: "Հեռախոս",
+        },
+        {
+          id: 43,
+          checked: false,
+          name: "Բջջային",
+        },
+        {
+          id: 44,
+          checked: false,
+          name: "Անձը հաստ. փաստթ.    կոդ -",
+        },
+        {
+          id: 45,
+          checked: false,
+          name: "Ա.հ.փ. Տրված",
+        },
+        {
+          id: 46,
+          checked: false,
+          name: "Ա.հ.փ. ամսթ.",
+        },
+        {
+          id: 47,
+          checked: false,
+          name: "Ա.հ.փ. Տիպ",
+        },
+        {
+          id: 48,
+          checked: false,
+          name: "ՀՎՀՀ",
+        },
+        {
+          id: 49,
+          checked: false,
+          name: "Գրանցման N",
+        },
+        {
+          id: 50,
+          checked: false,
+          name: "Սեռը",
+        },
+        {
+          id: 51,
+          checked: false,
+          name: "Ծննդյան ամսաթիվ",
+        },
+        {
+          id: 52,
+          checked: false,
+          name: "Գրանցման երկիր",
+        },
+        {
+          id: 53,
+          checked: false,
+          name: "Արտակարգ վերանայման տեսակ",
+        },
+        {
+          id: 54,
+          checked: false,
+          name: "Նշում",
+        },
+        {
+          id: 55,
+          checked: false,
+          name: "Նշում 2",
+        },
+        {
+          id: 56,
+          checked: false,
+          name: "Նշում 3",
+        },
+        {
+          id: 57,
+          checked: false,
+          name: "Նշում 4",
+        },
+        {
+          id: 58,
+          checked: false,
+          name: "Անվանում",
+        },
+        {
+          id: 59,
+          checked: false,
+          name: "Փուլ",
+        },
+        {
+          id: 60,
+          checked: false,
+          name: "ԽՎԲ մասնագետ",
+        },
+        {
+          id: 61,
+          checked: false,
+          name: "Է.Ռ.Ա.",
+        },
+        {
+          id: 62,
+          checked: false,
+          name: "ԽՎԲ մուտքի ամսաթիվ",
+        },
+        {
+          id: 63,
+          checked: false,
+          name: "Դատարան",
         },
       ],
       CaseData: [

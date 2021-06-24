@@ -18,13 +18,6 @@
     </transition>
 
     <transition name="fade">
-      <builder-add-case
-        :prioritys="Prioritys"
-        v-if="$store.state.showAddCase"
-      ></builder-add-case>
-    </transition>
-
-    <transition name="fade">
       <builder-changes-modal
         :chagesList="HistoryList"
         v-if="$store.state.showHistory"
@@ -139,7 +132,6 @@ import CommonCheckbox from "@/common/CommonCheckbox.vue";
 import CommonClientsDataHead from "@/common/CommonClientsDataHead.vue";
 import BuilderChangesModal from "../Builder/BuilderChangesModal.vue";
 import BuilderInfoModal from "../Builder/BuilderInfoModal.vue";
-import BuilderAddCase from "../Builder/BuilderAddCase.vue";
 import BuilderFile from "../Builder/BuilderFile.vue";
 import CommonAcbaList from "./CommonDebts/CommonAcbaList.vue";
 import BuilderAcbaModal from "./BuilderDebts/BuilderAcbaModal.vue";
@@ -154,7 +146,6 @@ export default {
     CommonButton,
     BuilderChangesModal,
     BuilderInfoModal,
-    BuilderAddCase,
     BuilderFile,
     CommonAcbaList,
     BuilderAcbaModal,
