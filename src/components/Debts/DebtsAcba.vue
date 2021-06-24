@@ -46,7 +46,7 @@
     </transition>
 
     <!-- static heigth -->
-    <div class="d-flex justify-content-center w-full h-80 mt-18">
+    <div class="d-flex justify-content-center w-full h-80 mt-12">
       <div class="d-flex h-full w-full">
         <div class="w-full">
           <div class="grid mb-8">
@@ -62,10 +62,6 @@
               :key="item.id"
               >{{ item.name }}</common-clients-data-head
             >
-            <!-- <common-clients-data-head>Հաճախորդի համար</common-clients-data-head>
-            <common-clients-data-head>Անուն Ազգանուն</common-clients-data-head>
-            <common-clients-data-head>Հաճախորդի դաս</common-clients-data-head>
-            <common-clients-data-head>Վարկի տեսակ</common-clients-data-head> -->
           </div>
           <div class="overflow-hidden">
             <common-acba-list
@@ -76,7 +72,13 @@
               @info="getInfo"
               @file="getFile"
               :prioritys="Prioritys"
+              @contextmenu.prevent.native="$refs.menu.open"
             ></common-acba-list>
+            <vue-context ref="menu" class="position-absolute w-full max-w-28">
+              <li class="ls-none py-8 ps-8 bg-pink-350 outline-none">
+                <span class="text-white fs-9">Հայցադիմում</span>
+              </li>
+            </vue-context>
           </div>
         </div>
         <div class="my-auto">
@@ -93,6 +95,8 @@
 </template>
 
 <script>
+import VueContext from "vue-context";
+
 import CommonButton from "@/common/CommonButton.vue";
 import CommonCheckbox from "@/common/CommonCheckbox.vue";
 import CommonClientsDataHead from "@/common/CommonClientsDataHead.vue";
@@ -105,8 +109,12 @@ import BuilderAcbaModal from "./BuilderDebts/BuilderAcbaModal.vue";
 import CommonShow from "./CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "./BuilderDebts/BuilderDebtsSelectHead.vue";
 
+import VueSimpleContextMenu from "vue-simple-context-menu";
+// import CommonContextMenu from "./CommonDebts/CommonContextMenu.vue";
+
 export default {
   components: {
+    VueContext,
     CommonCheckbox,
     CommonClientsDataHead,
     CommonButton,
@@ -118,6 +126,7 @@ export default {
     BuilderAcbaModal,
     CommonShow,
     BuilderDebtsSelectHead,
+    VueSimpleContextMenu,
   },
   data() {
     return {
@@ -158,6 +167,236 @@ export default {
           id: 7,
           checked: false,
           name: "Կարգավիճակ",
+        },
+        {
+          id: 8,
+          checked: false,
+          name: "ժամկետանց օրեր",
+        },
+        {
+          id: 9,
+          checked: false,
+          name: "ժամկետանց խումբ",
+        },
+        {
+          id: 10,
+          checked: false,
+          name: "Սեգմենտ",
+        },
+        {
+          id: 11,
+          checked: false,
+          name: "Մասնակից",
+        },
+        {
+          id: 12,
+          checked: false,
+          name: "Պատասխանատու ՊԿ",
+        },
+        {
+          id: 13,
+          checked: false,
+          name: "Վերահսկողություն",
+        },
+        {
+          id: 14,
+          checked: false,
+          name: "Մինչև",
+        },
+        {
+          id: 15,
+          checked: false,
+          name: "Փոխանցման ա/թ /ամսաթիվ/",
+        },
+        {
+          id: 16,
+          checked: false,
+          name: "Վարկի սկիզբ",
+        },
+        {
+          id: 17,
+          checked: false,
+          name: "Պայմանագրի համար",
+        },
+        {
+          id: 18,
+          checked: false,
+          name: "Պայմանագրային գումար /արժույթով/",
+        },
+        {
+          id: 19,
+          checked: false,
+          name: "Ընթացիկ ոչ ժամկետանց գումար (արժույթով)",
+        },
+        {
+          id: 20,
+          checked: false,
+          name: "ժամկետանց մնացորդ (արժույթով)",
+        },
+        {
+          id: 21,
+          checked: false,
+          name: "Հավաքագրվող գումար (AMD)",
+        },
+        {
+          id: 22,
+          checked: false,
+          name: "Ընդհանուր պարտավորություն (AMD)",
+        },
+        {
+          id: 23,
+          checked: false,
+          name: "Փակման ա/թ",
+        },
+        {
+          id: 24,
+          checked: false,
+          name: "Փակողի ՊԿ",
+        },
+        {
+          id: 25,
+          checked: false,
+          name: "Արտաքին իրավաբան",
+        },
+        {
+          id: 26,
+          checked: false,
+          name: "Արտաքին իրավաբանական կազմակերպությանը փոխանցման ամսաթիվ",
+        },
+        {
+          id: 27,
+          checked: false,
+          name: "Արտաքին իրավաբանի հաճախորդի համար",
+        },
+        {
+          id: 28,
+          checked: false,
+          name: "Հաճախորդի հեռախոսահամար",
+        },
+        {
+          id: 29,
+          checked: false,
+          name: "Հաճախորդի գործող ապառիկ վարկերի հեռախոսահամարներ",
+        },
+        {
+          id: 30,
+          checked: false,
+          name: "Երաշխավորի հեռախոսահամար",
+        },
+        {
+          id: 31,
+          checked: false,
+          name: "Գրավատուի հեռախոսահամար",
+        },
+        {
+          id: 32,
+          checked: false,
+          name: "Հաճախորդի հասցե",
+        },
+        {
+          id: 33,
+          checked: false,
+          name: "Վերջին մարման ա/թ",
+        },
+        {
+          id: 34,
+          checked: false,
+          name: "Պայմանավորվածություններ",
+        },
+        {
+          id: 35,
+          checked: false,
+          name: "Պայմանավորվածության վերջնաժամկետ",
+        },
+        {
+          id: 36,
+          checked: false,
+          name: "Վերջին պայմանավորվածության կարգավիճակ",
+        },
+        {
+          id: 37,
+          checked: false,
+          name: "Վերջին պայմանավորվածության ամսաթիվ",
+        },
+        {
+          id: 38,
+          checked: false,
+          name: "Խմբի համար",
+        },
+        {
+          id: 39,
+          checked: false,
+          name: "Գրավ",
+        },
+        {
+          id: 40,
+          checked: false,
+          name: "Հիշեցումներ",
+        },
+        {
+          id: 41,
+          checked: false,
+          name: "Մայր գումարի մնացորդ",
+        },
+        {
+          id: 42,
+          checked: false,
+          name: "Տոկոսագումարի մնացորդ",
+        },
+        {
+          id: 43,
+          checked: false,
+          name: "Վարկային գծի չօգտագործված մասի տոկոսագումար",
+        },
+        {
+          id: 44,
+          checked: false,
+          name: "Սպասարկման վճար",
+        },
+        {
+          id: 45,
+          checked: false,
+          name: "Տուգանք",
+        },
+        {
+          id: 46,
+          checked: false,
+          name: "Պետ․ տուրք",
+        },
+        {
+          id: 47,
+          checked: false,
+          name: "Ապահովագրավճար",
+        },
+        {
+          id: 48,
+          checked: false,
+          name: "Տուգանքի օրական դրույքաչափ",
+        },
+        {
+          id: 49,
+          checked: false,
+          name: "Տուգանքի դադարեցման ա/թ",
+        },
+        {
+          id: 50,
+          checked: false,
+          name: "Պետ. տուրքի փոխանցումից հետո տուգանքի դադարեցման ա/թ",
+        },
+        {
+          id: 51,
+          checked: false,
+          name: "Պետ. տուրքեր (ա/թ.- գումար- չմարված գումար)",
+        },
+        {
+          id: 52,
+          checked: false,
+          name: "Վերջին փուլի տեսակ - ամսաթիվ",
+        },
+        {
+          id: 53,
+          checked: false,
+          name: "Հայցի ապահովում - ամսաթիվ",
         },
       ],
       CaseData: [
@@ -239,12 +478,15 @@ export default {
     renderHead(item) {
       this.header = item;
     },
+    contextMenu(item) {
+      console.log(item);
+    },
   },
 };
 </script>
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 3fr 3fr 3fr 3fr 3fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 7fr 7fr 7fr 7fr 7fr;
 }
 </style>

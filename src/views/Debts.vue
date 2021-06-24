@@ -1,5 +1,5 @@
 <template>
-  <div class="px-15">
+  <div class="px-10">
     <common-define-page :notifycations="notifyData"></common-define-page>
     <div
       class="bg-9 w-12 h-12 bg-no-repeat bg-contain my-9"

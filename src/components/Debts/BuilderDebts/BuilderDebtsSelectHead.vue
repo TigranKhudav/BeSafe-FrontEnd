@@ -22,7 +22,6 @@
     </ul>
   </div>
 </template>
-
 <script>
 export default {
   props: { selHead: { type: Array, required: true } },
@@ -44,6 +43,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

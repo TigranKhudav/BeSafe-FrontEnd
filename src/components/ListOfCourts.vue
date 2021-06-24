@@ -58,11 +58,12 @@
           ՀՀ Շիրակի մարզի առաջին ատյանի ընդհանուր իրավասության դատարան
           <template v-slot:city>ք. Գյումրի, Անկախության հրապարակ 7</template>
         </common-court>
-        <!-- <common-court>
+        <common-court>
           <template v-slot:place>Արարատ</template>
-          ՀՀ Արարատի և Վայոց ձորի մարզերի առաջին ատյանի ընդհանուր իրավասության դատարան
+          ՀՀ Արարատի և Վայոց ձորի մարզերի առաջին ատյանի ընդհանուր իրավասության
+          դատարան
           <template v-slot:city>ք. Արտաշատ, Շահումյան 19</template>
-        </common-court>     -->
+        </common-court>
         <common-court>
           <template v-slot:place>ԼՂՀ</template>
           Արցախի Հանրապետության ընդհանուր իրավասության առաջին ատյանի դատարան
@@ -83,9 +84,5 @@
 <script>
 import CommonButton from "@/common/CommonButton.vue";
 import CommonCourt from "@/common/CommonCourt.vue";
-export default {
-  components: { CommonButton, CommonCourt },
-};
+export default { components: { CommonButton, CommonCourt } };
 </script>
-<style scoped>
-</style>
