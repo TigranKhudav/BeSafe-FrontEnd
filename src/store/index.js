@@ -12,6 +12,7 @@ export default new Vuex.Store({
     showFile: false,
     showAddCase: false,
     showAddSession: false,
+    showRepaymentSchedule: false,
     // showUpcoming: true,
   },
   mutations: {
@@ -36,9 +37,9 @@ export default new Vuex.Store({
     addSessionModal(state, value) {
       state.showAddSession = value
     },
-    // upcoming(state, value) {
-    //   state.showUpcoming = value
-    // },
+    showRepaymentSchedule(state, value) {
+      state.showRepaymentSchedule = value
+    },
   },
   actions: {
   },

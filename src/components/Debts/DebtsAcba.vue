@@ -35,7 +35,12 @@
       <builder-info-modal v-if="$store.state.showInfo"></builder-info-modal>
     </transition>
 
-    <!-- <builder-acba-modal></builder-acba-modal> -->
+    <transition name="fade">
+      <builder-acba-modal
+        :modal="'showRepaymentSchedule'"
+        v-if="$store.state.showRepaymentSchedule"
+      ></builder-acba-modal>
+    </transition>
 
     <transition name="fade">
       <builder-file
@@ -97,14 +102,15 @@
               <div class="ctx-grid" v-if="showMenu">
                 <li class="ls-none"></li>
                 <li
-                  class="ls-none py-7 ps-10 shadow-1 border-bottom"
+                  class="ls-none py-7 ps-10 shadow-1 border-bottom subMenu"
                   role="button"
                 >
                   <span class="text-gray-500 fs-8">Մեկանգամյա մարման</span>
                 </li>
                 <li
-                  class="ls-none py-7 ps-10 bg-pink-200 shadow-1"
+                  class="ls-none py-7 ps-10 shadow-1 subMenu"
                   role="button"
+                  @click="$store.state.showRepaymentSchedule = true"
                 >
                   <span class="text-gray-500 fs-8">Գրաֆիկով մարման</span>
                 </li>
@@ -516,6 +522,9 @@ export default {
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 8fr 8fr 8fr 8fr 8fr;
+}
+.subMenu:hover {
+  background: rgb(247, 157, 187);
 }
 .ctx-grid {
   display: grid;

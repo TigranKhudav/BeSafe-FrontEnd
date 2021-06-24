@@ -1,5 +1,5 @@
 <template>
-  <common-modal>
+  <common-modal :modal="modal">
     <div>
       <div class="row my-12">
         <div class="col px-0 me-10">
@@ -34,6 +34,7 @@
 import CommonModal from "@/common/CommonModal.vue";
 export default {
   components: { CommonModal },
+  props: { modal: { type: String } },
 };
 </script>
 
