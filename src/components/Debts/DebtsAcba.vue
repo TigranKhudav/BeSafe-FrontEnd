@@ -74,10 +74,41 @@
               :prioritys="Prioritys"
               @contextmenu.prevent.native="$refs.menu.open"
             ></common-acba-list>
-            <vue-context ref="menu" class="position-absolute w-full max-w-28">
-              <li class="ls-none py-8 ps-8 bg-pink-350 outline-none">
-                <span class="text-white fs-9">Հայցադիմում</span>
-              </li>
+            <vue-context
+              ref="menu"
+              class="position-absolute w-full max-w-35 ps-0 outline-none d-flex"
+            >
+              <div class="ctx-grid max-w-29">
+                <li
+                  class="ls-none py-7 ps-10 bg-pink-350 border-bottom"
+                  role="button"
+                >
+                  <span class="text-white fs-9">Հայցադիմում</span>
+                </li>
+                <li
+                  class="ls-none py-7 ps-10 bg-pink-350 part"
+                  role="button"
+                  @mouseover="showMenu = true"
+                >
+                  <span class="text-white fs-9">Պարտավորագիր</span>
+                </li>
+                <li class="ls-none"></li>
+              </div>
+              <div class="ctx-grid" v-if="showMenu">
+                <li class="ls-none"></li>
+                <li
+                  class="ls-none py-7 ps-10 shadow-1 border-bottom"
+                  role="button"
+                >
+                  <span class="text-gray-500 fs-8">Մեկանգամյա մարման</span>
+                </li>
+                <li
+                  class="ls-none py-7 ps-10 bg-pink-200 shadow-1"
+                  role="button"
+                >
+                  <span class="text-gray-500 fs-8">Գրաֆիկով մարման</span>
+                </li>
+              </div>
             </vue-context>
           </div>
         </div>
@@ -109,9 +140,6 @@ import BuilderAcbaModal from "./BuilderDebts/BuilderAcbaModal.vue";
 import CommonShow from "./CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "./BuilderDebts/BuilderDebtsSelectHead.vue";
 
-import VueSimpleContextMenu from "vue-simple-context-menu";
-// import CommonContextMenu from "./CommonDebts/CommonContextMenu.vue";
-
 export default {
   components: {
     VueContext,
@@ -126,11 +154,11 @@ export default {
     BuilderAcbaModal,
     CommonShow,
     BuilderDebtsSelectHead,
-    VueSimpleContextMenu,
   },
   data() {
     return {
       dropdown: false,
+      showMenu: false,
       header: [],
       selHead: [
         {
@@ -487,6 +515,11 @@ export default {
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 7fr 7fr 7fr 7fr 7fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 8fr 8fr 8fr 8fr 8fr;
+}
+.ctx-grid {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  width: 100%;
 }
 </style>
