@@ -1,33 +1,18 @@
 <template>
-  <div class="w-full">
-    <div class="w-full mt-18">
-      <!-- <common-button class="h-17 mt-10">{{ lawyer.title }}</common-button>
-      <div class="bord">
-        <ul class="px-12 mb-0">
-          <li
-            class="ls-none py-9 ps-15 li-border"
-            role="button"
-            v-for="item in lawyer.menuItems"
-            :key="item.id"
-            @click="onSelect(item.id)"
-          >
-            <span class="fs-8 text-gray-500">{{ item.name }}</span>
-          </li>
-        </ul>
-      </div> -->
-      <!-- v-if="role === 'debts'" -->
-      <div>
-        <router-link :to="{ name: 'Debts' }">
-          <common-button class="h-17 mt-5">{{ debts.title2 }}</common-button>
+  <div class="w-full max-w-33">
+    <div class="w-full">
+      <div v-if="role === 'lawyer' || role === 'admin'">
+        <router-link :to="{ path: '/' }">
+          <common-button class="h-17 mt-5">{{ lawyer.title }}</common-button>
         </router-link>
         <div class="bord">
           <ul class="px-12 mb-0">
             <router-link
-              v-for="item in debts.menuItems2"
+              v-for="item in lawyer.menuItems"
               :key="item.id"
-              :to="'/debts/' + item.path"
+              :to="'/lawyer/' + item.path"
               tag="li"
-              class="ls-none py-9 ps-15 li-border"
+              class="ls-none py-8 ps-15 li-border"
               role="button"
             >
               <span class="fs-8 text-gray-500">{{ item.name }}</span>
@@ -35,11 +20,35 @@
           </ul>
         </div>
       </div>
+      <div v-if="role === 'debts' || role === 'admin'">
+        <router-link :to="{ name: 'Debts' }">
+          <common-button class="h-17 mt-5">{{ debts.title2 }}</common-button>
+        </router-link>
+        <div class="bord">
+          <ul class="px-12 mb-0">
+            <router-link
+              v-for="item in debts.menuItems"
+              :key="item.id"
+              :to="'/debts/' + item.path"
+              tag="li"
+              class="ls-none py-8 ps-15 li-border"
+              role="button"
+            >
+              <span class="fs-8 text-gray-500">{{ item.name }}</span>
+            </router-link>
+          </ul>
+        </div>
+      </div>
+      <div v-if="role === 'admin'" class="w-full bg-pink-350">
+        <common-button class="py-5"> Օգտագործողներ </common-button>
+        <div class="w-full px-10">
+          <div class="h-1 bg-white"></div>
+        </div>
+        <common-button class="py-5"> Հաստատման ենթակա </common-button>
+      </div>
     </div>
-    <div></div>
   </div>
 </template>
-
 <script>
 import CommonButton from "@/common/CommonButton.vue";
 export default {
@@ -69,7 +78,7 @@ export default {
       },
       debts: {
         title2: "Պարտքերի հավաքագրման ենթաբաժին",
-        menuItems2: [
+        menuItems: [
           { id: 1, name: "Գործընկերներ", path: "partners" },
           { id: 2, name: "Օրվա ենթակա", path: "subjectday" },
           { id: 3, name: "Հաշվետվություններ", path: "reports" },

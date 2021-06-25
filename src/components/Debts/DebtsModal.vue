@@ -1,7 +1,8 @@
 <template>
   <div class="d-flex justify-content-center">
     <div class="w-full max-w-36">
-      <common-select class="mt-20" :Datavalue="Partners"
+      <!-- stor partners -->
+      <common-select class="mt-20" :Datavalue="part"
         >Կազմակերպություն</common-select
       >
       <common-input
@@ -33,6 +34,5 @@ import CommonSelect from "@/common/CommonSelect.vue";
 import CommonButton from "@/common/CommonButton.vue";
 export default {
   components: { CommonSelect, CommonInput, CommonButton },
-  props: { Partners: { type: Array } },
 };
 </script>

@@ -15,6 +15,23 @@ const routes = [
     component: () => import('@/views/Profile.vue')
   },
   {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('@/views/Debts.vue'),
+    children: [
+      {
+        path: '',
+        name: 'AdminHome',
+        component: () => import('@/components/Admin/AdminHome.vue')
+      },
+      {
+        path: 'users',
+        name: 'AdminUsers',
+        component: () => import('@/components/Admin/AdminUsers.vue')
+      },
+    ]
+  },
+  {
     path: '/debts',
     name: 'Debts',
     component: () => import('@/views/Debts.vue'),

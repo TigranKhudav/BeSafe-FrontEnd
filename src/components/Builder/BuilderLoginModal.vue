@@ -1,6 +1,6 @@
 <template>
   <div class="w-full mb-25">
-    <div class="bg-1 w-23 h-23 bg-contain"></div>
+    <div class="bg-1 w-23 h-23 bg-contain bg-no-repeat"></div>
     <div class="mb-20">
       <common-input
         @on-input="getLogin"

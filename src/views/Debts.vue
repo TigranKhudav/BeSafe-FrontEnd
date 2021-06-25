@@ -1,33 +1,19 @@
 <template>
-  <div class="px-10">
+  <div class="px-11">
     <common-define-page :notifycations="notifyData"></common-define-page>
     <div
       class="bg-9 w-12 h-12 bg-no-repeat bg-contain my-9"
       role="button"
     ></div>
     <div class="w-full h-80">
-      <router-view :Partners="Partners"></router-view>
-      <!-- <div class="w-full"></div> -->
-      <!-- <keep-alive>
-          <component :is="view" class="w-full"></component>
-        </keep-alive> -->
+      <router-view :role="role" :Partners="Partners"></router-view>
     </div>
   </div>
 </template>
-
 <script>
 import CommonDefinePage from "@/components/CommonDefinePage.vue";
-import BuilderPassword from "@/components/Builder/BuilderPassword.vue";
-import BuilderMenu from "@/components/Builder/BuilderMenu.vue";
-import DebtsModal from "@/components/Debts/DebtsModal.vue";
-
 export default {
-  components: {
-    CommonDefinePage,
-    BuilderPassword,
-    BuilderMenu,
-    DebtsModal,
-  },
+  components: { CommonDefinePage },
   data() {
     return {
       data: { type: Object },
@@ -48,13 +34,5 @@ export default {
       ],
     };
   },
-  created() {
-    if (this.role === "debts") {
-      this.data = { ...this.lawyer, ...this.debts };
-    } //else partqer
-  },
 };
 </script>
-
-<style>
-</style>

@@ -1,7 +1,9 @@
 <template>
   <div class="px-15">
     <div class="mb-10" role="button">
-      <span class="fs-10 fw-600 text-gray-400">Արխիվ</span>
+      <router-link :to="{ name: 'Archive' }">
+        <span class="fs-10 fw-600 text-gray-400">Արխիվ</span>
+      </router-link>
     </div>
     <div>
       <ul class="ps-0">
