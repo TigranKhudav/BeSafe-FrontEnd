@@ -13,6 +13,9 @@
         @on-input="getPass"
         :placeholder="'Գաղտնաբառ'"
       ></common-input>
+      <div class="mt-6">
+        <span class="fs-8 text-red-800">*Ձեր գաղտնաբառը սխալ է</span>
+      </div>
     </div>
     <common-button class="w-full p-6">Մուտք Գործել</common-button>
   </div>

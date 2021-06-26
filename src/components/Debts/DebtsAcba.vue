@@ -431,7 +431,7 @@ export default {
           info: "",
           1: "Մուսաելյան Արսեն Ալյոշայի",
           2: "00663555",
-          3: "568599",
+          3: "Armen",
           4: "",
           5: "",
           6: "6",
@@ -513,7 +513,6 @@ export default {
       this.$store.commit("getInfoModal", true);
     },
     renderHead(item) {
-      console.log(item);
       this.header = item;
     },
     contextMenu(item) {

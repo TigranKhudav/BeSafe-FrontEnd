@@ -72,15 +72,12 @@
     </div>
   </div>
 </template>
-
 <script>
 import CommonButton from "../common/CommonButton.vue";
 import CommonCheckbox from "../common/CommonCheckbox.vue";
 import CommonClientDataList from "../common/CommonClientDataList.vue";
 import CommonClientsDataHead from "../common/CommonClientsDataHead.vue";
 import BuilderAddClientModal from "./Builder/BuilderAddClientModal.vue";
-import simplebar from "simplebar-vue";
-import "simplebar/dist/simplebar.min.css";
 import BuilderChangesModal from "./Builder/BuilderChangesModal.vue";
 import BulderSendEmailModal from "./Builder/BulderSendEmailModal.vue";
 import BuilderInfoModal from "./Builder/BuilderInfoModal.vue";
@@ -91,7 +88,6 @@ export default {
     CommonButton,
     BuilderAddClientModal,
     CommonClientDataList,
-    simplebar,
     BuilderChangesModal,
     BulderSendEmailModal,
     BuilderInfoModal,
@@ -151,7 +147,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .grid {
   display: grid;

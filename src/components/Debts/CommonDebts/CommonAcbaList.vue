@@ -32,53 +32,18 @@
       :key="item.id"
     >
       <input
-        class="edit w-full outline-none bg-indigo-100"
+        class="edit w-full h-full outline-none bg-indigo-100"
         v-if="edit"
         type="text"
         :value="item.value"
+        @keyup.enter="hi()"
       />
       <span class="fs-8 text-gray-600" v-else>{{ item.value }}</span>
     </div>
-    <!-- <div @click="edit = true" class="bord" :class="{ 'p-4': !edit }">
-      <input
-        class="edit w-full outline-none bg-indigo-100 p-4"
-        v-if="edit"
-        type="text"
-        :value="data.passport"
-      />
-      <span class="fs-8 text-gray-600" v-else>{{ data.passport }}</span>
-    </div>
-    <div @click="edit = true" class="bord" :class="{ 'p-4': !edit }">
-      <input
-        class="edit w-full outline-none bg-indigo-100 p-4"
-        v-if="edit"
-        type="text"
-        :value="data.caseNum"
-      />
-      <span class="fs-8 text-gray-600" v-else>{{ data.caseNum }}</span>
-    </div>
-    <div @click="edit = true" class="bord" :class="{ 'p-4': !edit }">
-      <input
-        class="edit w-full outline-none bg-indigo-100 p-4"
-        v-if="edit"
-        type="text"
-        :value="data.caseNum"
-      />
-      <span class="fs-8 text-gray-600" v-else>{{ data.caseNum }}</span>
-    </div>
-    <div @click="edit = true" class="bord" :class="{ 'p-4': !edit }">
-      <input
-        class="edit w-full outline-none bg-indigo-100 p-4"
-        v-if="edit"
-        type="text"
-        :value="data.amountPaid"
-      /><span class="fs-8 text-gray-600" v-else>{{ data.amountPaid }}</span>
-    </div> -->
   </div>
 </template>
 <script>
 import CommonCheckbox from "@/common/CommonCheckbox.vue";
-
 export default {
   components: { CommonCheckbox },
   props: { data: { type: Object }, head: { type: Array } },
@@ -87,13 +52,10 @@ export default {
       edit: false,
     };
   },
-  // Object.keys(this.data).filter(v => v === this.head)
   computed: {
     cols() {
       let arr = [];
-      this.head.forEach((i) => {
-        arr.push({ id: i.id, value: this.data[i.id] });
-      });
+      this.head.forEach((i) => arr.push({ id: i.id, value: this.data[i.id] }));
       return arr;
     },
   },
@@ -107,10 +69,12 @@ export default {
     getFile() {
       this.$emit("file", this.data.id);
     },
+    hi() {
+      console.log("hi");
+    },
   },
 };
 </script>
-
 <style scoped>
 .bord {
   border: 1px solid rgb(202, 202, 202);
