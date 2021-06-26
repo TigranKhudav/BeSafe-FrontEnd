@@ -1,5 +1,15 @@
 <template>
-  <button class="border-0 bg-pink-350 w-full hover">
+  <button
+    class="
+      border-0
+      bg-pink-350
+      w-full
+      hover
+      d-flex
+      align-items-center
+      justify-content-center
+    "
+  >
     <span class="text-white fs-8 fs-sm-18"><slot>Ուղարկել</slot></span>
   </button>
 </template>

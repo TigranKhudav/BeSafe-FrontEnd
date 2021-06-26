@@ -1,9 +1,9 @@
 <template>
   <div class="modal-mask">
-    <div class="py-13 px-18 bg-white">
+    <div class="py-12 px-16 bg-white">
       <div class="d-flex justify-content-end">
         <div
-          @click="$store.commit(modal, false)"
+          @click="$emit('close')"
           role="button"
           class="bg-25 w-10 h-10 bg-contain bg-no-repeat"
         ></div>

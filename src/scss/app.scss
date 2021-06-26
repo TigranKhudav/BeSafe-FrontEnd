@@ -12,7 +12,7 @@
     opacity: 0;
   }
 
-  .modal-mask {
+.modal-mask {
     position: fixed;
     z-index: 9998;
     top: 0;
@@ -24,4 +24,8 @@
     justify-content: center;
     align-items: center;
     transition: opacity 0.3s ease;
-  }
+}
+
+.bord {
+    border: 1px solid rgb(221, 221, 221);
+}

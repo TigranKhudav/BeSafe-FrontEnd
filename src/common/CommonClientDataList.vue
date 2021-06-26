@@ -101,9 +101,6 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr 3fr 3fr 3fr 2fr 2fr 1fr 1fr;
 }
-.bord {
-  border: 1px solid rgb(202, 202, 202);
-}
 .edit {
   border: none;
 }

@@ -24,16 +24,22 @@
     >
       <div class="bg-27 w-10 h-10 bg-contain bg-no-repeat"></div>
     </div>
-    <div @click="edit = true" class="bord" :class="{ 'p-4': !edit }">
+    <div
+      @click="edit = true"
+      class="bord"
+      :class="{ 'p-4': !edit }"
+      v-for="item in cols"
+      :key="item.id"
+    >
       <input
         class="edit w-full outline-none bg-indigo-100"
         v-if="edit"
         type="text"
-        :value="data.name"
+        :value="item.value"
       />
-      <span class="fs-8 text-gray-600" v-else>{{ data.name }}</span>
+      <span class="fs-8 text-gray-600" v-else>{{ item.value }}</span>
     </div>
-    <div @click="edit = true" class="bord" :class="{ 'p-4': !edit }">
+    <!-- <div @click="edit = true" class="bord" :class="{ 'p-4': !edit }">
       <input
         class="edit w-full outline-none bg-indigo-100 p-4"
         v-if="edit"
@@ -67,7 +73,7 @@
         type="text"
         :value="data.amountPaid"
       /><span class="fs-8 text-gray-600" v-else>{{ data.amountPaid }}</span>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -75,13 +81,21 @@ import CommonCheckbox from "@/common/CommonCheckbox.vue";
 
 export default {
   components: { CommonCheckbox },
-  props: {
-    data: { type: Object },
-  },
+  props: { data: { type: Object }, head: { type: Array } },
   data() {
     return {
       edit: false,
     };
+  },
+  // Object.keys(this.data).filter(v => v === this.head)
+  computed: {
+    cols() {
+      let arr = [];
+      this.head.forEach((i) => {
+        arr.push({ id: i.id, value: this.data[i.id] });
+      });
+      return arr;
+    },
   },
   methods: {
     getHistort() {

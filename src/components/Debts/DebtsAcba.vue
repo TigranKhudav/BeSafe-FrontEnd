@@ -44,10 +44,10 @@
     </transition>
 
     <!-- static heigth -->
-    <div class="d-flex justify-content-center w-full h-80 mt-12">
+    <div class="d-flex justify-content-center w-full h-83 mt-12">
       <div class="d-flex h-full w-full">
-        <div class="w-full">
-          <div class="grid mb-8">
+        <div class="w-full overflow-x-scroll">
+          <div class="grid mb-8" :style="cssVar">
             <div class="d-flex justify-content-center align-items-center">
               <common-checkbox @change.native="check($event)">
               </common-checkbox>
@@ -61,16 +61,18 @@
               >{{ item.name }}</common-clients-data-head
             >
           </div>
-          <div class="overflow-hidden">
+          <div class="">
             <common-acba-list
               v-for="item in CaseData"
               :key="item.id"
               :data="item"
+              :head="header"
               @history="getHistory"
               @info="getInfo"
               @file="getFile"
               :prioritys="Prioritys"
               @contextmenu.prevent.native="$refs.menu.open"
+              :style="cssVar"
             ></common-acba-list>
             <vue-context
               ref="menu"
@@ -123,10 +125,8 @@
     </div>
   </div>
 </template>
-
 <script>
 import VueContext from "vue-context";
-
 import CommonButton from "@/common/CommonButton.vue";
 import CommonCheckbox from "@/common/CommonCheckbox.vue";
 import CommonClientsDataHead from "@/common/CommonClientsDataHead.vue";
@@ -429,11 +429,18 @@ export default {
           id: 1,
           checked: false,
           info: "",
-          name: "Մուսաելյան Արսեն Ալյոշայի",
-          passport: "00663555",
-          caseNum: "568599",
-          priority: "",
-          amountPaid: "",
+          1: "Մուսաելյան Արսեն Ալյոշայի",
+          2: "00663555",
+          3: "568599",
+          4: "",
+          5: "",
+          6: "6",
+          7: "7",
+          8: "8",
+          9: "9",
+          10: "10",
+          11: "11",
+          12: "12",
         },
       ],
       Prioritys: [
@@ -484,6 +491,11 @@ export default {
     defaultHead() {
       return this.selHead.filter((v) => v.checked);
     },
+    cssVar() {
+      return {
+        "--cols": this.header.length,
+      };
+    },
   },
   methods: {
     check(e) {
@@ -501,6 +513,7 @@ export default {
       this.$store.commit("getInfoModal", true);
     },
     renderHead(item) {
+      console.log(item);
       this.header = item;
     },
     contextMenu(item) {
@@ -512,7 +525,7 @@ export default {
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 8fr 8fr 8fr 8fr 8fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr repeat(var(--cols), 5fr);
 }
 .subMenu:hover {
   background: rgb(247, 157, 187);

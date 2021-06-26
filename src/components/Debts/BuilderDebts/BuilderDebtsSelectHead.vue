@@ -2,7 +2,7 @@
   <div
     class="position-absolute bg-white shadow-1 top-25 w-full max-w-36 right-22"
   >
-    <ul class="pe-5 ps-0 pt-5">
+    <ul class="pe-5 ps-0 pt-5 overflow-y-scroll max-h-37">
       <li
         role="button"
         class="ls-none ps-6 py-3 my-3"
@@ -32,13 +32,8 @@ export default {
   },
   methods: {
     hihi(item) {
-      if (item.checked) {
-        item.checked = !item.checked;
-        this.$emit("renderHead", this.renderHead);
-      } else if (!item.checked && this.renderHead.length < 5) {
-        item.checked = !item.checked;
-        this.$emit("renderHead", this.renderHead);
-      }
+      item.checked = !item.checked;
+      this.$emit("renderHead", this.renderHead);
     },
   },
 };

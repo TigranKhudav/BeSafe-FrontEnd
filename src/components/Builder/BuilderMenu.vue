@@ -40,7 +40,9 @@
         </div>
       </div>
       <div v-if="role === 'admin'" class="w-full bg-pink-350">
-        <common-button class="py-5"> Օգտագործողներ </common-button>
+        <router-link :to="{ name: 'AdminUsers' }">
+          <common-button class="py-5"> Օգտագործողներ </common-button>
+        </router-link>
         <div class="w-full px-10">
           <div class="h-1 bg-white"></div>
         </div>
