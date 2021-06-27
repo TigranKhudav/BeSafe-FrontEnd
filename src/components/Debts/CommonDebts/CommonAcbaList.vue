@@ -1,16 +1,16 @@
         <template>
   <div class="grid">
-    <div class="bord p-4 d-flex justify-content-center align-items-center">
+    <div class="bord p-3 d-flex justify-content-center align-items-center">
       <common-checkbox :value="data.checked"></common-checkbox>
     </div>
-    <div class="bord d-flex justify-content-center align-items-center">
+    <div class="bord p-3 d-flex justify-content-center align-items-center">
       <div
         role="button"
         @click="getInfo"
         class="bg-16 w-10 h-10 bg-contain bg-no-repeat"
       ></div>
     </div>
-    <div class="bord d-flex justify-content-center align-items-center">
+    <div class="bord p-3 d-flex justify-content-center align-items-center">
       <div
         role="button"
         @click="getHistort"
@@ -20,14 +20,13 @@
     <div
       role="button"
       @click="getFile"
-      class="bord d-flex justify-content-center align-items-center"
+      class="bord p-3 d-flex justify-content-center align-items-center"
     >
       <div class="bg-27 w-10 h-10 bg-contain bg-no-repeat"></div>
     </div>
     <div
       @click="edit = true"
-      class="bord"
-      :class="{ 'p-4': !edit }"
+      class="bord p-3"
       v-for="item in cols"
       :key="item.id"
     >

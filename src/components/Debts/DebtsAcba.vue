@@ -3,7 +3,6 @@
     <div class="position-absolute left-23 top-22">
       <span class="fs-12 text-gray-500">Acba</span>
     </div>
-
     <common-show
       @click.native="dropdown = !dropdown"
       :dropdown="dropdown"
@@ -48,13 +47,13 @@
       <div class="d-flex h-full w-full">
         <div class="w-full overflow-x-scroll">
           <div class="grid mb-8" :style="cssVar">
-            <div class="d-flex justify-content-center align-items-center">
+            <div class="d-flex p-3 justify-content-center align-items-center">
               <common-checkbox @change.native="check($event)">
               </common-checkbox>
             </div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <div class="min-w-12"></div>
+            <div class="min-w-12"></div>
+            <div class="min-w-12"></div>
             <common-clients-data-head
               v-for="item in (header = defaultHead)"
               :key="item.id"
@@ -524,7 +523,7 @@ export default {
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr repeat(var(--cols), 5fr);
+  grid-template-columns: 1fr 1fr 1fr 1fr repeat(var(--cols), minmax(270px, 5fr));
 }
 .subMenu:hover {
   background: rgb(247, 157, 187);

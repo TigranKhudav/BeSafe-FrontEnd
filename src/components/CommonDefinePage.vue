@@ -88,6 +88,7 @@
             mt-35
             bg-white
             shadow-1
+            z-index-1
           "
           v-if="notify"
         >
@@ -105,7 +106,7 @@
                   h-12
                   bg-no-repeat bg-contain
                   ms-9
-                  bord
+                  border-r-gray
                   px-11
                   me-11
                 "
@@ -151,7 +152,7 @@ export default {
 .bord-li {
   border-bottom: 2px solid rgb(212, 212, 212);
 }
-.bord {
+.border-r-gray {
   border-right: 2px solid rgb(212, 212, 212);
 }
 </style>
