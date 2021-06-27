@@ -1,18 +1,22 @@
 <template>
   <div
     :class="padding"
-    class="d-flex justify-content-between w-full row"
+    class="d-flex justify-content-between w-full row mx-0"
     @click="popup = !popup"
   >
-    <div class="col"></div>
-    <div class="col d-flex justify-content-center">
-      <span class="text-gray-400">{{ value }}</span>
+    <div class="col">
+      <div class="bg-no-repeat h-14" :class="img && img"></div>
     </div>
-    <div
-      role="button"
-      class="w-8 h-8 bg-no-repeat bg-contain col bg-center"
-      :class="popup ? 'bg-6' : 'bg-5'"
-    ></div>
+    <div class="col-8 d-flex justify-content-center">
+      <span class="text-gray-500">{{ value }}</span>
+    </div>
+    <div class="col d-flex justify-content-center">
+      <div
+        role="button"
+        class="w-9 h-9 bg-no-repeat bg-contain bg-center"
+        :class="popup ? 'bg-6' : 'bg-5'"
+      ></div>
+    </div>
     <transition name="fade">
       <div
         class="
@@ -35,14 +39,13 @@
             v-for="item in Datavalue"
             :key="item.id"
           >
-            <span class="fs-7">{{ item.priority }}</span>
+            <span class="fs-7">{{ item.name }}</span>
           </li>
         </ul>
       </div>
     </transition>
   </div>
 </template>
-
 <script>
 export default {
   props: {
@@ -50,6 +53,7 @@ export default {
     position: { type: String },
     value: { type: String },
     padding: { type: String },
+    img: { type: String },
   },
   data() {
     return {
@@ -58,7 +62,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .li-hover:hover {
   background: rgba(201, 132, 157, 1);

@@ -125,8 +125,8 @@ $utilities: (
       ),
       "background-position": (
         property: background-position,
-        class: bg,
-        values: $bg-position
+        class: bg-p,
+        values: map-merge($bg-position ,$spacers)
       ),
       "background-size": (
         property: background-size,

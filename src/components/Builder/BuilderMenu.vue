@@ -2,7 +2,7 @@
   <div class="w-full max-w-33">
     <div class="w-full">
       <div v-if="role === 'lawyer' || role === 'admin'">
-        <router-link :to="{ path: '/' }">
+        <router-link class="text-dec-none" :to="{ path: '/' }">
           <common-button class="h-17 mt-5">{{ lawyer.title }}</common-button>
         </router-link>
         <div class="bord">
@@ -21,7 +21,7 @@
         </div>
       </div>
       <div v-if="role === 'debts' || role === 'admin'">
-        <router-link :to="{ name: 'Debts' }">
+        <router-link class="text-dec-none" :to="{ name: 'Debts' }">
           <common-button class="h-17 mt-5">{{ debts.title2 }}</common-button>
         </router-link>
         <div class="bord">
@@ -40,7 +40,7 @@
         </div>
       </div>
       <div v-if="role === 'admin'" class="w-full bg-pink-350">
-        <router-link :to="{ name: 'AdminUsers' }">
+        <router-link class="text-dec-none" :to="{ name: 'AdminUsers' }">
           <common-button class="py-5"> Օգտագործողներ </common-button>
         </router-link>
         <div class="w-full px-10">

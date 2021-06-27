@@ -51,11 +51,10 @@
       />
       <span v-else>{{ data.caseNum }}</span>
     </div>
-    <!-- priority -->
     <div class="bord d-flex align-items-center">
       <common-select
         :padding="'pe-10'"
-        :prioritys="prioritys"
+        :Datavalue="prioritys"
         :position="'right-34 top-31'"
       ></common-select>
     </div>

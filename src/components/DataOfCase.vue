@@ -78,13 +78,10 @@
     </div>
   </div>
 </template>
-
 <script>
 import CommonButton from "../common/CommonButton.vue";
 import CommonCheckbox from "../common/CommonCheckbox.vue";
 import CommonClientsDataHead from "../common/CommonClientsDataHead.vue";
-// import simplebar from "simplebar-vue";
-// import "simplebar/dist/simplebar.min.css";
 import BuilderChangesModal from "./Builder/BuilderChangesModal.vue";
 import BuilderInfoModal from "./Builder/BuilderInfoModal.vue";
 import BuilderAddCase from "./Builder/BuilderAddCase.vue";
@@ -95,7 +92,6 @@ export default {
     CommonCheckbox,
     CommonClientsDataHead,
     CommonButton,
-    // simplebar,
     BuilderChangesModal,
     BuilderInfoModal,
     BuilderAddCase,

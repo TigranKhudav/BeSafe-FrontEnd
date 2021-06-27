@@ -31,8 +31,8 @@
     <transition name="fade">
       <builder-info-modal v-if="$store.state.showInfo"></builder-info-modal>
     </transition>
-    <!-- static heigth -->
-    <div class="d-flex justify-content-center w-full h-80 mt-12">
+
+    <div class="d-flex justify-content-center w-full h-83 mt-12">
       <div class="d-flex h-full w-full">
         <div class="w-full">
           <div class="grid mb-8">
