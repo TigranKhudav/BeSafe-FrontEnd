@@ -3,30 +3,30 @@
     <div class="d-flex justify-content-center">
       <div class="w-full max-w-36">
         <common-select
-          class="mt-20 mb-12 border-bottom"
+          class="mt-20 mb-11 border-bottom"
           :Datavalue="Partners"
           :value="'Կազմակերպություն'"
           :padding="'py-1'"
         >
         </common-select>
         <common-input
-          :img="'bg-24'"
-          class="text-align-center mb-12 bg-p-8"
+          :img="'bg-24 text-gray-500'"
+          class="text-align-center mb-11 bg-p-8"
           :placeholder="'Անուն Ազգանուն'"
         ></common-input>
         <common-input
-          :img="'bg-37'"
-          class="text-align-center mb-12 bg-p-8"
+          :img="'bg-37 text-gray-500'"
+          class="text-align-center mb-11 bg-p-8"
           :placeholder="'Անձնագիր'"
         ></common-input>
         <common-select
-          class="mb-12 border-bottom"
+          class="mb-11 border-bottom"
           :value="'Կարգավիճակ'"
           :padding="'py-1'"
           :img="'bg-36'"
         ></common-select>
         <common-input
-          :img="'bg-21'"
+          :img="'bg-21 text-gray-500'"
           class="text-align-center mb-12 bg-p-8"
           :placeholder="'Ժամանակահատված'"
         ></common-input>

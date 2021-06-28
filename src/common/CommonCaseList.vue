@@ -1,13 +1,13 @@
 <template>
-  <div class="grid">
-    <div class="bord p-6 d-flex justify-content-center align-items-center">
+  <div class="grid-case">
+    <div class="bord p-3 d-flex justify-content-center align-items-center">
       <common-checkbox :value="data.checked"></common-checkbox>
     </div>
     <div class="bord d-flex justify-content-center align-items-center">
       <div
         role="button"
         @click="getInfo"
-        class="bg-16 w-12 h-12 bg-contain bg-no-repeat"
+        class="bg-16 w-6 h-12 bg-contain bg-no-repeat"
       ></div>
     </div>
     <div class="bord d-flex justify-content-center align-items-center">
@@ -24,7 +24,7 @@
     >
       <div class="bg-27 w-12 h-12 bg-contain bg-no-repeat"></div>
     </div>
-    <div @click="edit = true" class="bord" :class="{ 'p-6': !edit }">
+    <div @click="edit = true" class="bord ps-6 d-flex align-items-center">
       <input
         class="edit w-full h-full outline-none bg-indigo-100"
         v-if="edit"
@@ -33,34 +33,30 @@
       />
       <span v-else>{{ data.name }}</span>
     </div>
-    <div @click="edit = true" class="bord" :class="{ 'p-6': !edit }">
+    <div @click="edit = true" class="bord ps-6 d-flex align-items-center">
       <input
-        class="edit w-full h-full outline-none bg-indigo-100 p-6"
+        class="edit w-full h-full outline-none bg-indigo-100 p-3"
         v-if="edit"
         type="text"
         :value="data.passport"
       />
       <span v-else>{{ data.passport }}</span>
     </div>
-    <div @click="edit = true" class="bord" :class="{ 'p-6': !edit }">
+    <div @click="edit = true" class="bord ps-6 d-flex align-items-center">
       <input
-        class="edit w-full h-full outline-none bg-indigo-100 p-6"
+        class="edit w-full h-full outline-none bg-indigo-100 p-3"
         v-if="edit"
         type="text"
         :value="data.caseNum"
       />
       <span v-else>{{ data.caseNum }}</span>
     </div>
-    <div class="bord d-flex align-items-center">
-      <common-select
-        :padding="'pe-10'"
-        :Datavalue="prioritys"
-        :position="'right-34 top-31'"
-      ></common-select>
+    <div class="bord ps-6 d-flex align-items-center">
+      <common-select :hide="false" :Datavalue="prioritys"></common-select>
     </div>
-    <div @click="edit = true" class="bord" :class="{ 'p-6': !edit }">
+    <div @click="edit = true" class="bord">
       <input
-        class="edit w-full h-full outline-none bg-indigo-100 p-6"
+        class="edit w-full h-full outline-none bg-indigo-100 p-3"
         v-if="edit"
         type="text"
         :value="data.amountPaid"
@@ -68,12 +64,13 @@
     </div>
   </div>
 </template>
-
 <script>
 import CommonCheckbox from "./CommonCheckbox.vue";
 import CommonSelect from "./CommonSelect.vue";
+import VueContext from "vue-context";
+
 export default {
-  components: { CommonCheckbox, CommonSelect },
+  components: { CommonCheckbox, CommonSelect, VueContext },
   props: {
     data: { type: Object },
     prioritys: { type: Array },
@@ -96,14 +93,10 @@ export default {
   },
 };
 </script>
-
 <style scoped>
-.grid {
+.grid-case {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 3fr 3fr 3fr 3fr 3fr;
-}
-.bord {
-  border: 1px solid rgb(202, 202, 202);
+  grid-template-columns: 1fr 1fr 1fr 1fr 6fr 4fr 4fr 12fr 4fr;
 }
 .edit {
   border: none;

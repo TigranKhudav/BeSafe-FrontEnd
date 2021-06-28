@@ -1,16 +1,19 @@
 <template>
   <div
+    role="button"
     :class="padding"
     class="d-flex justify-content-between w-full row mx-0"
     @click="popup = !popup"
   >
-    <div class="col">
+    <div class="col pe-0" v-if="hide" :class="{ 'ps-9': hide }">
       <div class="bg-no-repeat h-14" :class="img && img"></div>
     </div>
-    <div class="col-8 d-flex justify-content-center">
-      <span class="text-gray-500">{{ value }}</span>
+    <div class="col-10 px-0 d-flex align-items-center justify-content-center">
+      <span :class="!hide ? 'w-full' : 'text-gray-400'">
+        {{ value }}
+      </span>
     </div>
-    <div class="col d-flex justify-content-center">
+    <div class="col px-0 d-flex justify-content-center align-items-center">
       <div
         role="button"
         class="w-9 h-9 bg-no-repeat bg-contain bg-center"
@@ -26,10 +29,10 @@
           py-8
           w-full
           h-full
-          max-h-18 max-w-36 max-h-33
+          mt-15
+          max-w-36 max-h-33
           overflow-y-scroll
         "
-        :class="position"
         v-if="popup"
       >
         <ul class="p-0">
@@ -38,6 +41,7 @@
             role="button"
             v-for="item in Datavalue"
             :key="item.id"
+            @click="onSelect(item)"
           >
             <span class="fs-7">{{ item.name }}</span>
           </li>
@@ -50,15 +54,21 @@
 export default {
   props: {
     Datavalue: { type: Array },
-    position: { type: String },
     value: { type: String },
     padding: { type: String },
     img: { type: String },
+    hide: { type: Boolean, default: true },
   },
   data() {
     return {
       popup: false,
     };
+  },
+  methods: {
+    onSelect(item) {
+      this.value = item.name;
+      this.$emit("onSelect", item);
+    },
   },
 };
 </script>

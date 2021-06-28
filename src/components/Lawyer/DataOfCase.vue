@@ -1,8 +1,8 @@
 <template>
   <div>
     <common-button
-      @click.native="$store.commit('addCaseModal', true)"
-      class="position-absolute top-23 right-22 w-full max-w-28"
+      @click.native="addCaseModal = true"
+      class="position-absolute top-22 right-22 w-full max-w-28"
     >
       <div class="d-flex align-items-center p-4">
         <div class="bg-15 w-10 h-10 bg-contain bg-no-repeat me-3"></div>
@@ -13,7 +13,8 @@
     <transition name="fade">
       <builder-add-case
         :prioritys="Prioritys"
-        v-if="$store.state.showAddCase"
+        v-if="addCaseModal"
+        @close="addCaseModal = false"
       ></builder-add-case>
     </transition>
 
@@ -36,11 +37,10 @@
       ></builder-file>
     </transition>
 
-    <!-- static heigth -->
-    <div class="d-flex justify-content-center w-full h-80 mt-12">
+    <div class="d-flex justify-content-center w-full h-83 mt-13">
       <div class="d-flex h-full w-full">
         <div class="w-full">
-          <div class="grid mb-8">
+          <div class="grid-case mb-8">
             <div class="d-flex justify-content-center align-items-center">
               <common-checkbox @change.native="check($event)">
               </common-checkbox>
@@ -79,14 +79,14 @@
   </div>
 </template>
 <script>
-import CommonButton from "../common/CommonButton.vue";
-import CommonCheckbox from "../common/CommonCheckbox.vue";
-import CommonClientsDataHead from "../common/CommonClientsDataHead.vue";
-import BuilderChangesModal from "./Builder/BuilderChangesModal.vue";
-import BuilderInfoModal from "./Builder/BuilderInfoModal.vue";
-import BuilderAddCase from "./Builder/BuilderAddCase.vue";
-import CommonCaseList from "../common/CommonCaseList.vue";
-import BuilderFile from "./Builder/BuilderFile.vue";
+import CommonButton from "../../common/CommonButton.vue";
+import CommonCheckbox from "../../common/CommonCheckbox.vue";
+import CommonClientsDataHead from "../../common/CommonClientsDataHead.vue";
+import BuilderChangesModal from "../Builder/BuilderChangesModal.vue";
+import BuilderInfoModal from "../Builder/BuilderInfoModal.vue";
+import BuilderAddCase from "../Builder/BuilderAddCase.vue";
+import CommonCaseList from "../../common/CommonCaseList.vue";
+import BuilderFile from "../Builder/BuilderFile.vue";
 export default {
   components: {
     CommonCheckbox,
@@ -100,6 +100,7 @@ export default {
   },
   data() {
     return {
+      addCaseModal: null,
       CaseData: [
         {
           id: 1,
@@ -111,38 +112,55 @@ export default {
           priority: "",
           amountPaid: "",
         },
+        {
+          id: 2,
+          checked: false,
+          info: "",
+          name: "Գրիգորյան Աշոտ Ալյոշայի",
+          passport: "00663555",
+          caseNum: "568599",
+          priority: "",
+          amountPaid: "",
+        },
+        {
+          id: 3,
+          checked: false,
+          info: "",
+          name: "Հակոբյան Արմեն Ալյոշայի",
+          passport: "00663555",
+          caseNum: "568599",
+          priority: "",
+          amountPaid: "",
+        },
       ],
       Prioritys: [
         {
           id: 1,
-          priority: "ՎԿ փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
+          name: "ՎԿ փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
         },
         {
           id: 2,
-          priority:
-            "Հայցադիմումի փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
+          name: "Հայցադիմումի փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
         },
-        { id: 3, priority: "ՎԿ-2 փաստաթղթերը տրամադրված են կատարողին" },
+        { id: 3, name: "ՎԿ-2 փաստաթղթերը տրամադրված են կատարողին" },
         {
           id: 4,
-          priority: "ՎԿ փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
+          name: "ՎԿ փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
         },
         {
           id: 5,
-          priority:
-            "Հայցադիմումի փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
+          name: "Հայցադիմումի փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
         },
-        { id: 6, priority: "ՎԿ-2 փաստաթղթերը տրամադրված են կատարողին" },
+        { id: 6, name: "ՎԿ-2 փաստաթղթերը տրամադրված են կատարողին" },
         {
           id: 7,
-          priority: "ՎԿ փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
+          name: "ՎԿ փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
         },
         {
           id: 8,
-          priority:
-            "Հայցադիմումի փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
+          name: "Հայցադիմումի փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
         },
-        { id: 9, priority: "ՎԿ-2 փաստաթղթերը տրամադրված են կատարողին" },
+        { id: 9, name: "ՎԿ-2 փաստաթղթերը տրամադրված են կատարողին" },
       ],
       HistoryList: [
         {
@@ -174,10 +192,9 @@ export default {
   },
 };
 </script>
-
 <style scoped>
-.grid {
+.grid-case {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 3fr 3fr 3fr 3fr 3fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 7fr 5fr 5fr 10fr 4fr;
 }
 </style>

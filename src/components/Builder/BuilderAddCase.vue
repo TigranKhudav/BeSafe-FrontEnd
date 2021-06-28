@@ -1,5 +1,5 @@
 <template>
-  <common-modal :modal="'addCaseModal'">
+  <common-modal @close="$emit('close')">
     <div class="max-w-36">
       <common-input
         :img="'py-11 text-gray-500 text-align-center'"
@@ -10,13 +10,12 @@
         :placeholder="'Անձնագիր'"
       ></common-input>
       <common-input
-        :img="'py-11 text-gray-500 text-align-center'"
+        :img="'py-11 text-gray-500  text-align-center'"
         :placeholder="'Գործի համար'"
       ></common-input>
       <common-select
-        class="py-7 text-gray-500 ms-8 border-bottom"
+        class="py-4 border-bottom"
         :prioritys="prioritys"
-        :position="'top-35'"
         :value="'Կարգավիճակ'"
       ></common-select>
       <common-input

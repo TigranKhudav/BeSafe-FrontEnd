@@ -76,14 +76,14 @@
   </div>
 </template>
 <script>
-import CommonButton from "../common/CommonButton.vue";
-import CommonCheckbox from "../common/CommonCheckbox.vue";
-import CommonClientsDataHead from "../common/CommonClientsDataHead.vue";
-import BuilderChangesModal from "./Builder/BuilderChangesModal.vue";
-import BuilderInfoModal from "./Builder/BuilderInfoModal.vue";
+import CommonButton from "../../common/CommonButton.vue";
+import CommonCheckbox from "../../common/CommonCheckbox.vue";
+import CommonClientsDataHead from "../../common/CommonClientsDataHead.vue";
+import BuilderChangesModal from "../Builder/BuilderChangesModal.vue";
+import BuilderInfoModal from "../Builder/BuilderInfoModal.vue";
 import CommonSesionList from "@/common/CommonSesionList.vue";
-import BuilderAddSession from "./Builder/BuilderAddSession.vue";
-import BuilderUpcomingSessions from "./Builder/BuilderUpcomingSessions.vue";
+import BuilderAddSession from "../Builder/BuilderAddSession.vue";
+import BuilderUpcomingSessions from "../Builder/BuilderUpcomingSessions.vue";
 export default {
   components: {
     CommonCheckbox,

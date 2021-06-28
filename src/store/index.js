@@ -10,10 +10,11 @@ export default new Vuex.Store({
     showSendEmail: false,
     showInfo: false,
     showFile: false,
-    showAddCase: false,
     showAddSession: false,
     showRepaymentSchedule: false,
-    // showUpcoming: true,
+    UserData: {
+      type: Object
+    }
   },
   mutations: {
     setComponent(state, id) {
@@ -31,18 +32,16 @@ export default new Vuex.Store({
     fileModal(state, value) {
       state.showFile = value
     },
-    addCaseModal(state, value) {
-      state.showAddCase = value
-    },
     addSessionModal(state, value) {
       state.showAddSession = value
     },
     showRepaymentSchedule(state, value) {
       state.showRepaymentSchedule = value
     },
+    userData(state, data) {
+      state.UserData = data
+    }
   },
   actions: {
   },
-  modules: {
-  }
 })

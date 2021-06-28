@@ -48,16 +48,14 @@
             <common-clients-data-head>Ամսաթիվ</common-clients-data-head>
           </div>
           <div class="overflow-hidden">
-            <simplebar data-simplebar-auto-hide="false">
-              <common-client-data-list
-                :data="item"
-                v-for="item in clientsData"
-                :key="item.id"
-                @history="getHistory"
-                @info="getInfo"
-                @email="sendEmail"
-              ></common-client-data-list>
-            </simplebar>
+            <common-client-data-list
+              :data="item"
+              v-for="item in clientsData"
+              :key="item.id"
+              @history="getHistory"
+              @info="getInfo"
+              @email="sendEmail"
+            ></common-client-data-list>
           </div>
         </div>
         <div class="my-auto">
@@ -73,14 +71,14 @@
   </div>
 </template>
 <script>
-import CommonButton from "../common/CommonButton.vue";
-import CommonCheckbox from "../common/CommonCheckbox.vue";
-import CommonClientDataList from "../common/CommonClientDataList.vue";
-import CommonClientsDataHead from "../common/CommonClientsDataHead.vue";
-import BuilderAddClientModal from "./Builder/BuilderAddClientModal.vue";
-import BuilderChangesModal from "./Builder/BuilderChangesModal.vue";
-import BulderSendEmailModal from "./Builder/BulderSendEmailModal.vue";
-import BuilderInfoModal from "./Builder/BuilderInfoModal.vue";
+import CommonButton from "../../common/CommonButton.vue";
+import CommonCheckbox from "../../common/CommonCheckbox.vue";
+import CommonClientDataList from "../../common/CommonClientDataList.vue";
+import CommonClientsDataHead from "../../common/CommonClientsDataHead.vue";
+import BuilderAddClientModal from "../Builder/BuilderAddClientModal.vue";
+import BuilderChangesModal from "../Builder/BuilderChangesModal.vue";
+import BulderSendEmailModal from "../Builder/BulderSendEmailModal.vue";
+import BuilderInfoModal from "../Builder/BuilderInfoModal.vue";
 export default {
   components: {
     CommonCheckbox,
