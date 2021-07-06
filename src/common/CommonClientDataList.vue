@@ -87,7 +87,7 @@ export default {
       this.$emit("history", this.data.id);
     },
     sendEmail() {
-      this.$emit("email", this.data.id);
+      this.$emit("email", { name: this.data.name, email: this.data.email });
     },
     getInfo() {
       this.$emit("info", this.data.id);

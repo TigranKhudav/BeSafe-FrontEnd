@@ -19,12 +19,27 @@
     </div>
     <div
       role="button"
-      @click="getFile"
       class="bord d-flex justify-content-center align-items-center"
     >
-      <div class="bg-27 w-12 h-12 bg-contain bg-no-repeat"></div>
+      <div
+        @click="showFile = true"
+        class="bg-27 w-12 h-12 bg-contain bg-no-repeat"
+      ></div>
+      <transition name="fade">
+        <builder-file
+          v-if="showFile"
+          :files="files"
+          @uploadFile="uploadFile"
+          @close="showFile = false"
+        ></builder-file>
+      </transition>
     </div>
-    <div @click="edit = true" class="bord ps-6 d-flex align-items-center">
+
+    <div
+      @click="edit = true"
+      class="bord ps-6 d-flex align-items-center"
+      :class="{ 'bg-indigo-100': edit }"
+    >
       <input
         class="edit w-full h-full outline-none bg-indigo-100"
         v-if="edit"
@@ -33,7 +48,11 @@
       />
       <span v-else>{{ data.name }}</span>
     </div>
-    <div @click="edit = true" class="bord ps-6 d-flex align-items-center">
+    <div
+      @click="edit = true"
+      :class="{ 'bg-indigo-100': edit }"
+      class="bord ps-6 d-flex align-items-center"
+    >
       <input
         class="edit w-full h-full outline-none bg-indigo-100 p-3"
         v-if="edit"
@@ -42,7 +61,11 @@
       />
       <span v-else>{{ data.passport }}</span>
     </div>
-    <div @click="edit = true" class="bord ps-6 d-flex align-items-center">
+    <div
+      @click="edit = true"
+      :class="{ 'bg-indigo-100': edit }"
+      class="bord ps-6 d-flex align-items-center"
+    >
       <input
         class="edit w-full h-full outline-none bg-indigo-100 p-3"
         v-if="edit"
@@ -51,10 +74,13 @@
       />
       <span v-else>{{ data.caseNum }}</span>
     </div>
-    <div class="bord ps-6 d-flex align-items-center">
-      <common-select :hide="false" :Datavalue="prioritys"></common-select>
+    <div class="bord">
+      <common-select
+        :Size="'max-h-33 max-w-status'"
+        :Datavalue="prioritys"
+      ></common-select>
     </div>
-    <div @click="edit = true" class="bord">
+    <div @click="edit = true" :class="{ 'bg-indigo-100': edit }" class="bord">
       <input
         class="edit w-full h-full outline-none bg-indigo-100 p-3"
         v-if="edit"
@@ -67,10 +93,11 @@
 <script>
 import CommonCheckbox from "./CommonCheckbox.vue";
 import CommonSelect from "./CommonSelect.vue";
+import BuilderFile from "@/components/Builder/BuilderFile.vue";
 import VueContext from "vue-context";
 
 export default {
-  components: { CommonCheckbox, CommonSelect, VueContext },
+  components: { CommonCheckbox, CommonSelect, VueContext, BuilderFile },
   props: {
     data: { type: Object },
     prioritys: { type: Array },
@@ -78,8 +105,11 @@ export default {
   data() {
     return {
       edit: false,
+      showFile: false,
+      files: [],
     };
   },
+
   methods: {
     getHistort() {
       this.$emit("history", this.data.id);
@@ -87,8 +117,8 @@ export default {
     getInfo() {
       this.$emit("info", this.data.id);
     },
-    getFile() {
-      this.$emit("file", this.data.id);
+    uploadFile(files) {
+      this.$store.dispatch("uploadFile", { id: this.data.id, files });
     },
   },
 };

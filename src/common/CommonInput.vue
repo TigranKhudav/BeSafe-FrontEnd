@@ -14,7 +14,7 @@
     :value="value"
     :placeholder="placeholder"
     :class="img ? img : 'bg-3'"
-    @input="$emit('on-input', $event.target.value)"
+    @input="$emit('onInput', $event.target.value)"
   />
 </template>
 

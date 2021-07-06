@@ -5,6 +5,7 @@
         <common-select
           class="mt-20 mb-11 border-bottom"
           :Datavalue="Partners"
+          :Size="'max-h-26'"
           :value="'Կազմակերպություն'"
           :padding="'py-1'"
         >

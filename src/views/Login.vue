@@ -1,12 +1,54 @@
 <template>
-  <div class="container d-flex align-items-center justify-content-center h-100">
-    <builder-login-modal class="max-w-35"></builder-login-modal>
+  <div class="d-flex align-items-center justify-content-center h-100">
+    <div class="w-full max-w-35 mb-25">
+      <div class="bg-1 w-23 h-23 bg-contain bg-no-repeat"></div>
+      <div class="mb-20">
+        <common-input
+          @onInput="login = $event"
+          :img="'bg-2'"
+          :placeholder="'Մուտքանուն'"
+        ></common-input>
+      </div>
+      <div class="my-14">
+        <common-input
+          @onInput="pass = $event"
+          :placeholder="'Գաղտնաբառ'"
+        ></common-input>
+        <div class="mt-6">
+          <span class="fs-8 text-red-800">*Ձեր գաղտնաբառը սխալ է</span>
+        </div>
+      </div>
+      <common-button @click="ShowInputs" class="w-full p-6">
+        Մուտք Գործել
+      </common-button>
+    </div>
   </div>
 </template>
-
 <script>
-import BuilderLoginModal from "@/components/Builder/BuilderLoginModal.vue";
+import CommonButton from "@/common/CommonButton.vue";
+import CommonInput from "@/common/CommonInput.vue";
 export default {
-  components: { BuilderLoginModal },
+  components: { CommonButton, CommonInput },
+  data() {
+    return {
+      login: "",
+      pass: "",
+    };
+  },
+  methods: {
+    ShowInputs() {
+      this.$store.dispatch("login", { login: this.login, pass: this.pass });
+    },
+  },
 };
 </script>
+<style scoped>
+.plac {
+  background-size: 1.5rem 1.5rem;
+  background-position: left center;
+}
+.plac::placeholder {
+  color: gray;
+  font-size: 0.9rem;
+}
+</style>

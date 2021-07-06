@@ -28,11 +28,8 @@
     <span class="fs-10 fw-600 text-white"><slot /></span>
   </li>
 </template>
-
 <script>
-import CommonPartners from "@/common/CommonPartners.vue";
 export default {
-  components: { CommonPartners },
   data() {
     return {
       mounts: [

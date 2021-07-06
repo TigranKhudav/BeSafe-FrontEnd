@@ -1,41 +1,44 @@
 <template>
-  <div
-    role="button"
-    :class="padding"
-    class="d-flex justify-content-between w-full row mx-0"
-    @click="popup = !popup"
-  >
-    <div class="col pe-0" v-if="hide" :class="{ 'ps-9': hide }">
-      <div class="bg-no-repeat h-14" :class="img && img"></div>
-    </div>
-    <div class="col-10 px-0 d-flex align-items-center justify-content-center">
-      <span :class="!hide ? 'w-full' : 'text-gray-400'">
-        {{ value }}
-      </span>
-    </div>
-    <div class="col px-0 d-flex justify-content-center align-items-center">
-      <div
-        role="button"
-        class="w-9 h-9 bg-no-repeat bg-contain bg-center"
-        :class="popup ? 'bg-6' : 'bg-5'"
-      ></div>
+  <div v-outside-click="outside">
+    <div
+      role="button"
+      :class="padding"
+      class="d-flex justify-content-between w-full row px-0 mx-0"
+      @click="popup = !popup"
+    >
+      <div class="col px-0">
+        <div class="bg-no-repeat h-14" :class="img && img"></div>
+      </div>
+      <div class="col-11 px-0 d-flex align-items-center justify-content-center">
+        <span class="fs-8 text-gray-400 user-select-none">
+          {{ selectedValue }}
+        </span>
+      </div>
+      <div class="col px-0 d-flex justify-content-center align-items-center">
+        <div
+          role="button"
+          class="w-9 h-9 bg-no-repeat bg-contain bg-center"
+          :class="popup ? 'bg-6' : 'bg-5'"
+        ></div>
+      </div>
     </div>
     <transition name="fade">
       <div
+        :class="Size"
         class="
           position-absolute
           shadow-1
           bg-white
-          py-8
+          py-7
+          mt-3
+          px-6
           w-full
           h-full
-          mt-15
-          max-w-36 max-h-33
-          overflow-y-scroll
+          overflow-y-auto
         "
         v-if="popup"
       >
-        <ul class="p-0">
+        <ul class="p-0 mb-0">
           <li
             class="li-hover ls-none px-8 py-4"
             role="button"
@@ -54,20 +57,25 @@
 export default {
   props: {
     Datavalue: { type: Array },
-    value: { type: String },
+    value: { type: String, default: "" },
     padding: { type: String },
     img: { type: String },
-    hide: { type: Boolean, default: true },
+    Size: { type: String },
   },
   data() {
     return {
       popup: false,
+      selectedValue: this.value,
     };
   },
   methods: {
     onSelect(item) {
-      this.value = item.name;
+      this.selectedValue = item.name;
       this.$emit("onSelect", item);
+      this.popup = false;
+    },
+    outside() {
+      this.popup = false;
     },
   },
 };

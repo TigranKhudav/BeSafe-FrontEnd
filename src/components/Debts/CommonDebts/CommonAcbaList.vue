@@ -1,5 +1,5 @@
         <template>
-  <div class="grid">
+  <div class="part-grid">
     <div class="bord p-3 d-flex justify-content-center align-items-center">
       <common-checkbox :value="data.checked"></common-checkbox>
     </div>
@@ -7,7 +7,7 @@
       <div
         role="button"
         @click="getInfo"
-        class="bg-16 w-10 h-10 bg-contain bg-no-repeat"
+        class="bg-16 w-10 h-10 bg-contain bg-no-repeat bg-p-center"
       ></div>
     </div>
     <div class="bord p-3 d-flex justify-content-center align-items-center">

@@ -189,32 +189,16 @@ $utilities: (
         property: z-index,
         values: 0 1 2 3 4,
       ),
+      "resize": (
+        property: resize,
+        values: none,
+      ),
+      "appearance": (
+        property: appearance,
+        values: none,
+      ),
+      "user-select": (
+        property: user-select,
+        values: none,
+      ),
  );
-
-// @mixin sm($var) {
-//         font-size: $var;
-// }
-
-//  @each $name, $var in $spacers{
-//   @media (min-width: 640px) { 
-
-// }
-// }
-
-// $sizes: ("xs":320px, "sm":576px, "md":768px, "lg":992px, "xl":1200px);
-
-// @mixin media($media) {
-//   @each $size, $resolution in $sizes {
-//     @if $media == $size {
-//       @media only screen and (min-width: $resolution) {
-//         @each $var in $spacers{
-//         font-size: $var;
-//         }
-//       }
-//     }
-//   }
-// }
-
-//  .fs-#{$name}-{
-//    @include media($name)
-//  }

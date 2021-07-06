@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="position-absolute left-23 top-22">
-      <span class="fs-12 text-gray-500">Օրվա ենթակա</span>
+      <span class="fs-12 text-gray-500">GlobalCredit</span>
     </div>
 
     <common-show
@@ -39,11 +39,6 @@
     <div class="d-flex justify-content-center w-full h-83 mt-12">
       <div class="d-flex h-full w-full">
         <div class="w-full overflow-x-auto">
-          <div class="w-full d-flex justify-content-end mt-3">
-            <div class="" role="button">
-              <span class="fs-10 fw-600 text-gray-400">Արխիվ</span>
-            </div>
-          </div>
           <div class="part-grid mb-8" :style="cssVar">
             <div class="d-flex p-3 justify-content-center align-items-center">
               <common-checkbox @change.native="check($event)">
@@ -55,8 +50,8 @@
             <common-clients-data-head
               v-for="item in (header = defaultHead)"
               :key="item.id"
-              >{{ item.name }}</common-clients-data-head
-            >
+              >{{ item.name }}
+            </common-clients-data-head>
           </div>
           <common-acba-list
             v-for="item in CaseData"
@@ -81,16 +76,17 @@
     </div>
   </div>
 </template>
+
 <script>
 import CommonButton from "@/common/CommonButton.vue";
 import CommonCheckbox from "@/common/CommonCheckbox.vue";
 import CommonClientsDataHead from "@/common/CommonClientsDataHead.vue";
-import BuilderChangesModal from "@/components/Builder/BuilderChangesModal.vue";
-import BuilderInfoModal from "@/components/Builder/BuilderInfoModal.vue";
-import BuilderFile from "@/components/Builder/BuilderFile.vue";
+import BuilderChangesModal from "../../Builder/BuilderChangesModal.vue";
+import BuilderInfoModal from "../../Builder/BuilderInfoModal.vue";
+import BuilderFile from "../../Builder/BuilderFile.vue";
 import CommonAcbaList from "../CommonDebts/CommonAcbaList.vue";
 import CommonShow from "../CommonDebts/CommonShow.vue";
-import BuilderDebtsSelectHead from "../BuilderDebts/BuilderDebtsSelectHead.vue";
+import BuilderDebtsSelectHead from "./BuilderDebtsSelectHead.vue";
 
 export default {
   components: {
@@ -162,9 +158,12 @@ export default {
     renderHead(item) {
       this.header = item;
     },
-    contextMenu(item) {
-      console.log(item);
-    },
   },
 };
 </script>
+<style scoped>
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 8fr 8fr 8fr 8fr 8fr;
+}
+</style>

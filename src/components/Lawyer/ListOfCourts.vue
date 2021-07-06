@@ -1,10 +1,10 @@
 <template>
   <div class="px-22">
     <div>
-      <div class="ms-24">
-        <span class="fs-12 text-gray-500">Դատարանների ցանկ</span>
+      <div class="position-absolute left-23 top-22">
+        <h3 class="fs-12 text-gray-500">Դատարանների ցանկ</h3>
       </div>
-      <div class="px-8 max-h-80 overflow-y-scroll">
+      <div class="px-8 mt-15 max-h-83 overflow-y-scroll">
         <common-court>
           <template v-slot:place>Երևան</template>
           Երևան քաղաքի առաջին ատյանի ընդհանուր իրավասության դատարան

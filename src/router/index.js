@@ -1,8 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store'
 import axios from '@/utils/axios'
 
 Vue.use(VueRouter)
+
+function getHead(route) {
+  if (route.params.id === '2') return { selHead: store.getters.Ucom }
+  else if (route.params.id === '3') return { selHead: store.getters.GlobalCredit }
+  else if (route.params.id === '4') return { selHead: store.getters.GoodCredit }
+  else return { selHead: store.getters.NewPartner }
+}
 
 
 const router = new VueRouter({
@@ -14,128 +22,131 @@ const router = new VueRouter({
       component: () => import('@/views/Login.vue')
     },
     {
+      name: '404',
+      path: '/404',
+      alias: '*',
+      component: () => import('@/views/NotFound.vue'),
+    },
+    {
       path: '/',
       name: 'Home',
-      component: () => import('@/views/Home.vue')
+      component: () => import('@/views/Home.vue'),
+      children: [
+        {
+          path: '/profile',
+          name: 'Profile',
+          component: () => import('@/views/PersonalPage.vue')
+        },
+      ]
     },
     {
       path: '/lawyer',
-      name: 'Lawyer',
       component: () => import('@/views/Home.vue'),
       children: [
         {
           path: '',
-          name: 'ClientsData',
-          component: () => import('@/components/Lawyer/ClientsData.vue')
+          name: 'Lawyer',
+          component: () => import('@/components/Lawyer/ClientsData.vue'),
+          meta: { authorize: 'lawyer' }
         },
         {
           path: 'dataofcase',
           name: 'DataOfCase',
-          component: () => import('@/components/Lawyer/DataOfCase.vue')
+          component: () => import('@/components/Lawyer/DataOfCase.vue'),
+          meta: { authorize: 'lawyer' }
         },
-        // {
-        //   path: 'partners/1',
-        //   name: 'Acba',
-        //   component: () => import('@/components/Debts/DebtsAcba.vue')
-        // },
-        // {
-        //   path: 'partners/2',
-        //   name: 'Ucom',
-        //   component: () => import('@/components/Debts/DebtsUcom.vue')
-        // },
-        // {
-        //   path: 'partners/3',
-        //   name: 'GlobalCredit',
-        //   component: () => import('@/components/Debts/DebtsGlobalCredit.vue')
-        // },
-        // {
-        //   path: 'partners/4',
-        //   name: 'GoodCredit',
-        //   component: () => import('@/components/Debts/DebtsGoodCredit.vue')
-        // },
-        // {
-        //   path: 'reports',
-        //   name: 'Reports',
-        //   component: () => import('@/components/Debts/Reports/Reports.vue')
-        // },
-        // {
-        //   path: 'subjectday',
-        //   name: 'SubjectDay',
-        //   component: () => import('@/components/Debts/SubjectDay/SubjectDay.vue')
-        // },
-        // {
-        //   path: 'archive',
-        //   name: 'Archive',
-        //   component: () => import('@/components/Debts/SubjectDay/Archive.vue')
-        // },
       ]
     },
     {
       path: '/admin',
-      name: 'Admin',
       component: () => import('@/views/Home.vue'),
       children: [
         {
           path: '',
-          name: 'AdminHome',
-          component: () => import('@/components/Admin/AdminHome.vue')
+          name: 'Admin',
+          component: () => import('@/components/Admin/AdminHome.vue'),
+          meta: { authorize: 'admin' }
         },
         {
           path: 'users',
           name: 'AdminUsers',
-          component: () => import('@/components/Admin/AdminUsers.vue')
+          component: () => import('@/components/Admin/AdminUsers.vue'),
+          meta: { authorize: 'admin' }
+        },
+        {
+          path: 'partners',
+          name: 'AdminPartners',
+          component: () => import('@/components/Debts/DebtsPartners.vue'),
+          meta: { authorize: 'admin' }
         },
       ]
     },
     {
       path: '/debts',
-      name: 'Debts',
       component: () => import('@/views/Home.vue'),
       children: [
         {
           path: '',
-          name: 'DebtsHome',
-          component: () => import('@/components/Debts/DebtsHomeModal.vue')
+          name: 'Debts',
+          component: () => import('@/components/Debts/DebtsHomeModal.vue'),
+          meta: { authorize: 'debts' }
         },
         {
           path: 'partners',
           name: 'Partners',
-          component: () => import('@/components/Debts/DebtsPartners.vue')
+          component: () => import('@/components/Debts/DebtsPartners.vue'),
+          meta: { authorize: 'debts' }
         },
         {
           path: 'partners/1',
           name: 'Acba',
-          component: () => import('@/components/Debts/DebtsAcba.vue')
+          component: () => import('@/components/Debts/DebtsAcba.vue'),
+          meta: { authorize: 'debts' },
+          props: { selHead: store.getters.Acba }
         },
         {
-          path: 'partners/2',
-          name: 'Ucom',
-          component: () => import('@/components/Debts/DebtsUcom.vue')
-        },
-        {
-          path: 'partners/3',
-          name: 'GlobalCredit',
-          component: () => import('@/components/Debts/DebtsGlobalCredit.vue')
-        },
-        {
-          path: 'partners/4',
-          name: 'GoodCredit',
-          component: () => import('@/components/Debts/DebtsGoodCredit.vue')
-        },
-        {
-          path: 'reports',
-          name: 'Reports',
-          component: () => import('@/components/Debts/Reports/Reports.vue')
+          path: 'partners/:id',
+          name: 'Patrner',
+          component: () => import('@/components/Debts/BuilderDebts/BuilderPartnerTable.vue'),
+          meta: { authorize: 'debts' },
+          props: getHead
         },
         {
           path: 'subjectday',
           name: 'SubjectDay',
-          component: () => import('@/components/Debts/SubjectDay/SubjectDay.vue')
+          component: () => import('@/components/Debts/SubjectDay/SubjectDay.vue'),
+          meta: { authorize: 'debts' },
+          props: { selHead: store.getters.Acba }
         },
         {
           path: 'archive',
           name: 'Archive',
-          component: () => import('@/components/Debts/SubjectDay/Archive.vue')
+          component: () => import('@/components/Debts/SubjectDay/Archive.vue'),
+          meta: { authorize: 'debts' }
+        },
+        {
+          path: 'reports',
+          name: 'Reports',
+          component: () => import('@/components/Debts/Reports/Reports.vue'),
+          meta: { authorize: 'debts' }
+        },
+        {
+          path: 'statuses',
+          name: 'Statuses',
+          component: () => import('@/components/Debts/DebtsStatuses.vue'),
+          meta: { authorize: 'debts' }
+        },
+        {
+          path: 'listofcourts',
+          name: 'ListOfCourts',
+          component: () => import('@/components/Lawyer/ListOfCourts.vue'),
+          meta: { authorize: 'debts' }
+        },
+        {
+          path: 'templates',
+          name: 'Templates',
+          component: () => import('@/components/Debts/DebtsTemplates.vue'),
+          meta: { authorize: 'debts' }
         },
       ]
     },
@@ -152,6 +163,15 @@ const router = new VueRouter({
 //   }
 //   else if (to.path === '/login') next()
 //   else next({ name: "Login" })
+// })
+// router.beforeEach((to, from, next) => {
+//   const role = 'debts'
+//   const auth = to.meta.authorize
+//   if (auth) {
+//     if (role === auth) {
+//       next()
+//     } else next({ name: '404' });
+//   } else next()
 // })
 
 export default router

@@ -84,7 +84,7 @@
             right-15
             w-full
             max-w-34 max-h-34
-            overflow-y-scroll
+            overflow-y-auto
             mt-35
             bg-white
             shadow-1
@@ -111,7 +111,7 @@
                   me-11
                 "
               ></div>
-              <span class="">{{ item.name }}</span>
+              <span>{{ item.name }}</span>
             </li>
           </ul>
         </div>
@@ -120,7 +120,6 @@
     <slot />
   </div>
 </template>
-
 <script>
 import CommonButton from "@/common/CommonButton.vue";
 export default {
@@ -138,7 +137,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .head-border {
   border-bottom: 2px solid rgba(201, 132, 157, 1);

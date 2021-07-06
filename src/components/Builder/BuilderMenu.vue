@@ -1,7 +1,8 @@
 <template>
   <div class="w-full max-w-33">
     <div class="w-full">
-      <div v-if="role === 'lawyer' || role === 'admin'">
+      <!-- v-if="role === 'lawyer' || role === 'admin'" -->
+      <div>
         <router-link class="text-dec-none" :to="{ path: '/' }">
           <common-button class="h-17 mt-5">{{ lawyer.title }}</common-button>
         </router-link>
@@ -15,12 +16,13 @@
               class="ls-none py-8 ps-15 li-border"
               role="button"
             >
-              <span class="fs-8 text-gray-500">{{ item.name }}</span>
+              <span class="text-gray-500">{{ item.name }}</span>
             </router-link>
           </ul>
         </div>
       </div>
-      <div v-if="role === 'debts' || role === 'admin'">
+      <!-- v-if="role === 'debts' || role === 'admin'" -->
+      <div>
         <router-link class="text-dec-none" :to="{ name: 'Debts' }">
           <common-button class="h-17 mt-5">{{ debts.title2 }}</common-button>
         </router-link>
@@ -34,7 +36,7 @@
               class="ls-none py-8 ps-15 li-border"
               role="button"
             >
-              <span class="fs-8 text-gray-500">{{ item.name }}</span>
+              <span class="text-gray-500">{{ item.name }}</span>
             </router-link>
           </ul>
         </div>
@@ -84,21 +86,9 @@ export default {
           { id: 1, name: "Գործընկերներ", path: "partners" },
           { id: 2, name: "Օրվա ենթակա", path: "subjectday" },
           { id: 3, name: "Հաշվետվություններ", path: "reports" },
-          {
-            id: 4,
-            name: "Կարգավիճակներ",
-            path: "partners",
-          },
-          {
-            id: 5,
-            name: "Դատարաններ",
-            path: "partners",
-          },
-          {
-            id: 6,
-            name: "Շաբլոններ",
-            path: "partners",
-          },
+          { id: 4, name: "Կարգավիճակներ", path: "statuses" },
+          { id: 5, name: "Դատարաններ", path: "listofcourts" },
+          { id: 6, name: "Շաբլոններ", path: "templates" },
         ],
       },
     };
@@ -110,7 +100,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .li-border {
   border-bottom: 2px solid rgba(201, 132, 157, 1);

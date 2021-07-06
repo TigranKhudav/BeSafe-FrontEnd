@@ -23,7 +23,8 @@
 
     <transition name="fade">
       <bulder-send-email-modal
-        v-if="$store.state.showSendEmail"
+        v-if="showSendEmail"
+        @close="showSendEmail = false"
         :clientData="sendEmailData"
       ></bulder-send-email-modal>
     </transition>
@@ -94,6 +95,7 @@ export default {
     return {
       showModal: false,
       showHistory: false,
+      showSendEmail: false,
       sendEmailData: {
         name: "",
         email: "",
@@ -132,15 +134,10 @@ export default {
     getInfo(id) {
       this.$store.commit("getInfoModal", true);
     },
-    sendEmail(id) {
-      console.log(id);
-      this.clientsData.map((v) => {
-        if (v.id === id) {
-          this.sendEmailData.name = v.name;
-          this.sendEmailData.email = v.email;
-        }
-      });
-      this.$store.commit("sendEmailModal", true);
+    sendEmail(userInfo) {
+      this.showSendEmail = true;
+      this.sendEmailData.name = userInfo.name;
+      this.sendEmailData.email = userInfo.email;
     },
   },
 };

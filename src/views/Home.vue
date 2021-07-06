@@ -5,7 +5,7 @@
       class="bg-9 w-12 h-12 bg-no-repeat bg-contain my-9"
       role="button"
     ></div>
-    <div class="w-full h-80">
+    <div class="w-full h-83">
       <router-view :role="role" :Partners="Partners"></router-view>
     </div>
   </div>
@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       data: { type: Object },
-      role: "debts",
+      role: "admin",
       notifyData: [
         { id: 1, name: "ddddd" },
         { id: 2, name: "ddddd" },

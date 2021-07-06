@@ -1,7 +1,7 @@
 <template>
   <div>
     <common-button
-      @click.native="addCaseModal = true"
+      @click="addCaseModal = true"
       class="position-absolute top-22 right-22 w-full max-w-28"
     >
       <div class="d-flex align-items-center p-4">
@@ -29,14 +29,6 @@
       <builder-info-modal v-if="$store.state.showInfo"></builder-info-modal>
     </transition>
 
-    <transition name="fade">
-      <builder-file
-        v-if="$store.state.showFile"
-        :files="files"
-        :modal="'fileModal'"
-      ></builder-file>
-    </transition>
-
     <div class="d-flex justify-content-center w-full h-83 mt-13">
       <div class="d-flex h-full w-full">
         <div class="w-full">
@@ -61,7 +53,6 @@
               :data="item"
               @history="getHistory"
               @info="getInfo"
-              @file="getFile"
               :prioritys="Prioritys"
             ></common-case-list>
           </div>
@@ -79,14 +70,13 @@
   </div>
 </template>
 <script>
-import CommonButton from "../../common/CommonButton.vue";
+import CommonButton from "@/common/CommonButton.vue";
 import CommonCheckbox from "../../common/CommonCheckbox.vue";
 import CommonClientsDataHead from "../../common/CommonClientsDataHead.vue";
 import BuilderChangesModal from "../Builder/BuilderChangesModal.vue";
 import BuilderInfoModal from "../Builder/BuilderInfoModal.vue";
 import BuilderAddCase from "../Builder/BuilderAddCase.vue";
 import CommonCaseList from "../../common/CommonCaseList.vue";
-import BuilderFile from "../Builder/BuilderFile.vue";
 export default {
   components: {
     CommonCheckbox,
@@ -96,10 +86,10 @@ export default {
     BuilderInfoModal,
     BuilderAddCase,
     CommonCaseList,
-    BuilderFile,
   },
   data() {
     return {
+      showFile: false,
       addCaseModal: null,
       CaseData: [
         {
@@ -171,7 +161,6 @@ export default {
           hour: "12.:30",
         },
       ],
-      files: [],
     };
   },
   methods: {
@@ -181,10 +170,6 @@ export default {
     getHistory(id) {
       console.log(id);
       this.$store.commit("historyModal", true);
-    },
-    getFile(id) {
-      console.log(id);
-      this.$store.commit("fileModal", true);
     },
     getInfo(id) {
       this.$store.commit("getInfoModal", true);

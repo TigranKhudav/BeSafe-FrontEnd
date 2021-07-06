@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-import BuilderMenu from "../components/Builder/BuilderMenu.vue";
+import BuilderMenu from "@/components/Builder/BuilderMenu.vue";
 export default {
   components: { BuilderMenu },
   props: { role: { type: String } },

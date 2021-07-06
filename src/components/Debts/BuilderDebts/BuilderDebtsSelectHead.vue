@@ -1,8 +1,16 @@
 <template>
   <div
-    class="position-absolute bg-white shadow-1 top-25 w-full max-w-36 right-22"
+    class="
+      position-absolute
+      bg-white
+      shadow-1
+      mt-minus
+      w-full
+      max-w-36
+      right-21
+    "
   >
-    <ul class="pe-5 ps-0 pt-5 overflow-y-scroll max-h-37">
+    <ul class="px-5 pt-5 overflow-y-scroll max-h-37">
       <li
         role="button"
         class="ls-none ps-6 py-3 my-3"
