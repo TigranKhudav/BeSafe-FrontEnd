@@ -54,7 +54,9 @@ export default {
   computed: {
     cols() {
       let arr = [];
-      this.head.forEach((i) => arr.push({ id: i.id, value: this.data[i.id] }));
+      this.head.forEach((i) =>
+        arr.push({ id: i.id, value: this.data[i.column] })
+      );
       return arr;
     },
   },
