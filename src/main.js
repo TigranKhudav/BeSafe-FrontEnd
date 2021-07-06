@@ -6,6 +6,9 @@ import Vuelidate from 'vuelidate'
 import 'bootstrap'
 
 Vue.use(Vuelidate)
+// priduction
+Vue.config.devtools = true
+Vue.config.productionTip = false
 
 Vue.directive('outside-click', {
   bind: function (el, binding, vNode) {
@@ -26,7 +29,7 @@ Vue.directive('outside-click', {
   }
 })
 
-Vue.config.productionTip = false
+
 
 new Vue({
   router,

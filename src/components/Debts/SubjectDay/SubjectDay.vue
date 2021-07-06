@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div class="position-absolute left-23 top-22">
+    <div class="position-absolute left-23 top-21">
       <span class="fs-12 text-gray-500">Օրվա ենթակա</span>
+      <common-update></common-update>
     </div>
 
     <common-show
@@ -36,7 +37,7 @@
       ></builder-file>
     </transition>
 
-    <div class="d-flex justify-content-center w-full h-83 mt-12">
+    <div class="d-flex justify-content-center w-full h-83 mt-13">
       <div class="d-flex h-full w-full">
         <div class="w-full overflow-x-auto">
           <div class="w-full d-flex justify-content-end mt-3">
@@ -91,6 +92,7 @@ import BuilderFile from "@/components/Builder/BuilderFile.vue";
 import CommonAcbaList from "../CommonDebts/CommonAcbaList.vue";
 import CommonShow from "../CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "../BuilderDebts/BuilderDebtsSelectHead.vue";
+import CommonUpdate from "@/common/CommonUpdate.vue";
 
 export default {
   components: {
@@ -103,6 +105,7 @@ export default {
     CommonAcbaList,
     CommonShow,
     BuilderDebtsSelectHead,
+    CommonUpdate,
   },
   props: ["selHead"],
   data() {
@@ -161,9 +164,6 @@ export default {
     },
     renderHead(item) {
       this.header = item;
-    },
-    contextMenu(item) {
-      console.log(item);
     },
   },
 };

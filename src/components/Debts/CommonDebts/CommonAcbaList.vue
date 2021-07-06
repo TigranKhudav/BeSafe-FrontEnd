@@ -1,7 +1,7 @@
         <template>
   <div class="part-grid">
     <div class="bord p-3 d-flex justify-content-center align-items-center">
-      <common-checkbox :value="data.checked"></common-checkbox>
+      <common-checkbox @check="onCheck" :value="checked"></common-checkbox>
     </div>
     <div class="bord p-3 d-flex justify-content-center align-items-center">
       <div
@@ -49,18 +49,27 @@ export default {
   data() {
     return {
       edit: false,
+      checked: this.data.checked,
     };
   },
   computed: {
     cols() {
       let arr = [];
       this.head.forEach((i) =>
-        arr.push({ id: i.id, value: this.data[i.column] })
+        arr.push({ id: i.id, value: this.data[i.column], column: i.column })
       );
       return arr;
     },
   },
   methods: {
+    onCheck(event) {
+      this.checked = event;
+      this.$emit("onCheck", {
+        id: this.data.id,
+        value: event,
+        table: this.cols,
+      });
+    },
     getHistort() {
       this.$emit("history", this.data.id);
     },

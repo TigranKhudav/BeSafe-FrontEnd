@@ -15,7 +15,7 @@
         <div class="d-flex border-right">
           <div class="bg-2 w-13 h-13 bg-no-repeat bg-contain"></div>
           <div class="w-20 d-flex align-items-end mx-8">
-            <span class="text-gray-400">{{ urername }}</span>
+            <span class="text-gray-400">{{ username }}</span>
           </div>
           <div class="d-flex align-items-end" @click="dropdown = !dropdown">
             <div
@@ -125,12 +125,12 @@ import CommonButton from "@/common/CommonButton.vue";
 export default {
   components: { CommonButton },
   props: {
-    urername: { type: String },
     notifyCount: { type: Number },
     notifycations: { type: Array },
   },
   data() {
     return {
+      username: this.$store.getters.username,
       dropdown: false,
       notify: false,
     };

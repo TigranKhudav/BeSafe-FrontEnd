@@ -113,7 +113,7 @@ export default {
           info: "",
           name: "Մուսաելյան Արսեն Ալյոշայի",
           passport: "00663555",
-          caseNum: "568599",
+          contract_num: "568599",
           priority: "",
           amountPaid: "",
         },

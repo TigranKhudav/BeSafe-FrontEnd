@@ -47,8 +47,7 @@
         <div class="w-full overflow-x-auto">
           <div class="part-grid mb-8" :style="cssVar">
             <div class="d-flex p-3 justify-content-center align-items-center">
-              <common-checkbox @change.native="check($event)">
-              </common-checkbox>
+              <common-checkbox @check="checkAll($event)"></common-checkbox>
             </div>
             <div class="min-w-12"></div>
             <div class="min-w-12"></div>
@@ -68,6 +67,7 @@
               @history="getHistory"
               @info="getInfo"
               @file="getFile"
+              @onCheck="onCheck"
               @contextmenu.prevent.native="$refs.menu.open"
               :style="cssVar"
             ></common-acba-list>
@@ -134,8 +134,7 @@ import CommonAcbaList from "./CommonDebts/CommonAcbaList.vue";
 import BuilderAcbaModal from "./BuilderDebts/BuilderAcbaModal.vue";
 import CommonShow from "./CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "./BuilderDebts/BuilderDebtsSelectHead.vue";
-
-import XLSX from "xlsx";
+import xlsx from "xlsx";
 
 export default {
   components: {
@@ -157,6 +156,7 @@ export default {
       dropdown: false,
       showMenu: false,
       header: [],
+      exportTable: [],
       CaseData: [
         {
           id: 1,
@@ -179,7 +179,7 @@ export default {
           id: 2,
           checked: false,
           info: "",
-          branch: "Մուսաելյcweն Արսեն Ալյոշայի",
+          branch: "Մասնաճյուղ",
           client_num: "00663weewc555",
           name: "Armen",
           client_class: "wdvweverver",
@@ -216,17 +216,25 @@ export default {
     },
   },
   methods: {
-    onexport() {
-      let column = this.header.map((v) => v.name);
-      const data = this.header.map((v) => [v.id, v.name, v.checked]);
-
-      let animalWS = XLSX.utils.aoa_to_sheet([column, ...data]);
-      var wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, animalWS, "nameUsers");
-
-      XLSX.writeFile(wb, "book.xlsx");
+    onCheck(event) {
+      let arr = [];
+      event.table.forEach((v) => arr.push(v.value));
+      this.exportTable.push(arr);
+      this.CaseData.forEach((i) => {
+        if (i.id === event.id) {
+          i.checked = event.value;
+        }
+      });
     },
-    check(e) {
+    onexport() {
+      // this.$store.dispatch("onexport");
+      let column = this.header.map((v) => v.name);
+      let animalWS = xlsx.utils.aoa_to_sheet([column, ...this.exportTable]);
+      let wb = xlsx.utils.book_new();
+      xlsx.utils.book_append_sheet(wb, animalWS, "nameUsers");
+      xlsx.writeFile(wb, "besafe.xlsx");
+    },
+    checkAll(e) {
       this.CaseData.forEach((i) => (i.checked = e.target.checked));
     },
     getHistory(id) {

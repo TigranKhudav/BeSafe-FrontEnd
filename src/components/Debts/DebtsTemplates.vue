@@ -3,16 +3,23 @@
     <div class="position-absolute left-23 top-22">
       <h3 class="fs-12 text-gray-500">Շաբլոններ</h3>
     </div>
-    <div class="px-8 mt-15 max-h-83 overflow-y-auto">
+    <div class="px-8 mt-13 max-h-83 overflow-y-auto">
       <div class="px-15">
         <div class="row">
           <div
-            class="col-4 d-flex align-items-center mb-17"
+            class="col-4 d-flex align-items-center mb-17 px-15"
             v-for="item in templates"
             :key="item.id"
           >
             <div class="bg-38 w-17 h-17 bg-contain bg-no-repeat"></div>
-            <span class="ms-12 text-gray-400">{{ item.name }}</span>
+            <span class="ms-12 text-gray-400 w-full">{{ item.name }}</span>
+            <button
+              v-if="admin"
+              @click="$emit('close')"
+              type="button"
+              class="btn-close outline-none mb-11"
+              aria-label="Close"
+            ></button>
           </div>
         </div>
       </div>
@@ -21,6 +28,11 @@
 </template>
 <script>
 export default {
+  computed: {
+    admin() {
+      return this.$store.getters.userperm.some((v) => v === "removeInfo");
+    },
+  },
   data() {
     return {
       templates: [

@@ -118,6 +118,11 @@ export default {
         return this.LawyerPerm;
       } else return [...this.LawyerPerm, ...this.Perm];
     },
+    userPermission() {
+      let arr = [];
+      this.selPerm.forEach((v) => arr.push(v.val));
+      return arr;
+    },
     accessRend() {
       if (this.UserInfo.access === "lawyer") return "Փաստաբանական";
       else if (this.UserInfo.access === "debts") return "Պարտքերի հավաքագրման";
@@ -219,7 +224,7 @@ export default {
           newPass: this.newPass,
           role: this.role,
           access: this.access,
-          selPerm: this.selPerm,
+          selPerm: this.userPermission,
         };
         this.$store.dispatch("editUser", data);
       }

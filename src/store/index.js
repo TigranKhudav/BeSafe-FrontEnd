@@ -6,6 +6,7 @@ import ucom from './modules/ucom'
 import global_credit from './modules/global-credit'
 import good_credit from './modules/good-credit'
 import statuses from './modules/statuses'
+import user from './modules/user'
 
 Vue.use(Vuex)
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
     global_credit,
     good_credit,
     statuses,
+    user,
   },
   state: {
     componentNumber: 0,
@@ -83,7 +85,17 @@ export default new Vuex.Store({
       axios.post('login', data)
         .then(res => console.log(res))
         .catch(err => console.log(err))
-    }
+    },
+    onexport() {
+      let column = this.header.map((v) => v.name);
+      const data = this.header.map((v) => [v.id, v.name, v.checked]);
+
+      let animalWS = XLSX.utils.aoa_to_sheet([column, ...data]);
+      var wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, animalWS, "nameUsers");
+
+      XLSX.writeFile(wb, "book.xlsx");
+    },
   },
   getters: {
     NewPartner: state => [...state.Acba],

@@ -104,6 +104,11 @@ export default {
         return this.LawyerPerm;
       } else return [...this.LawyerPerm, ...this.Perm];
     },
+    userPermission() {
+      let arr = [];
+      this.selPerm.forEach((v) => arr.push(v.val));
+      return arr;
+    },
   },
   data() {
     return {
@@ -196,7 +201,7 @@ export default {
           pass: this.pass,
           role: this.role,
           access: this.access,
-          selPerm: this.selPerm,
+          selPerm: this.userPermission,
         };
         this.$store.dispatch("createUser", data);
       }

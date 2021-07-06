@@ -12,7 +12,6 @@ function getHead(route) {
   else return { selHead: store.getters.NewPartner }
 }
 
-
 const router = new VueRouter({
   mode: 'history',
   routes: [
@@ -101,6 +100,10 @@ const router = new VueRouter({
           path: 'partners/1',
           name: 'Acba',
           component: () => import('@/components/Debts/DebtsAcba.vue'),
+          // beforeEnter: async (to, from, next) => {
+          //   await store.dispatch('fetchData')
+          //   next()
+          // },
           meta: { authorize: 'debts' },
           props: { selHead: store.getters.Acba }
         },
