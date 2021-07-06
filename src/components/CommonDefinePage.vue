@@ -10,7 +10,11 @@
         py-8
       "
     >
-      <div class="bg-4 w-18 h-18 bg-no-repeat bg-contain"></div>
+      <div
+        role="button"
+        @click="$router.push('/')"
+        class="bg-4 w-18 h-18 bg-no-repeat bg-contain"
+      ></div>
       <div class="d-flex">
         <div class="d-flex border-right">
           <div class="bg-2 w-13 h-13 bg-no-repeat bg-contain"></div>

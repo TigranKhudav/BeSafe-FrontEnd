@@ -1,8 +1,9 @@
 export default {
     state: {
         userData: {
-            username: null,
-            perm: []
+            username: "",
+            perm: [],
+            role: "two",
         }
     },
     mutations: {
@@ -12,6 +13,7 @@ export default {
     },
     getters: {
         username: state => state.userData.username,
-        userperm: state => state.userData.perm
+        userperm: state => state.userData.perm,
+        userrole: state => state.userData.role,
     }
 }

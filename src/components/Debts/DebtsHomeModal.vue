@@ -1,5 +1,5 @@
 <template>
-  <common-main-page :role="'debts'">
+  <common-main-page>
     <div class="d-flex justify-content-center">
       <div class="w-full max-w-36">
         <common-select
@@ -23,7 +23,7 @@
         <common-select
           class="mb-11 border-bottom"
           :value="'Կարգավիճակ'"
-          :padding="'py-1'"
+          :padding="'pb-3 ps-7'"
           :img="'bg-36'"
         ></common-select>
         <common-input

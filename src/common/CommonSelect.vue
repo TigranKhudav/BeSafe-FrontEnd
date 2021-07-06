@@ -7,7 +7,10 @@
       @click="popup = !popup"
     >
       <div class="col px-0">
-        <div class="bg-no-repeat h-14" :class="img && img"></div>
+        <div
+          class="bg-no-repeat bg-contain h-11 w-11"
+          :class="img && img"
+        ></div>
       </div>
       <div class="col-11 px-0 d-flex align-items-center justify-content-center">
         <span class="fs-8 text-gray-400 user-select-none">

@@ -23,7 +23,6 @@ export default new Vuex.Store({
     componentNumber: 0,
     showHistory: false,
     showSendEmail: false,
-    showInfo: false,
     showRepaymentSchedule: false,
     UserData: {
       type: Object
@@ -38,9 +37,6 @@ export default new Vuex.Store({
     },
     sendEmailModal(state, value) {
       state.showSendEmail = value
-    },
-    getInfoModal(state, value) {
-      state.showInfo = value
     },
     showRepaymentSchedule(state, value) {
       state.showRepaymentSchedule = value

@@ -1,8 +1,7 @@
 <template>
-  <div class="w-full max-w-33">
+  <div class="w-full max-w-33 position-absolute">
     <div class="w-full">
-      <!-- v-if="role === 'lawyer' || role === 'admin'" -->
-      <div>
+      <div v-if="role !== 'debts'">
         <router-link class="text-dec-none" :to="{ path: '/' }">
           <common-button class="h-17 mt-5">{{ lawyer.title }}</common-button>
         </router-link>
@@ -21,8 +20,7 @@
           </ul>
         </div>
       </div>
-      <!-- v-if="role === 'debts' || role === 'admin'" -->
-      <div>
+      <div v-if="role !== 'lawyer'">
         <router-link class="text-dec-none" :to="{ name: 'Debts' }">
           <common-button class="h-17 mt-5">{{ debts.title2 }}</common-button>
         </router-link>
@@ -57,11 +55,9 @@
 import CommonButton from "@/common/CommonButton.vue";
 export default {
   components: { CommonButton },
-  props: {
-    role: { type: String },
-  },
   data() {
     return {
+      role: this.$store.getters.userrole,
       lawyer: {
         title: "Փաստաբանական բաժին",
         menuItems: [

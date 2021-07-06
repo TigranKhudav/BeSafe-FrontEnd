@@ -28,7 +28,10 @@
     </transition>
 
     <transition name="fade">
-      <builder-info-modal v-if="$store.state.showInfo"></builder-info-modal>
+      <builder-info-modal
+        @clse="showInfo = false"
+        v-if="showInfo"
+      ></builder-info-modal>
     </transition>
 
     <transition name="fade">
@@ -39,8 +42,7 @@
       ></builder-file>
     </transition>
 
-    <!-- static heigth -->
-    <div class="d-flex justify-content-center w-full h-80 mt-12">
+    <div class="d-flex justify-content-center w-full h-83 mt-12">
       <div class="d-flex h-full w-full">
         <div class="w-full">
           <div class="grid mb-8">
@@ -80,7 +82,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import CommonButton from "@/common/CommonButton.vue";
 import CommonCheckbox from "@/common/CommonCheckbox.vue";
@@ -108,6 +109,7 @@ export default {
     return {
       dropdown: false,
       showMenu: false,
+      showInfo: false,
       header: [],
       selHead: [
         {
@@ -163,7 +165,7 @@ export default {
       this.$store.commit("fileModal", true);
     },
     getInfo(id) {
-      this.$store.commit("getInfoModal", true);
+      this.showInfo = true;
     },
     renderHead(item) {
       this.header = item;

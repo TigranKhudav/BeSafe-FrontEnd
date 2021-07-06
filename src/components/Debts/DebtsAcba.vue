@@ -24,7 +24,10 @@
     </transition>
 
     <transition name="fade">
-      <builder-info-modal v-if="$store.state.showInfo"></builder-info-modal>
+      <builder-info-modal
+        @close="showInfo = false"
+        v-if="showInfo"
+      ></builder-info-modal>
     </transition>
 
     <transition name="fade">
@@ -155,6 +158,7 @@ export default {
     return {
       dropdown: false,
       showMenu: false,
+      showInfo: false,
       header: [],
       exportTable: [],
       CaseData: [
@@ -246,7 +250,7 @@ export default {
       this.$store.commit("fileModal", true);
     },
     getInfo(id) {
-      this.$store.commit("getInfoModal", true);
+      this.showInfo = true;
     },
     renderHead(item) {
       this.header = item;
