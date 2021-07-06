@@ -1,54 +1,62 @@
 <template>
-  <div class="w-full max-w-33 position-absolute">
-    <div class="w-full">
-      <div v-if="role !== 'debts'">
-        <router-link class="text-dec-none" :to="{ path: '/' }">
-          <common-button class="h-17 mt-5">{{ lawyer.title }}</common-button>
-        </router-link>
-        <div class="bord">
-          <ul class="px-12 mb-0">
-            <router-link
-              v-for="item in lawyer.menuItems"
-              :key="item.id"
-              :to="'/lawyer/' + item.path"
-              tag="li"
-              class="ls-none py-8 ps-15 li-border"
-              role="button"
-            >
-              <span class="text-gray-500">{{ item.name }}</span>
-            </router-link>
-          </ul>
+  <!-- position-absolute -->
+  <div class="w-full max-w-33">
+    <transition name="fade">
+      <div v-if="$store.state.menu" class="w-full">
+        <div v-if="role !== 'debts'">
+          <router-link class="text-dec-none" :to="{ path: '/' }">
+            <common-button class="h-17 mt-5">{{ lawyer.title }}</common-button>
+          </router-link>
+          <div class="bord">
+            <ul class="px-12 mb-0">
+              <router-link
+                v-for="item in lawyer.menuItems"
+                :key="item.id"
+                :to="'/lawyer/' + item.path"
+                tag="li"
+                class="ls-none py-8 ps-15 li-border"
+                role="button"
+              >
+                <span class="text-gray-500">{{ item.name }}</span>
+              </router-link>
+            </ul>
+          </div>
+        </div>
+        <div v-if="role !== 'lawyer'">
+          <router-link class="text-dec-none" :to="{ name: 'Debts' }">
+            <common-button class="h-17 mt-5">{{ debts.title2 }}</common-button>
+          </router-link>
+          <div class="bord">
+            <ul class="px-12 mb-0">
+              <router-link
+                v-for="item in debts.menuItems"
+                :key="item.id"
+                :to="'/debts/' + item.path"
+                tag="li"
+                class="ls-none py-8 ps-15 li-border"
+                role="button"
+              >
+                <span class="text-gray-500">{{ item.name }}</span>
+              </router-link>
+            </ul>
+          </div>
+        </div>
+        <div v-if="role === 'admin'" class="w-full bg-pink-350">
+          <router-link class="text-dec-none" :to="{ name: 'AdminUsers' }">
+            <common-button class="py-5"> Օգտագործողներ </common-button>
+          </router-link>
+          <div class="w-full px-10">
+            <div class="h-1 bg-white"></div>
+          </div>
+          <router-link
+            class="text-dec-none"
+            :to="{ name: 'SubjectToApproval' }"
+          >
+            <common-button class="py-5"> Հաստատման ենթակա </common-button>
+          </router-link>
         </div>
       </div>
-      <div v-if="role !== 'lawyer'">
-        <router-link class="text-dec-none" :to="{ name: 'Debts' }">
-          <common-button class="h-17 mt-5">{{ debts.title2 }}</common-button>
-        </router-link>
-        <div class="bord">
-          <ul class="px-12 mb-0">
-            <router-link
-              v-for="item in debts.menuItems"
-              :key="item.id"
-              :to="'/debts/' + item.path"
-              tag="li"
-              class="ls-none py-8 ps-15 li-border"
-              role="button"
-            >
-              <span class="text-gray-500">{{ item.name }}</span>
-            </router-link>
-          </ul>
-        </div>
-      </div>
-      <div v-if="role === 'admin'" class="w-full bg-pink-350">
-        <router-link class="text-dec-none" :to="{ name: 'AdminUsers' }">
-          <common-button class="py-5"> Օգտագործողներ </common-button>
-        </router-link>
-        <div class="w-full px-10">
-          <div class="h-1 bg-white"></div>
-        </div>
-        <common-button class="py-5"> Հաստատման ենթակա </common-button>
-      </div>
-    </div>
+    </transition>
   </div>
 </template>
 <script>

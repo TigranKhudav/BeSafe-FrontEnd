@@ -3,7 +3,7 @@ export default {
         userData: {
             username: "",
             perm: [],
-            role: "two",
+            role: "admin",
         }
     },
     mutations: {

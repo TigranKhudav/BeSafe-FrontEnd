@@ -46,13 +46,11 @@ const router = new VueRouter({
           path: '',
           name: 'Lawyer',
           component: () => import('@/components/Lawyer/ClientsData.vue'),
-          meta: { authorize: 'lawyer' }
         },
         {
           path: 'dataofcase',
           name: 'DataOfCase',
           component: () => import('@/components/Lawyer/DataOfCase.vue'),
-          meta: { authorize: 'lawyer' }
         },
       ]
     },
@@ -64,20 +62,17 @@ const router = new VueRouter({
           path: '',
           name: 'Admin',
           component: () => import('@/components/Admin/AdminHome.vue'),
-          meta: { authorize: 'admin' }
         },
         {
           path: 'users',
           name: 'AdminUsers',
           component: () => import('@/components/Admin/AdminUsers.vue'),
-          meta: { authorize: 'admin' }
         },
         {
-          path: 'partners',
-          name: 'AdminPartners',
-          component: () => import('@/components/Debts/DebtsPartners.vue'),
-          meta: { authorize: 'admin' }
-        },
+          path: 'subject-to-approval',
+          name: 'SubjectToApproval',
+          component: () => import('@/components/Admin/SubjectToApproval.vue'),
+        }
       ]
     },
     {
@@ -88,13 +83,11 @@ const router = new VueRouter({
           path: '',
           name: 'Debts',
           component: () => import('@/components/Debts/DebtsHomeModal.vue'),
-          meta: { authorize: 'debts' }
         },
         {
           path: 'partners',
           name: 'Partners',
           component: () => import('@/components/Debts/DebtsPartners.vue'),
-          meta: { authorize: 'debts' }
         },
         {
           path: 'partners/1',
@@ -104,52 +97,44 @@ const router = new VueRouter({
           //   await store.dispatch('fetchData')
           //   next()
           // },
-          meta: { authorize: 'debts' },
           props: { selHead: store.getters.Acba }
         },
         {
           path: 'partners/:id',
           name: 'Patrner',
           component: () => import('@/components/Debts/BuilderDebts/BuilderPartnerTable.vue'),
-          meta: { authorize: 'debts' },
           props: getHead
         },
         {
           path: 'subjectday',
           name: 'SubjectDay',
           component: () => import('@/components/Debts/SubjectDay/SubjectDay.vue'),
-          meta: { authorize: 'debts' },
           props: { selHead: store.getters.Acba }
         },
         {
           path: 'archive',
           name: 'Archive',
           component: () => import('@/components/Debts/SubjectDay/Archive.vue'),
-          meta: { authorize: 'debts' }
         },
         {
           path: 'reports',
           name: 'Reports',
           component: () => import('@/components/Debts/Reports/Reports.vue'),
-          meta: { authorize: 'debts' }
         },
         {
           path: 'statuses',
           name: 'Statuses',
           component: () => import('@/components/Debts/DebtsStatuses.vue'),
-          meta: { authorize: 'debts' }
         },
         {
           path: 'listofcourts',
           name: 'ListOfCourts',
           component: () => import('@/components/Lawyer/ListOfCourts.vue'),
-          meta: { authorize: 'debts' }
         },
         {
           path: 'templates',
           name: 'Templates',
           component: () => import('@/components/Debts/DebtsTemplates.vue'),
-          meta: { authorize: 'debts' }
         },
       ]
     },

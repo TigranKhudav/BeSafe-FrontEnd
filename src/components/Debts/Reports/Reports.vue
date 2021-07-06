@@ -1,11 +1,21 @@
 <template>
   <div>
-    <common-button
-      @click.native="$store.commit('addCaseModal', true)"
-      class="position-absolute top-22 right-34 w-full max-w-32 p-4"
-    >
-      Ներկայացվող հաշվետվություն
-    </common-button>
+    <label for="file">
+      <common-button
+        @click=""
+        class="position-absolute top-22 right-34 w-full max-w-32 p-4"
+      >
+        Ներկայացվող հաշվետվություն
+        <input
+          type="file"
+          id="file"
+          accept=".csv,application/vnd.ms-excel,.xlsx,.xls"
+          role="button"
+          class="opacity-0 w-0"
+          @change="uploadUpdateFile"
+        />
+      </common-button>
+    </label>
 
     <common-show
       @click.native="dropdown = !dropdown"

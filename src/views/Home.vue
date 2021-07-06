@@ -4,9 +4,10 @@
     <div
       class="bg-9 w-12 h-12 bg-no-repeat bg-contain my-9"
       role="button"
+      @click="$store.state.menu = !$store.state.menu"
     ></div>
     <div class="w-full h-83">
-      <router-view :role="role" :Partners="Partners"></router-view>
+      <router-view :Partners="Partners"></router-view>
     </div>
   </div>
 </template>

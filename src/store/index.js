@@ -20,7 +20,7 @@ export default new Vuex.Store({
     user,
   },
   state: {
-    componentNumber: 0,
+    menu: true,
     showHistory: false,
     showSendEmail: false,
     showRepaymentSchedule: false,
@@ -29,9 +29,6 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    setComponent(state, id) {
-      state.componentNumber = id
-    },
     historyModal(state, value) {
       state.showHistory = value
     },
@@ -95,5 +92,6 @@ export default new Vuex.Store({
   },
   getters: {
     NewPartner: state => [...state.Acba],
+    menu: state => state.menu,
   }
 })
