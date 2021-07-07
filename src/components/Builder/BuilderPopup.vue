@@ -9,7 +9,7 @@
           aria-label="Close"
         ></button>
       </div>
-      <div class="d-flex w-full">
+      <div class="d-flex align-items-center w-full m-5">
         <slot name="img" />
         <slot />
       </div>

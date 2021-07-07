@@ -52,6 +52,92 @@
       ></builder-file>
     </transition>
 
+    <!-- Popups -->
+    <transition name="fade">
+      <builder-popup v-if="changesPopup" @close="changesPopup = false">
+        <template v-slot:img>
+          <div class="bg-43 w-22 h-20 bg-no-repeat bg-contain"></div>
+        </template>
+        <span class="text-gray-500"
+          >Փոփոխությունները ուղարկված են հաստատման։</span
+        >
+      </builder-popup>
+    </transition>
+
+    <transition name="fade">
+      <builder-popup v-if="warningPopup" @close="warningPopup = false">
+        <template v-slot:img>
+          <div class="bg-33 w-22 h-20 bg-no-repeat bg-contain"></div>
+        </template>
+        <span class="text-gray-500 max-w-35">
+          Դուք չեք ուղարկել կատարողական թերթիկ N 5252245225 պայմ․համարով գործի
+          համար։
+        </span>
+      </builder-popup>
+    </transition>
+
+    <transition name="fade">
+      <builder-popup
+        v-if="severalWarningPopup"
+        @close="severalWarningPopup = false"
+      >
+        <template v-slot:img>
+          <div class="bg-33 w-22 h-20 bg-no-repeat bg-contain"></div>
+        </template>
+        <div class="max-w-35">
+          <div class="mb-6">
+            <span class="text-gray-500">
+              Դուք չեք ուղարկել կատարողական թերթիկ N 5252245225 պայմ․համարով
+              գործի համար։
+            </span>
+          </div>
+          <div class="mb-6">
+            <span class="text-gray-500 mt-10">
+              Դուք չեք ուղարկել կատարողական թերթիկ N 5252245225 պայմ․համարով
+              գործի համար։
+            </span>
+          </div>
+          <span class="text-gray-500">
+            Դուք չեք ուղարկել կատարողական թերթիկ N 5252245225 պայմ․համարով գործի
+            համար։
+          </span>
+        </div>
+      </builder-popup>
+    </transition>
+
+    <transition name="fade">
+      <builder-popup v-if="warningCheck" @close="warningCheck = false">
+        <template v-slot:img>
+          <div class="bg-33 w-22 h-20 bg-no-repeat bg-contain"></div>
+        </template>
+        <span class="text-gray-500 max-w-35">
+          Ստուգել վարույթ հարուցվելու փաստը N պայմ․ համարով գործի համար
+        </span>
+      </builder-popup>
+    </transition>
+
+    <transition name="fade">
+      <builder-popup v-if="loadingPopup" @close="loadingPopup = false">
+        <template v-slot:img>
+          <div class="bg-45 w-22 h-20 bg-no-repeat bg-contain"></div>
+        </template>
+        <span class="text-gray-500 max-w-35">
+          Կատարվում է տվյալների ներմուծում։
+        </span>
+      </builder-popup>
+    </transition>
+
+    <transition name="fade">
+      <builder-popup v-if="complitedPopup" @close="complitedPopup = false">
+        <template v-slot:img>
+          <div class="bg-44 w-22 h-20 bg-no-repeat bg-contain"></div>
+        </template>
+        <span class="text-gray-500 max-w-35">
+          Տվյալների ներմուծումը կատրված է։
+        </span>
+      </builder-popup>
+    </transition>
+
     <div class="d-flex justify-content-center w-full h-83 mt-12">
       <div class="d-flex h-full w-full">
         <div class="w-full">
@@ -102,6 +188,7 @@ import BuilderFile from "@/components/Builder/BuilderFile.vue";
 import CommonAcbaList from "../CommonDebts/CommonAcbaList.vue";
 import CommonShow from "../CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "../BuilderDebts/BuilderDebtsSelectHead.vue";
+import BuilderPopup from "@/components/Builder/BuilderPopup.vue";
 
 export default {
   components: {
@@ -114,9 +201,16 @@ export default {
     CommonAcbaList,
     CommonShow,
     BuilderDebtsSelectHead,
+    BuilderPopup,
   },
   data() {
     return {
+      complitedPopup: false,
+      loadingPopup: false,
+      warningCheck: false,
+      severalWarningPopup: false,
+      warningPopup: false,
+      changesPopup: false,
       dropdown: false,
       showMenu: false,
       showInfo: false,

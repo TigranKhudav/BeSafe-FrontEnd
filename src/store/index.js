@@ -24,9 +24,6 @@ export default new Vuex.Store({
     showHistory: false,
     showSendEmail: false,
     showRepaymentSchedule: false,
-    UserData: {
-      type: Object
-    },
   },
   mutations: {
     historyModal(state, value) {

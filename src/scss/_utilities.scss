@@ -201,4 +201,10 @@ $utilities: (
         property: user-select,
         values: none,
       ),
+      "flex-direction": (
+        responsive: true,
+        property: flex-direction,
+        class: flex-dir,
+        values: row column row-reverse column-reverse
+      ),
  );

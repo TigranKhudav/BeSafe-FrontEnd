@@ -22,7 +22,7 @@
     ></div>
   </div>
 </template>
-
 <script>
 export default {};
+ewfewfwew;
 </script>
