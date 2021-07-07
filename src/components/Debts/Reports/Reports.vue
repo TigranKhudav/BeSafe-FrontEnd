@@ -1,9 +1,12 @@
 <template>
   <div>
+    <common-update class="position-absolute top-22 left-20">
+      <div class="bg-41 w-11 h-11 bg-no-repeat bg-contain"></div>
+      <span class="ms-6">Թարմացում</span>
+    </common-update>
     <label for="file">
       <common-button
-        @click=""
-        class="position-absolute top-22 right-34 w-full max-w-32 p-4"
+        class="position-absolute top-22 right-33 w-full max-w-32 p-2"
       >
         Ներկայացվող հաշվետվություն
         <input
@@ -12,7 +15,6 @@
           accept=".csv,application/vnd.ms-excel,.xlsx,.xls"
           role="button"
           class="opacity-0 w-0"
-          @change="uploadUpdateFile"
         />
       </common-button>
     </label>
@@ -138,31 +140,33 @@
       </builder-popup>
     </transition>
 
-    <div class="d-flex justify-content-center w-full h-83 mt-12">
+    <div class="d-flex justify-content-center w-full h-83">
       <div class="d-flex h-full w-full">
-        <div class="w-full">
-          <div class="grid mb-8">
-            <div class="d-flex justify-content-center align-items-center">
-              <common-checkbox @change.native="check($event)">
-              </common-checkbox>
+        <div class="w-full overflow-x-auto">
+          <div class="part-grid mb-8" :style="cssVar">
+            <div class="d-flex p-3 justify-content-center align-items-center">
+              <common-checkbox @check="checkAll($event)"></common-checkbox>
             </div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <div class="min-w-12"></div>
+            <div class="min-w-12"></div>
+            <div class="min-w-12"></div>
             <common-clients-data-head
               v-for="item in (header = defaultHead)"
               :key="item.id"
               >{{ item.name }}</common-clients-data-head
             >
           </div>
-          <div class="overflow-hidden">
+          <div>
             <common-acba-list
               v-for="item in CaseData"
               :key="item.id"
               :data="item"
+              :head="header"
               @history="getHistory"
               @info="getInfo"
               @file="getFile"
+              @onCheck="onCheck"
+              :style="cssVar"
             ></common-acba-list>
           </div>
         </div>
@@ -189,6 +193,7 @@ import CommonAcbaList from "../CommonDebts/CommonAcbaList.vue";
 import CommonShow from "../CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "../BuilderDebts/BuilderDebtsSelectHead.vue";
 import BuilderPopup from "@/components/Builder/BuilderPopup.vue";
+import CommonUpdate from "@/common/CommonUpdate.vue";
 
 export default {
   components: {
@@ -202,6 +207,7 @@ export default {
     CommonShow,
     BuilderDebtsSelectHead,
     BuilderPopup,
+    CommonUpdate,
   },
   data() {
     return {
@@ -255,9 +261,24 @@ export default {
     defaultHead() {
       return this.selHead.filter((v) => v.checked);
     },
+    cssVar() {
+      return {
+        "--cols": this.header.length,
+      };
+    },
   },
   methods: {
-    check(e) {
+    onCheck(event) {
+      let arr = [];
+      event.table.forEach((v) => arr.push(v.value));
+      this.exportTable.push(arr);
+      this.CaseData.forEach((i) => {
+        if (i.id === event.id) {
+          i.checked = event.value;
+        }
+      });
+    },
+    checkAll(e) {
       this.CaseData.forEach((i) => (i.checked = e.target.checked));
     },
     getHistory(id) {
@@ -281,8 +302,9 @@ export default {
 };
 </script>
 <style scoped>
-.grid {
+.ctx-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 8fr 8fr 8fr 8fr 8fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  width: 100%;
 }
 </style>

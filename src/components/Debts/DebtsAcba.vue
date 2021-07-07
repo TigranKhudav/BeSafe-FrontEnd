@@ -3,18 +3,11 @@
     <div class="position-absolute left-23 top-22">
       <h3 class="fs-12 text-gray-500">Acba</h3>
     </div>
-    <div v-if="admin" class="right-34 position-absolute top-20 z-index-0">
-      <input
-        type="file"
-        id="file"
-        accept=".csv,application/vnd.ms-excel,.xlsx,.xls"
-        class="opacity-0 w-0"
-      />
-      <label for="file" class="d-flex align-items-center" role="button">
-        <div class="bg-42 w-10 h-10 bg-no-repeat bg-contain"></div>
-        <span class="text-pink-350 ms-6">Ներմուծել հաճախորդ</span>
-      </label>
-    </div>
+    <common-update v-if="admin" class="right-33 position-absolute top-22">
+      <div class="bg-42 w-10 h-10 bg-no-repeat bg-contain"></div>
+      <span class="text-pink-350 ms-6">Ներմուծել հաճախորդ</span>
+    </common-update>
+
     <common-show
       @click.native="dropdown = !dropdown"
       :dropdown="dropdown"
@@ -150,6 +143,7 @@ import BuilderAcbaModal from "./BuilderDebts/BuilderAcbaModal.vue";
 import CommonShow from "./CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "./BuilderDebts/BuilderDebtsSelectHead.vue";
 import xlsx from "xlsx";
+import CommonUpdate from "../../common/CommonUpdate.vue";
 
 export default {
   components: {
@@ -164,6 +158,7 @@ export default {
     BuilderAcbaModal,
     CommonShow,
     BuilderDebtsSelectHead,
+    CommonUpdate,
   },
   props: ["selHead"],
   data() {

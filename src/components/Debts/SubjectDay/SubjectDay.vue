@@ -2,7 +2,10 @@
   <div>
     <div class="position-absolute left-23 top-21">
       <span class="fs-12 text-gray-500">Օրվա ենթակա</span>
-      <common-update></common-update>
+      <common-update>
+        <div class="bg-41 w-11 h-11 bg-no-repeat bg-contain"></div>
+        <span class="ms-6">Թարմացում</span>
+      </common-update>
     </div>
 
     <common-show

@@ -1,22 +1,22 @@
 <template>
-  <div class="mt-8 d-flex align-items-center">
-    <div class="bg-41 w-11 h-11 bg-no-repeat bg-contain"></div>
-    <label for="file" role="button" class="text-pink-350 ms-10 fs-10"
-      >Թարմացում</label
-    >
+  <label
+    for="file"
+    role="button"
+    class="text-pink-350 ms-10 fs-10 d-flex align-items-center"
+  >
+    <slot />
     <input
       type="file"
       id="file"
       accept=".csv,application/vnd.ms-excel,.xlsx,.xls"
       role="button"
-      class="opacity-0 w-0"
+      class="d-none"
       @change="uploadUpdateFile"
     />
-  </div>
+  </label>
 </template>
 <script>
 import xlsx from "xlsx";
-
 export default {
   methods: {
     uploadUpdateFile(event) {

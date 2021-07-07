@@ -4,14 +4,14 @@
       <div class="bg-1 w-23 h-23 bg-contain bg-no-repeat"></div>
       <div class="mb-20">
         <common-input
-          @onInput="login = $event"
+          @onInput="username = $event"
           :img="'bg-2'"
           :placeholder="'Մուտքանուն'"
         ></common-input>
       </div>
       <div class="my-14">
         <common-input
-          @onInput="pass = $event"
+          @onInput="password = $event"
           :placeholder="'Գաղտնաբառ'"
         ></common-input>
         <div class="mt-6">
@@ -31,13 +31,16 @@ export default {
   components: { CommonButton, CommonInput },
   data() {
     return {
-      login: "",
-      pass: "",
+      username: "",
+      password: "",
     };
   },
   methods: {
     ShowInputs() {
-      this.$store.dispatch("login", { login: this.login, pass: this.pass });
+      this.$store.dispatch("login", {
+        login: this.username,
+        pass: this.password,
+      });
     },
   },
 };
