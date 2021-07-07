@@ -49,7 +49,14 @@ export default new Vuex.Store({
         name: "Սոց քարտ",
         column: 'social_card'
       },
-    ]
+    ],
+    // back
+    Partners: [
+      { id: 1, name: "Acba", key: 'acba' },
+      { id: 2, name: "UCOM", key: 'ucom' },
+      { id: 3, name: "Global Credit", key: 'global-credit' },
+      { id: 4, name: "Good Credit", key: 'good-credit' },
+    ],
   },
   mutations: {
     historyModal(state, value) {
@@ -102,6 +109,14 @@ export default new Vuex.Store({
         .then(res => console.log(res))
         .catch(err => console.log(err))
     },
+    createPartner({ state }, data) {
+      axios.post('createPartner', data)
+        .then(res => {
+          state.Partners = res.data.Partners
+          this.$router.push(data.key);
+        })
+        .catch(err => console.log(err))
+    },
     onexport() {
       let column = this.header.map((v) => v.name);
       const data = this.header.map((v) => [v.id, v.name, v.checked]);
@@ -115,6 +130,7 @@ export default new Vuex.Store({
   },
   getters: {
     NewPartner: state => [...state.Acba, ...state.newPartnerHead],
+    Partners: state => state.Partners,
     menu: state => state.menu,
   }
 })

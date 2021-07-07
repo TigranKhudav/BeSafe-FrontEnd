@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="position-absolute left-23 top-22">
-      <span class="fs-12 text-gray-500">GlobalCredit</span>
+      <span class="fs-12 text-gray-500">{{ PartName }}</span>
     </div>
 
     <common-show
@@ -76,7 +76,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import CommonButton from "@/common/CommonButton.vue";
 import CommonCheckbox from "@/common/CommonCheckbox.vue";
@@ -100,7 +99,7 @@ export default {
     CommonShow,
     BuilderDebtsSelectHead,
   },
-  props: ["selHead"],
+  props: ["selHead", "PartName"],
   data() {
     return {
       dropdown: false,

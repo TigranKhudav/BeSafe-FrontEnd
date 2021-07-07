@@ -6,10 +6,10 @@ import axios from '@/utils/axios'
 Vue.use(VueRouter)
 
 function getHead(route) {
-  if (route.params.id === '2') return { selHead: store.getters.Ucom }
-  else if (route.params.id === '3') return { selHead: store.getters.GlobalCredit }
-  else if (route.params.id === '4') return { selHead: store.getters.GoodCredit }
-  else return { selHead: store.getters.NewPartner }
+  if (route.params.id === 'ucom') return { selHead: store.getters.Ucom, PartName: 'Ucom' }
+  else if (route.params.id === 'global-credit') return { selHead: store.getters.GlobalCredit, PartName: 'GlobalCredit' }
+  else if (route.params.id === 'good-credit') return { selHead: store.getters.GoodCredit, PartName: 'GoodCredit' }
+  else return { selHead: store.getters.NewPartner, PartName: store.state.Partners.filter(v => v.key === route.params.id)[0].name }
 }
 
 const router = new VueRouter({
@@ -90,7 +90,7 @@ const router = new VueRouter({
           component: () => import('@/components/Debts/DebtsPartners.vue'),
         },
         {
-          path: 'partners/1',
+          path: 'partners/acba',
           name: 'Acba',
           component: () => import('@/components/Debts/DebtsAcba.vue'),
           // beforeEnter: async (to, from, next) => {
@@ -141,17 +141,17 @@ const router = new VueRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('besafe')
-  if (token) {
-    axios.post('auth').then(result => {
-      store.commit("userData", result)
-      next()
-    }).catch(() => next({ name: "Login" }))
-  }
-  else if (to.path === '/login') next()
-  else next({ name: "Login" })
-})
+// router.beforeEach((to, from, next) => {
+//   const token = localStorage.getItem('besafe')
+//   if (token) {
+//     axios.post('auth').then(result => {
+//       store.commit("userData", result)
+//       next()
+//     }).catch(() => next({ name: "Login" }))
+//   }
+//   else if (to.path === '/login') next()
+//   else next({ name: "Login" })
+// })
 // router.beforeEach((to, from, next) => {
 //   const role = 'debts'
 //   const auth = to.meta.authorize

@@ -3,6 +3,10 @@
     <div class="position-absolute left-23 top-22">
       <h3 class="fs-12 text-gray-500">Acba</h3>
     </div>
+    <div v-if="admin" class="d-flex" role="button">
+      <div class="bg-42 w-11 h-11 bg-no-repeat bg-contain"></div>
+      <span class="text-pink-350 ms-6">Ներմուծել հաճախորդ</span>
+    </div>
     <common-show
       @click.native="dropdown = !dropdown"
       :dropdown="dropdown"
@@ -210,6 +214,9 @@ export default {
     };
   },
   computed: {
+    admin() {
+      return this.$store.getters.userperm.some((v) => v === "addClient");
+    },
     defaultHead() {
       return this.selHead.filter((v) => v.checked);
     },
