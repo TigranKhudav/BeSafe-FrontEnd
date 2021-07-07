@@ -24,6 +24,32 @@ export default new Vuex.Store({
     showHistory: false,
     showSendEmail: false,
     showRepaymentSchedule: false,
+    newPartnerHead: [
+      {
+        id: 1,
+        checked: true,
+        name: "Անձնագիր",
+        column: 'passport'
+      },
+      {
+        id: 1,
+        checked: true,
+        name: "ՈՒմ կողմից է տրված",
+        column: 'passport_authority'
+      },
+      {
+        id: 1,
+        checked: true,
+        name: "Երբ է տրված",
+        column: 'date_of_issue'
+      },
+      {
+        id: 1,
+        checked: true,
+        name: "Սոց քարտ",
+        column: 'social_card'
+      },
+    ]
   },
   mutations: {
     historyModal(state, value) {
@@ -88,7 +114,7 @@ export default new Vuex.Store({
     },
   },
   getters: {
-    NewPartner: state => [...state.Acba],
+    NewPartner: state => [...state.Acba, ...state.newPartnerHead],
     menu: state => state.menu,
   }
 })

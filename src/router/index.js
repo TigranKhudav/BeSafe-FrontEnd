@@ -141,17 +141,17 @@ const router = new VueRouter({
   ]
 })
 
-// router.beforeEach((to, from, next) => {
-//   const token = localStorage.getItem('besafe')
-//   if (token) {
-//     axios.post('auth').then(result => {
-//       store.commit("userData", result)
-//       next()
-//     }).catch(() => next({ name: "Login" }))
-//   }
-//   else if (to.path === '/login') next()
-//   else next({ name: "Login" })
-// })
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('besafe')
+  if (token) {
+    axios.post('auth').then(result => {
+      store.commit("userData", result)
+      next()
+    }).catch(() => next({ name: "Login" }))
+  }
+  else if (to.path === '/login') next()
+  else next({ name: "Login" })
+})
 // router.beforeEach((to, from, next) => {
 //   const role = 'debts'
 //   const auth = to.meta.authorize
