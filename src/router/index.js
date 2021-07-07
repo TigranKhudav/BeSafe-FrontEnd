@@ -109,12 +109,17 @@ const router = new VueRouter({
           path: 'subjectday',
           name: 'SubjectDay',
           component: () => import('@/components/Debts/SubjectDay/SubjectDay.vue'),
-          props: { selHead: store.getters.Acba }
         },
         {
           path: 'archive',
           name: 'Archive',
           component: () => import('@/components/Debts/SubjectDay/Archive.vue'),
+        },
+        {
+          path: 'archive/:date',
+          name: 'Archiv',
+          component: () => import('@/components/Debts/BuilderDebts/BuilderPartnerTable.vue'),
+          props: { selHead: store.getters.Acba, PartName: 'Օրվա ենթակա' }
         },
         {
           path: 'reports',

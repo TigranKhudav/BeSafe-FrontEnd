@@ -1,9 +1,13 @@
 <template>
   <div>
     <div class="position-absolute left-23 top-22">
-      <h3 class="fs-12 text-gray-500">Acba</h3>
+      <h3 class="fs-11 text-gray-500">Acba</h3>
     </div>
-    <common-update v-if="admin" class="right-33 position-absolute top-22">
+    <common-update
+      @table="uploadTable"
+      v-if="admin"
+      class="right-33 position-absolute top-22"
+    >
       <div class="bg-42 w-10 h-10 bg-no-repeat bg-contain"></div>
       <span class="text-pink-350 ms-6">Ներմուծել հաճախորդ</span>
     </common-update>
@@ -70,6 +74,7 @@
             <common-acba-list
               v-for="item in CaseData"
               :key="item.id"
+              :uploadData="updateData"
               :data="item"
               :head="header"
               @history="getHistory"
@@ -143,7 +148,7 @@ import BuilderAcbaModal from "./BuilderDebts/BuilderAcbaModal.vue";
 import CommonShow from "./CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "./BuilderDebts/BuilderDebtsSelectHead.vue";
 import xlsx from "xlsx";
-import CommonUpdate from "../../common/CommonUpdate.vue";
+import CommonUpdate from "@/common/CommonUpdate.vue";
 
 export default {
   components: {
@@ -166,44 +171,11 @@ export default {
       dropdown: false,
       showMenu: false,
       showInfo: false,
+      updateData: false,
+      uploadData: [],
       header: [],
       exportTable: [],
-      CaseData: [
-        {
-          id: 1,
-          checked: false,
-          info: "",
-          branch: "Մուսաելյան Արսեն Ալյոշայի",
-          client_num: "00663555",
-          name: "Armen",
-          client_class: "wdvweverver",
-          loan_type: "",
-          currency: "6",
-          status: "7",
-          expired_days: "8",
-          expired_group: "9",
-          segment: "10",
-          participant: "11",
-          responsible: "12",
-        },
-        {
-          id: 2,
-          checked: false,
-          info: "",
-          branch: "Մասնաճյուղ",
-          client_num: "00663weewc555",
-          name: "Armen",
-          client_class: "wdvweverver",
-          loan_type: "",
-          currency: "6",
-          status: "7",
-          expired_days: "8",
-          expired_group: "9",
-          segment: "10",
-          participant: "11",
-          responsible: "12",
-        },
-      ],
+      CaseData: this.$store.getters.CaseData,
       HistoryList: [
         {
           id: 1,
@@ -230,6 +202,10 @@ export default {
     },
   },
   methods: {
+    uploadTable(event) {
+      this.CaseData = event;
+      this.updateData = true;
+    },
     onCheck(event) {
       let arr = [];
       event.table.forEach((v) => arr.push(v.value));

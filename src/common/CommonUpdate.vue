@@ -9,7 +9,6 @@
       type="file"
       id="file"
       accept=".csv,application/vnd.ms-excel,.xlsx,.xls"
-      role="button"
       class="d-none"
       @change="uploadUpdateFile"
     />
@@ -27,10 +26,8 @@ export default {
         let data = event.target.result;
         let workbook = xlsx.read(data, { type: "binary" });
         workbook.SheetNames.forEach((sheet) => {
-          let rowObj = xlsx.utils.sheet_to_row_object_array(
-            workbook.Sheets[sheet]
-          );
-          console.log(rowObj);
+          let rowObj = xlsx.utils.sheet_to_json(workbook.Sheets[sheet]);
+          this.$emit("table", rowObj);
         });
       };
     },

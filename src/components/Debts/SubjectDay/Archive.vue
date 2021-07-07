@@ -16,7 +16,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import CommonArchiveButton from "../CommonDebts/CommonArchiveButton.vue";
 export default {
@@ -28,7 +27,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .days-grid {
   display: grid;

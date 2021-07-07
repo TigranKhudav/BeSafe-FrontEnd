@@ -8,7 +8,7 @@
         </div>
 
         <div
-          @click="$store.commit('historyModal', false)"
+          @click="$emit('close')"
           role="button"
           class="bg-25 w-10 h-10 bg-contain bg-no-repeat"
         ></div>

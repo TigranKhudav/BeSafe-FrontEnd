@@ -45,7 +45,11 @@
 import CommonCheckbox from "@/common/CommonCheckbox.vue";
 export default {
   components: { CommonCheckbox },
-  props: { data: { type: Object }, head: { type: Array } },
+  props: {
+    data: { type: Object },
+    head: { type: Array },
+    uploadData: { type: Boolean },
+  },
   data() {
     return {
       edit: false,
@@ -56,7 +60,11 @@ export default {
     cols() {
       let arr = [];
       this.head.forEach((i) =>
-        arr.push({ id: i.id, value: this.data[i.column], column: i.column })
+        arr.push({
+          id: i.id,
+          value: this.uploadData ? this.data[i.name] : this.data[i.column],
+          column: i.column,
+        })
       );
       return arr;
     },

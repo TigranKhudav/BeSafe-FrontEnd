@@ -2,7 +2,7 @@
   <div>
     <div class="position-absolute left-23 top-21">
       <span class="fs-12 text-gray-500">Օրվա ենթակա</span>
-      <common-update>
+      <common-update @table="uploadTable" v-if="admin" class="mt-6">
         <div class="bg-41 w-11 h-11 bg-no-repeat bg-contain"></div>
         <span class="ms-6">Թարմացում</span>
       </common-update>
@@ -13,6 +13,18 @@
       :dropdown="dropdown"
     ></common-show>
     <!-- Modals -->
+
+    <transition name="fade">
+      <builder-popup v-if="loadingPopup" @close="loadingPopup = false">
+        <template v-slot:img>
+          <div class="bg-45 w-22 h-20 bg-no-repeat bg-contain"></div>
+        </template>
+        <span class="text-gray-500 max-w-35">
+          Կատարվում է տվյալների ներմուծում։
+        </span>
+      </builder-popup>
+    </transition>
+
     <transition name="fade">
       <builder-debts-select-head
         v-if="dropdown"
@@ -24,7 +36,8 @@
     <transition name="fade">
       <builder-changes-modal
         :chagesList="HistoryList"
-        v-if="$store.state.showHistory"
+        @close="showHistory = false"
+        v-if="showHistory"
       ></builder-changes-modal>
     </transition>
 
@@ -47,9 +60,9 @@
       <div class="d-flex h-full w-full">
         <div class="w-full overflow-x-auto">
           <div class="w-full d-flex justify-content-end mt-3">
-            <div class="" role="button">
+            <router-link to="/debts/archive">
               <span class="fs-10 fw-600 text-gray-400">Արխիվ</span>
-            </div>
+            </router-link>
           </div>
           <div class="part-grid mb-8" :style="cssVar">
             <div class="d-flex p-3 justify-content-center align-items-center">
@@ -69,6 +82,7 @@
             v-for="item in CaseData"
             :key="item.id"
             :data="item"
+            :uploadData="updateData"
             :head="header"
             @history="getHistory"
             @info="getInfo"
@@ -113,12 +127,16 @@ export default {
     BuilderDebtsSelectHead,
     CommonUpdate,
   },
-  props: ["selHead"],
   data() {
     return {
       dropdown: false,
       showMenu: false,
+      showInfo: false,
+      showHistory: false,
+      updateData: false,
+      loadingPopup: false,
       header: [],
+      selHead: this.$store.getters.Acba,
       CaseData: [
         {
           id: 1,
@@ -152,14 +170,24 @@ export default {
         "--cols": this.header.length,
       };
     },
+    admin() {
+      return this.$store.getters.userperm.some((v) => v === "updateSubjectDay");
+    },
   },
   methods: {
+    uploadTable(event) {
+      this.loadingPopup = true;
+      this.$store.dispatch("toArchive", this.CaseData).then(() => {
+        this.CaseData = event;
+        this.updateData = true;
+      });
+      this.loadingPopup = false;
+    },
     check(e) {
       this.CaseData.forEach((i) => (i.checked = e.target.checked));
     },
     getHistory(id) {
-      console.log(id);
-      this.$store.commit("historyModal", true);
+      this.showHistory = true;
     },
     getFile(id) {
       console.log(id);

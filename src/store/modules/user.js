@@ -2,7 +2,7 @@ export default {
     state: {
         userData: {
             username: "",
-            perm: ['addPartners', 'addClient'],
+            perm: ['addPartners', 'addClient', 'updateSubjectDay'],
             role: "admin",
         }
     },

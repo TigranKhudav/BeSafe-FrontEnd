@@ -1,8 +1,19 @@
 <template>
   <div>
     <div class="position-absolute left-23 top-22">
-      <span class="fs-12 text-gray-500">{{ PartName }}</span>
+      <span class="fs-11 text-gray-500">{{ PartName }}</span>
+      <div class="mt-3" v-if="archiv">
+        <span class="text-gray-500 fs-10 fw-600">{{ archivDate }}</span>
+      </div>
     </div>
+    <common-update
+      @table="uploadTable"
+      v-if="admin && !archiv"
+      class="right-33 position-absolute top-22"
+    >
+      <div class="bg-42 w-10 h-10 bg-no-repeat bg-contain"></div>
+      <span class="text-pink-350 ms-6">Ներմուծել հաճախորդ</span>
+    </common-update>
 
     <common-show
       @click.native="dropdown = !dropdown"
@@ -19,13 +30,17 @@
 
     <transition name="fade">
       <builder-changes-modal
+        @close="historyModal = false"
         :chagesList="HistoryList"
-        v-if="$store.state.showHistory"
+        v-if="historyModal"
       ></builder-changes-modal>
     </transition>
 
     <transition name="fade">
-      <builder-info-modal v-if="$store.state.showInfo"></builder-info-modal>
+      <builder-info-modal
+        @close="showInfo = false"
+        v-if="showInfo"
+      ></builder-info-modal>
     </transition>
 
     <transition name="fade">
@@ -36,10 +51,10 @@
       ></builder-file>
     </transition>
 
-    <div class="d-flex justify-content-center w-full h-83 mt-12">
+    <div class="d-flex justify-content-center w-full h-83 mt-13">
       <div class="d-flex h-full w-full">
         <div class="w-full overflow-x-auto">
-          <div class="part-grid mb-8" :style="cssVar">
+          <div class="part-grid mb-2" :style="cssVar">
             <div class="d-flex p-3 justify-content-center align-items-center">
               <common-checkbox @change.native="check($event)">
               </common-checkbox>
@@ -57,6 +72,7 @@
             v-for="item in CaseData"
             :key="item.id"
             :data="item"
+            :uploadData="updateData"
             :head="header"
             @history="getHistory"
             @info="getInfo"
@@ -86,12 +102,14 @@ import BuilderFile from "../../Builder/BuilderFile.vue";
 import CommonAcbaList from "../CommonDebts/CommonAcbaList.vue";
 import CommonShow from "../CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "./BuilderDebtsSelectHead.vue";
+import CommonUpdate from "@/common/CommonUpdate.vue";
 
 export default {
   components: {
     CommonCheckbox,
     CommonClientsDataHead,
     CommonButton,
+    CommonUpdate,
     BuilderChangesModal,
     BuilderInfoModal,
     BuilderFile,
@@ -104,6 +122,11 @@ export default {
     return {
       dropdown: false,
       showMenu: false,
+      showInfo: false,
+      historyModal: false,
+      updateData: false,
+      archivDate: this.$route.params.date,
+      archiv: this.$route.name === "Archiv",
       header: [],
       CaseData: [
         {
@@ -138,21 +161,28 @@ export default {
         "--cols": this.header.length,
       };
     },
+    admin() {
+      return this.$store.getters.userperm.some((v) => v === "addClient");
+    },
   },
   methods: {
+    uploadTable(event) {
+      this.CaseData = event;
+      this.updateData = true;
+    },
     check(e) {
       this.CaseData.forEach((i) => (i.checked = e.target.checked));
     },
     getHistory(id) {
       console.log(id);
-      this.$store.commit("historyModal", true);
+      this.historyModal = true;
     },
     getFile(id) {
       console.log(id);
       this.$store.commit("fileModal", true);
     },
     getInfo(id) {
-      this.$store.commit("getInfoModal", true);
+      this.showInfo = true;
     },
     renderHead(item) {
       this.header = item;

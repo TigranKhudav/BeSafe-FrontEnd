@@ -21,7 +21,6 @@ export default new Vuex.Store({
   },
   state: {
     menu: true,
-    showHistory: false,
     showSendEmail: false,
     showRepaymentSchedule: false,
     newPartnerHead: [
@@ -59,9 +58,6 @@ export default new Vuex.Store({
     ],
   },
   mutations: {
-    historyModal(state, value) {
-      state.showHistory = value
-    },
     sendEmailModal(state, value) {
       state.showSendEmail = value
     },
@@ -115,6 +111,11 @@ export default new Vuex.Store({
           state.Partners = res.data.Partners
           this.$router.push(data.key);
         })
+        .catch(err => console.log(err))
+    },
+    toArchive(_, data) {
+      axios.post('archiv', data)
+        .then(res => console.log(res))
         .catch(err => console.log(err))
     },
     onexport() {
