@@ -105,7 +105,7 @@ export default new Vuex.Store({
         .catch(err => console.log(err))
     },
     login(_, data) {
-      axios.post('login', data)
+      axios.post('api/login', data)
         .then(res => console.log(res))
         .catch(err => console.log(err))
     },

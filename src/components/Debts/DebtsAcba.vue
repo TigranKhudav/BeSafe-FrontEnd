@@ -3,9 +3,17 @@
     <div class="position-absolute left-23 top-22">
       <h3 class="fs-12 text-gray-500">Acba</h3>
     </div>
-    <div v-if="admin" class="d-flex" role="button">
-      <div class="bg-42 w-11 h-11 bg-no-repeat bg-contain"></div>
-      <span class="text-pink-350 ms-6">Ներմուծել հաճախորդ</span>
+    <div v-if="admin" class="right-34 position-absolute top-20 z-index-0">
+      <input
+        type="file"
+        id="file"
+        accept=".csv,application/vnd.ms-excel,.xlsx,.xls"
+        class="opacity-0 w-0"
+      />
+      <label for="file" class="d-flex align-items-center" role="button">
+        <div class="bg-42 w-10 h-10 bg-no-repeat bg-contain"></div>
+        <span class="text-pink-350 ms-6">Ներմուծել հաճախորդ</span>
+      </label>
     </div>
     <common-show
       @click.native="dropdown = !dropdown"
@@ -49,7 +57,7 @@
       ></builder-file>
     </transition>
 
-    <div class="d-flex justify-content-center w-full h-83 mt-12">
+    <div class="d-flex justify-content-center w-full h-83 mt-13">
       <div class="d-flex h-full w-full">
         <div class="w-full overflow-x-auto">
           <div class="part-grid mb-8" :style="cssVar">
