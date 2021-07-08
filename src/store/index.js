@@ -127,6 +127,11 @@ export default new Vuex.Store({
         .then(res => state.Partners = res)
         .catch(err => console.log(err))
     },
+    uploadTable(_, data) {
+      axios.post('api/upload-table/' + data.id, data.table)
+        .then(res => state.Partners = res)
+        .catch(err => console.log(err))
+    },
     onexport() {
       let column = this.header.map((v) => v.name);
       const data = this.header.map((v) => [v.id, v.name, v.checked]);

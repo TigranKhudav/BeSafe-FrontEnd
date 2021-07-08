@@ -67,10 +67,10 @@
       ></builder-info-modal>
     </transition>
 
-    <div class="d-flex justify-content-center w-full h-83 mt-12">
+    <div class="d-flex justify-content-center w-full h-83 mt-13">
       <div class="d-flex h-full w-full">
-        <div class="w-full">
-          <div class="grid mb-8">
+        <div class="w-full overflow-x-auto">
+          <div class="grid mb-3">
             <div class="d-flex justify-content-center align-items-center">
               <common-checkbox @change.native="check($event)">
               </common-checkbox>
@@ -82,16 +82,14 @@
             <common-clients-data-head>Ծննդյան թիվ</common-clients-data-head>
             <common-clients-data-head>Ամսաթիվ</common-clients-data-head>
           </div>
-          <div class="overflow-hidden">
-            <common-client-data-list
-              :data="item"
-              v-for="item in clientsData"
-              :key="item.id"
-              @history="getHistory"
-              @info="getInfo"
-              @email="sendEmail"
-            ></common-client-data-list>
-          </div>
+          <common-client-data-list
+            :data="item"
+            v-for="item in clientsData"
+            :key="item.id"
+            @history="getHistory"
+            @info="getInfo"
+            @email="sendEmail"
+          ></common-client-data-list>
         </div>
         <div class="my-auto">
           <common-button

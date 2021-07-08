@@ -170,15 +170,12 @@ export default {
       showMenu: false,
       showInfo: false,
       updateData: false,
+      params: this.$route.params.id,
       header: [],
       exportTable: [],
+      uploadTable: [],
       count: 1,
-      // CaseData: this.$store.getters.CaseData,
-      CaseData: [
-        { id: 1, branch: "efewf", client_num: 12 },
-        { id: 2, branch: "efewf", client_num: 13 },
-        { id: 3, branch: "efewf", client_num: 14 },
-      ],
+      CaseData: this.$store.getters.CaseData,
       HistoryList: [
         {
           id: 1,
@@ -214,7 +211,8 @@ export default {
         this.header.forEach((i) =>
           array.push({
             id: i.id,
-            value: this.updateData ? v[i.name] : v[i.column],
+            // value: this.updateData ? v[i.name] : v[i.column],
+            value: v[i.column],
             column: i.column,
           })
         );
@@ -222,19 +220,22 @@ export default {
       });
       return arr;
     },
-    uploadData() {
+    uploadCols() {
       let arr = [];
-      this.CaseData.forEach((v) => {
+      this.uploadTable.forEach((v) => {
+        let array = [];
         this.header.forEach((i) =>
-          arr.push({
+          array.push({
             id: i.id,
             value: v[i.name],
             column: i.column,
           })
         );
+        arr.push(array);
       });
       return arr;
     },
+
     admin() {
       return this.$store.getters.userperm.some((v) => v === "addClient");
     },
@@ -249,10 +250,10 @@ export default {
   },
   methods: {
     uploadTable(event) {
-      this.CaseData = event;
+      this.uploadTable = event;
       this.updateData = true;
-      console.log(this.cols);
-      // this.$store.dispatch()
+      let data = { id: this.params, table: this.uploadCols };
+      this.$store.dispatch("uploadTable", data);
     },
     onCheck(event) {
       let arr = [];
