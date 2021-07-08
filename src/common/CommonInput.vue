@@ -8,7 +8,6 @@
       bg-no-repeat
       ps-14
       py-10
-      plac
     "
     type="text"
     :value="value"

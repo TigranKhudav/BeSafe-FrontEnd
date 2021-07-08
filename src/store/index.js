@@ -11,6 +11,8 @@ import admin from './modules/admin'
 
 Vue.use(Vuex)
 
+const userURL = 'users/'
+
 export default new Vuex.Store({
   modules: {
     acba,
@@ -24,7 +26,23 @@ export default new Vuex.Store({
   state: {
     menu: true,
     showRepaymentSchedule: false,
-    CaseData: [],
+    CaseData: [
+      {
+        "id": 1,
+        "branch": "efefewf",
+        "client_num": "ewfwefewf"
+      },
+      {
+        "id": 2,
+        "branch": "efefeewfwefwf",
+        "client_num": "eewfewfwfwefewf"
+      },
+      {
+        "id": 3,
+        "branch": "babfewfw",
+        "client_num": "eewfewfwfwefewf"
+      }
+    ],
     newPartnerHead: [
       {
         id: 1,
@@ -118,7 +136,7 @@ export default new Vuex.Store({
         .catch(err => console.log(err))
     },
     getPartData({ state }, data) {
-      axios.get('api/partners/' + data.name + '/' + data.id)
+      axios.get('api/partners/' + data.name + '?page=' + data.id)
         .then(res => state.CaseData.push(...res))
         .catch(err => console.log(err))
     },
@@ -128,8 +146,8 @@ export default new Vuex.Store({
         .catch(err => console.log(err))
     },
     uploadTable(_, data) {
-      axios.post('api/upload-table/' + data.id, data.table)
-        .then(res => state.Partners = res)
+      axios.post('api/partners/upload-table/' + data.id, data.table)
+        .then(res => state.CaseData = res)
         .catch(err => console.log(err))
     },
     onexport() {

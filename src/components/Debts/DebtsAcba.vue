@@ -4,7 +4,7 @@
       <h3 class="fs-11 text-gray-500">Acba</h3>
     </div>
     <common-update
-      @table="uploadTable"
+      @table="uploadTableMethod"
       v-if="admin"
       class="right-33 position-absolute top-22"
     >
@@ -57,7 +57,7 @@
     <div class="d-flex justify-content-center w-full h-83 mt-13">
       <div class="d-flex h-full w-full">
         <div ref="table" class="w-full overflow-x-auto">
-          <div class="part-grid mb-8" :style="cssVar">
+          <div class="part-grid mb-3" :style="cssVar">
             <div class="d-flex p-3 justify-content-center align-items-center">
               <common-checkbox @check="checkAll($event)"></common-checkbox>
             </div>
@@ -67,13 +67,15 @@
             <common-clients-data-head
               v-for="item in (header = defaultHead)"
               :key="item.id"
+              @search="Search($event, item.column)"
               >{{ item.name }}</common-clients-data-head
             >
           </div>
           <div>
             <common-acba-list
-              v-for="item in cols"
+              v-for="item in LineData"
               :key="item.id"
+              :head="header"
               :data="item"
               @history="getHistory"
               @info="getInfo"
@@ -169,7 +171,8 @@ export default {
       dropdown: false,
       showMenu: false,
       showInfo: false,
-      updateData: false,
+      SearchColumn: null,
+      SearchText: "",
       params: this.$route.params.id,
       header: [],
       exportTable: [],
@@ -204,21 +207,12 @@ export default {
     }
   },
   computed: {
-    cols() {
-      let arr = [];
-      this.CaseData.forEach((v) => {
-        let array = [];
-        this.header.forEach((i) =>
-          array.push({
-            id: i.id,
-            // value: this.updateData ? v[i.name] : v[i.column],
-            value: v[i.column],
-            column: i.column,
-          })
+    LineData() {
+      if (this.SearchColumn) {
+        return this.CaseData.filter((v) =>
+          v[`${this.SearchColumn}`].includes(this.SearchText)
         );
-        arr.push(array);
-      });
-      return arr;
+      } else return this.CaseData;
     },
     uploadCols() {
       let arr = [];
@@ -249,9 +243,12 @@ export default {
     },
   },
   methods: {
-    uploadTable(event) {
+    Search(event, column) {
+      this.SearchColumn = column;
+      this.SearchText = event;
+    },
+    uploadTableMethod(event) {
       this.uploadTable = event;
-      this.updateData = true;
       let data = { id: this.params, table: this.uploadCols };
       this.$store.dispatch("uploadTable", data);
     },
