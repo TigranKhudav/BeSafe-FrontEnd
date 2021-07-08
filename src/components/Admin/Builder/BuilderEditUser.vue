@@ -109,14 +109,17 @@ import CommonModal from "@/common/CommonModal.vue";
 import CommonSelect from "@/common/CommonSelect.vue";
 import BuilderUserPermission from "./BuilderUserPermission.vue";
 import { minLength, required } from "vuelidate/lib/validators";
+import { mapGetters } from "vuex";
+
 export default {
   components: { CommonModal, CommonSelect, BuilderUserPermission },
   props: { UserInfo: { type: Object, required: true } },
   computed: {
+    ...mapGetters(["LawyerPerm", "AllPerm", "Subsection", "UserType"]),
     Competencies() {
       if (this.access === "lawyer") {
         return this.LawyerPerm;
-      } else return [...this.LawyerPerm, ...this.Perm];
+      } else return this.AllPerm;
     },
     userPermission() {
       let arr = [];
@@ -142,58 +145,6 @@ export default {
       err: false,
       selPerm: null,
       newPassInp: false,
-      UserType: [
-        { id: 1, name: "Օգտագործող", role: "user" },
-        { id: 2, name: "Ադմին", role: "admin" },
-      ],
-      Subsection: [
-        { id: 1, access: "lawyer", name: "Փաստաբանական" },
-        { id: 2, access: "debts", name: "Պարտքերի հավաքագրման" },
-        { id: 3, access: "two", name: "Փաստաբանական/Պարտքերի հավաքագրման" },
-      ],
-      LawyerPerm: [
-        { id: 1, checked: false, val: "createUser", name: "Ստեղծել նոր user" },
-        {
-          id: 2,
-          checked: false,
-          val: "resetPass",
-          name: "Գաղտնաբառի վերականգնում",
-        },
-        { id: 3, checked: false, val: "editInfo", name: "Խմբագրել ինֆորմացիա" },
-        { id: 4, checked: false, val: "removeInfo", name: "Ջնջել ինֆորմացիա" },
-      ],
-      Perm: [
-        {
-          id: 5,
-          checked: false,
-          val: "updateSubjectDay",
-          name: "Թարմացնել <<Օրվա ենթակա>>-ի ցանկը",
-        },
-        {
-          id: 6,
-          checked: false,
-          val: "addPartners",
-          name: "<<Գործընկերներ>> բաժնում ներմուծել հաճախորդներ",
-        },
-        {
-          id: 7,
-          checked: false,
-          val: "editReport",
-          name: "Խմբագրել/ջնջել <<Հաշվետվություն>> բաժնի ամսաթվերը",
-        },
-        {
-          id: 8,
-          checked: false,
-          val: "updateReport",
-          name: "Թարմացնել <<Հաշվետվություն>> բաժնի գործերը/ինֆորմացիան",
-        },
-        {
-          id: 9,
-          checked: false,
-          val: "confirmReport",
-          name: "Հաստատել <<Հաշվետվություն>> բաժնի ամսաթվերի փոփոխությունները",
-        },
-      ],
     };
   },
   validations: {

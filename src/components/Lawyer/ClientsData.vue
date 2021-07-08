@@ -1,8 +1,8 @@
 <template>
   <div>
     <common-button
-      @click.native="showModal = true"
-      class="position-absolute top-23 right-22 w-full max-w-28"
+      @click="showModal = true"
+      class="position-absolute top-22 right-21 w-full max-w-32"
     >
       <div class="d-flex align-items-center p-4">
         <div class="bg-15 w-10 h-10 bg-contain bg-no-repeat me-3"></div>
@@ -10,14 +10,45 @@
       </div>
     </common-button>
     <!-- Modals -->
+
+    <!-- add client -->
     <transition name="fade">
-      <builder-add-client-modal v-if="showModal"></builder-add-client-modal>
+      <common-modal v-if="showModal" @close="showModal = false">
+        <div class="w-full max-w-35">
+          <common-input
+            class="my-10"
+            :class="'text-align-center'"
+            :img="'bg-24'"
+            :placeholder="'Անուն Ազգանուն'"
+          ></common-input>
+          <common-input
+            :class="'text-align-center'"
+            class="my-10"
+            :img="'bg-23'"
+            :placeholder="'Հեռախոսահամար'"
+          ></common-input>
+          <common-input
+            class="my-10"
+            :class="'text-align-center'"
+            :img="'bg-22'"
+            :placeholder="'Էլ, հասցե'"
+          ></common-input>
+          <common-input
+            :class="'text-align-center'"
+            class="my-10"
+            :img="'bg-21'"
+            :placeholder="'Ծննդյան ամսաթիվ'"
+          ></common-input>
+        </div>
+        <template v-slot:sub>Պահպանել</template>
+      </common-modal>
     </transition>
 
     <transition name="fade">
       <builder-changes-modal
+        @close="showHistory = false"
         :chagesList="HistoryList"
-        v-if="$store.state.showHistory"
+        v-if="showHistory"
       ></builder-changes-modal>
     </transition>
 
@@ -30,7 +61,10 @@
     </transition>
 
     <transition name="fade">
-      <builder-info-modal v-if="$store.state.showInfo"></builder-info-modal>
+      <builder-info-modal
+        @close="showInfo = false"
+        v-if="showInfo"
+      ></builder-info-modal>
     </transition>
 
     <div class="d-flex justify-content-center w-full h-83 mt-12">
@@ -72,11 +106,12 @@
   </div>
 </template>
 <script>
-import CommonButton from "../../common/CommonButton.vue";
-import CommonCheckbox from "../../common/CommonCheckbox.vue";
-import CommonClientDataList from "../../common/CommonClientDataList.vue";
-import CommonClientsDataHead from "../../common/CommonClientsDataHead.vue";
-import BuilderAddClientModal from "../Builder/BuilderAddClientModal.vue";
+import CommonButton from "@/common/CommonButton.vue";
+import CommonCheckbox from "@/common/CommonCheckbox.vue";
+import CommonInput from "@/common/CommonInput.vue";
+import CommonModal from "@/common/CommonModal.vue";
+import CommonClientDataList from "@/common/CommonClientDataList.vue";
+import CommonClientsDataHead from "@/common/CommonClientsDataHead.vue";
 import BuilderChangesModal from "../Builder/BuilderChangesModal.vue";
 import BulderSendEmailModal from "../Builder/BulderSendEmailModal.vue";
 import BuilderInfoModal from "../Builder/BuilderInfoModal.vue";
@@ -85,17 +120,19 @@ export default {
     CommonCheckbox,
     CommonClientsDataHead,
     CommonButton,
-    BuilderAddClientModal,
     CommonClientDataList,
     BuilderChangesModal,
     BulderSendEmailModal,
     BuilderInfoModal,
+    CommonModal,
+    CommonInput,
   },
   data() {
     return {
       showModal: false,
       showHistory: false,
       showSendEmail: false,
+      showInfo: false,
       sendEmailData: {
         name: "",
         email: "",
@@ -129,10 +166,10 @@ export default {
     },
     getHistory(id) {
       console.log(id);
-      this.$store.commit("historyModal", true);
+      this.showHistory = true;
     },
     getInfo(id) {
-      this.$store.commit("getInfoModal", true);
+      this.showInfo = true;
     },
     sendEmail(userInfo) {
       this.showSendEmail = true;

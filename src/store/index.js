@@ -7,6 +7,7 @@ import global_credit from './modules/global-credit'
 import good_credit from './modules/good-credit'
 import statuses from './modules/statuses'
 import user from './modules/user'
+import admin from './modules/admin'
 
 Vue.use(Vuex)
 
@@ -18,11 +19,12 @@ export default new Vuex.Store({
     good_credit,
     statuses,
     user,
+    admin
   },
   state: {
     menu: true,
-    showSendEmail: false,
     showRepaymentSchedule: false,
+    CaseData: [],
     newPartnerHead: [
       {
         id: 1,
@@ -58,9 +60,6 @@ export default new Vuex.Store({
     ],
   },
   mutations: {
-    sendEmailModal(state, value) {
-      state.showSendEmail = value
-    },
     showRepaymentSchedule(state, value) {
       state.showRepaymentSchedule = value
     },
@@ -96,7 +95,7 @@ export default new Vuex.Store({
         .catch(err => console.log(err))
     },
     editUser(_, data) {
-      axios.put('users/createUser', data)
+      axios.put('users/editUser', data)
         .then(res => console.log(res))
         .catch(err => console.log(err))
     },
@@ -118,6 +117,16 @@ export default new Vuex.Store({
         .then(res => console.log(res))
         .catch(err => console.log(err))
     },
+    getPartData({ state }, data) {
+      axios.get('api/partners/' + data.name + '/' + data.id)
+        .then(res => state.CaseData.push(...res))
+        .catch(err => console.log(err))
+    },
+    getPartners({ state }) {
+      axios.get('api/partners')
+        .then(res => state.Partners = res)
+        .catch(err => console.log(err))
+    },
     onexport() {
       let column = this.header.map((v) => v.name);
       const data = this.header.map((v) => [v.id, v.name, v.checked]);
@@ -133,5 +142,6 @@ export default new Vuex.Store({
     NewPartner: state => [...state.Acba, ...state.newPartnerHead],
     Partners: state => state.Partners,
     menu: state => state.menu,
+    CaseData: state => state.CaseData
   }
 })

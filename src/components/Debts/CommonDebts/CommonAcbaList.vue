@@ -27,7 +27,7 @@
     <div
       @click="edit = true"
       class="bord p-3"
-      v-for="item in cols"
+      v-for="item in data"
       :key="item.id"
     >
       <input
@@ -45,30 +45,14 @@
 import CommonCheckbox from "@/common/CommonCheckbox.vue";
 export default {
   components: { CommonCheckbox },
-  props: {
-    data: { type: Object },
-    head: { type: Array },
-    uploadData: { type: Boolean },
-  },
+  props: { data: { type: Array } },
   data() {
     return {
       edit: false,
       checked: this.data.checked,
     };
   },
-  computed: {
-    cols() {
-      let arr = [];
-      this.head.forEach((i) =>
-        arr.push({
-          id: i.id,
-          value: this.uploadData ? this.data[i.name] : this.data[i.column],
-          column: i.column,
-        })
-      );
-      return arr;
-    },
-  },
+  computed: {},
   methods: {
     onCheck(event) {
       this.checked = event;

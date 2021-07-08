@@ -93,10 +93,10 @@ const router = new VueRouter({
           path: 'partners/acba',
           name: 'Acba',
           component: () => import('@/components/Debts/DebtsAcba.vue'),
-          // beforeEnter: async (to, from, next) => {
-          //   await store.dispatch('fetchData')
-          //   next()
-          // },
+          beforeEnter: async (to, from, next) => {
+            await store.dispatch('getPartData', { name: 'acba', id: 0 })
+            next()
+          },
           props: { selHead: store.getters.Acba }
         },
         {
@@ -118,8 +118,8 @@ const router = new VueRouter({
         {
           path: 'archive/:date',
           name: 'Archiv',
-          component: () => import('@/components/Debts/BuilderDebts/BuilderPartnerTable.vue'),
-          props: { selHead: store.getters.Acba, PartName: 'Օրվա ենթակա' }
+          component: () => import('@/components/Debts/SubjectDay/ArchiveDay.vue'),
+          props: { selHead: store.getters.Acba }
         },
         {
           path: 'reports',

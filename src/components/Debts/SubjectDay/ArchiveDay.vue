@@ -1,30 +1,25 @@
 <template>
   <div>
-    <div class="position-absolute left-23 top-21">
-      <span class="fs-12 text-gray-500">Օրվա ենթակա</span>
-      <common-update @table="uploadTable" v-if="admin" class="mt-6">
-        <div class="bg-41 w-11 h-11 bg-no-repeat bg-contain"></div>
-        <span class="ms-6">Թարմացում</span>
-      </common-update>
+    <div class="position-absolute left-23 top-22">
+      <span class="fs-11 text-gray-500">Օրվա ենթակա</span>
+      <div class="mt-3" v-if="archiv">
+        <span class="text-gray-500 fs-10 fw-600">{{ archivDate }}</span>
+      </div>
     </div>
+    <common-update
+      @table="uploadTable"
+      v-if="admin && !archiv"
+      class="right-33 position-absolute top-22"
+    >
+      <div class="bg-42 w-10 h-10 bg-no-repeat bg-contain"></div>
+      <span class="text-pink-350 ms-6">Ներմուծել հաճախորդ</span>
+    </common-update>
 
     <common-show
       @click.native="dropdown = !dropdown"
       :dropdown="dropdown"
     ></common-show>
     <!-- Modals -->
-
-    <transition name="fade">
-      <builder-popup v-if="loadingPopup" @close="loadingPopup = false">
-        <template v-slot:img>
-          <div class="bg-45 w-22 h-20 bg-no-repeat bg-contain"></div>
-        </template>
-        <span class="text-gray-500 max-w-35">
-          Կատարվում է տվյալների ներմուծում։
-        </span>
-      </builder-popup>
-    </transition>
-
     <transition name="fade">
       <builder-debts-select-head
         v-if="dropdown"
@@ -35,9 +30,9 @@
 
     <transition name="fade">
       <builder-changes-modal
+        @close="historyModal = false"
         :chagesList="HistoryList"
-        @close="showHistory = false"
-        v-if="showHistory"
+        v-if="historyModal"
       ></builder-changes-modal>
     </transition>
 
@@ -50,7 +45,8 @@
 
     <transition name="fade">
       <builder-file
-        v-if="$store.state.showFile"
+        v-if="showFile"
+        @close="showFile = false"
         :files="files"
         :modal="'fileModal'"
       ></builder-file>
@@ -58,13 +54,8 @@
 
     <div class="d-flex justify-content-center w-full h-83 mt-13">
       <div class="d-flex h-full w-full">
-        <div class="w-full overflow-x-auto">
-          <div class="w-full d-flex justify-content-end mt-3">
-            <router-link to="/debts/archive">
-              <span class="fs-10 fw-600 text-gray-400">Արխիվ</span>
-            </router-link>
-          </div>
-          <div class="part-grid mb-8" :style="cssVar">
+        <div ref="table" class="w-full overflow-x-auto">
+          <div class="part-grid mb-2" :style="cssVar">
             <div class="d-flex p-3 justify-content-center align-items-center">
               <common-checkbox @change.native="check($event)">
               </common-checkbox>
@@ -75,8 +66,8 @@
             <common-clients-data-head
               v-for="item in (header = defaultHead)"
               :key="item.id"
-              >{{ item.name }}</common-clients-data-head
-            >
+              >{{ item.name }}
+            </common-clients-data-head>
           </div>
           <common-acba-list
             v-for="item in CaseData"
@@ -119,36 +110,26 @@ export default {
     CommonCheckbox,
     CommonClientsDataHead,
     CommonButton,
+    CommonUpdate,
     BuilderChangesModal,
     BuilderInfoModal,
     BuilderFile,
     CommonAcbaList,
     CommonShow,
     BuilderDebtsSelectHead,
-    CommonUpdate,
   },
+  props: ["selHead"],
   data() {
     return {
       dropdown: false,
       showMenu: false,
       showInfo: false,
-      showHistory: false,
+      historyModal: false,
       updateData: false,
-      loadingPopup: false,
+      archivDate: this.$route.params.date,
+      archiv: this.$route.name === "Archiv",
       header: [],
-      selHead: this.$store.getters.Acba,
-      CaseData: [
-        {
-          id: 1,
-          // checked: false,
-          info: "",
-          name: "Մուսաելյան Արսեն Ալյոշայի",
-          passport: "00663555",
-          caseNum: "568599",
-          priority: "",
-          amountPaid: "",
-        },
-      ],
+      CaseData: this.$store.getters.CaseData,
       HistoryList: [
         {
           id: 1,
@@ -161,6 +142,20 @@ export default {
       files: [],
     };
   },
+  mounted() {
+    const eventHandler = () => {
+      let scrollTop = this.$refs.table.scrollTop;
+      let offsetHeight = this.$refs.table.offsetHeight;
+      let scrollHeight = this.$refs.table.scrollHeight;
+      let atTheBottom = scrollTop + offsetHeight === scrollHeight;
+      let data = { name: this.archivDate, id: count };
+      if (atTheBottom) {
+        this.$store.dispatch("getArchivData", data);
+        this.count++;
+      }
+    };
+    this.$refs.table.addEventListener("scroll", eventHandler);
+  },
   computed: {
     defaultHead() {
       return this.selHead.filter((v) => v.checked);
@@ -171,27 +166,24 @@ export default {
       };
     },
     admin() {
-      return this.$store.getters.userperm.some((v) => v === "updateSubjectDay");
+      return this.$store.getters.userperm.some((v) => v === "addClient");
     },
   },
   methods: {
     uploadTable(event) {
-      this.loadingPopup = true;
-      this.$store.dispatch("toArchive", this.CaseData).then(() => {
-        this.CaseData = event;
-        this.updateData = true;
-      });
-      this.loadingPopup = false;
+      this.CaseData = event;
+      this.updateData = true;
     },
     check(e) {
       this.CaseData.forEach((i) => (i.checked = e.target.checked));
     },
     getHistory(id) {
-      this.showHistory = true;
+      console.log(id);
+      this.historyModal = true;
     },
     getFile(id) {
       console.log(id);
-      this.$store.commit("fileModal", true);
+      this.showFile = true;
     },
     getInfo(id) {
       this.showInfo = true;
@@ -202,3 +194,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 8fr 8fr 8fr 8fr 8fr;
+}
+</style>

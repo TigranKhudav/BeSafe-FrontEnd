@@ -2,13 +2,10 @@
   <div>
     <div class="position-absolute left-23 top-22">
       <span class="fs-11 text-gray-500">{{ PartName }}</span>
-      <div class="mt-3" v-if="archiv">
-        <span class="text-gray-500 fs-10 fw-600">{{ archivDate }}</span>
-      </div>
     </div>
     <common-update
       @table="uploadTable"
-      v-if="admin && !archiv"
+      v-if="admin"
       class="right-33 position-absolute top-22"
     >
       <div class="bg-42 w-10 h-10 bg-no-repeat bg-contain"></div>
@@ -45,7 +42,8 @@
 
     <transition name="fade">
       <builder-file
-        v-if="$store.state.showFile"
+        @close="showFile = false"
+        v-if="showFile"
         :files="files"
         :modal="'fileModal'"
       ></builder-file>
@@ -53,7 +51,7 @@
 
     <div class="d-flex justify-content-center w-full h-83 mt-13">
       <div class="d-flex h-full w-full">
-        <div class="w-full overflow-x-auto">
+        <div ref="table" class="w-full overflow-x-auto">
           <div class="part-grid mb-2" :style="cssVar">
             <div class="d-flex p-3 justify-content-center align-items-center">
               <common-checkbox @change.native="check($event)">
@@ -123,23 +121,11 @@ export default {
       dropdown: false,
       showMenu: false,
       showInfo: false,
+      showFile: false,
       historyModal: false,
       updateData: false,
-      archivDate: this.$route.params.date,
-      archiv: this.$route.name === "Archiv",
       header: [],
-      CaseData: [
-        {
-          id: 1,
-          checked: false,
-          info: "",
-          name: "Մուսաելյան Արսեն Ալյոշայի",
-          passport: "00663555",
-          contract_num: "568599",
-          priority: "",
-          amountPaid: "",
-        },
-      ],
+      CaseData: this.$store.getters.CaseData,
       HistoryList: [
         {
           id: 1,
@@ -151,6 +137,20 @@ export default {
       ],
       files: [],
     };
+  },
+  mounted() {
+    const eventHandler = () => {
+      let scrollTop = this.$refs.table.scrollTop;
+      let offsetHeight = this.$refs.table.offsetHeight;
+      let scrollHeight = this.$refs.table.scrollHeight;
+      let atTheBottom = scrollTop + offsetHeight === scrollHeight;
+      let data = { name: this.$route.params.id, id: count };
+      if (atTheBottom) {
+        this.$store.dispatch("getPartData", data);
+        this.count++;
+      }
+    };
+    this.$refs.table.addEventListener("scroll", eventHandler);
   },
   computed: {
     defaultHead() {
@@ -179,7 +179,7 @@ export default {
     },
     getFile(id) {
       console.log(id);
-      this.$store.commit("fileModal", true);
+      this.showFile = true;
     },
     getInfo(id) {
       this.showInfo = true;

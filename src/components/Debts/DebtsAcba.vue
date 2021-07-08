@@ -56,7 +56,7 @@
 
     <div class="d-flex justify-content-center w-full h-83 mt-13">
       <div class="d-flex h-full w-full">
-        <div class="w-full overflow-x-auto">
+        <div ref="table" class="w-full overflow-x-auto">
           <div class="part-grid mb-8" :style="cssVar">
             <div class="d-flex p-3 justify-content-center align-items-center">
               <common-checkbox @check="checkAll($event)"></common-checkbox>
@@ -72,11 +72,9 @@
           </div>
           <div>
             <common-acba-list
-              v-for="item in CaseData"
+              v-for="item in cols"
               :key="item.id"
-              :uploadData="updateData"
               :data="item"
-              :head="header"
               @history="getHistory"
               @info="getInfo"
               @file="getFile"
@@ -172,10 +170,15 @@ export default {
       showMenu: false,
       showInfo: false,
       updateData: false,
-      uploadData: [],
       header: [],
       exportTable: [],
-      CaseData: this.$store.getters.CaseData,
+      count: 1,
+      // CaseData: this.$store.getters.CaseData,
+      CaseData: [
+        { id: 1, branch: "efewf", client_num: 12 },
+        { id: 2, branch: "efewf", client_num: 13 },
+        { id: 3, branch: "efewf", client_num: 14 },
+      ],
       HistoryList: [
         {
           id: 1,
@@ -188,7 +191,50 @@ export default {
       files: [],
     };
   },
+  mounted() {
+    if (!this.updateData) {
+      const eventHandler = () => {
+        let scrollTop = this.$refs.table.scrollTop;
+        let offsetHeight = this.$refs.table.offsetHeight;
+        let scrollHeight = this.$refs.table.scrollHeight;
+        let atTheBottom = scrollTop + offsetHeight === scrollHeight;
+        if (atTheBottom) {
+          this.$store.dispatch("getPartData", this.count);
+          this.count++;
+        }
+      };
+      this.$refs.table.addEventListener("scroll", eventHandler);
+    }
+  },
   computed: {
+    cols() {
+      let arr = [];
+      this.CaseData.forEach((v) => {
+        let array = [];
+        this.header.forEach((i) =>
+          array.push({
+            id: i.id,
+            value: this.updateData ? v[i.name] : v[i.column],
+            column: i.column,
+          })
+        );
+        arr.push(array);
+      });
+      return arr;
+    },
+    uploadData() {
+      let arr = [];
+      this.CaseData.forEach((v) => {
+        this.header.forEach((i) =>
+          arr.push({
+            id: i.id,
+            value: v[i.name],
+            column: i.column,
+          })
+        );
+      });
+      return arr;
+    },
     admin() {
       return this.$store.getters.userperm.some((v) => v === "addClient");
     },
@@ -205,6 +251,8 @@ export default {
     uploadTable(event) {
       this.CaseData = event;
       this.updateData = true;
+      console.log(this.cols);
+      // this.$store.dispatch()
     },
     onCheck(event) {
       let arr = [];
