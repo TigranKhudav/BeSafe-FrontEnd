@@ -4,7 +4,7 @@
       <span class="fs-11 text-gray-500">{{ PartName }}</span>
     </div>
     <common-update
-      @table="uploadTable"
+      @table="uploadTableMethod"
       v-if="admin"
       class="right-33 position-absolute top-22"
     >
@@ -54,7 +54,7 @@
         <div ref="table" class="w-full overflow-x-auto">
           <div class="part-grid mb-2" :style="cssVar">
             <div class="d-flex p-3 justify-content-center align-items-center">
-              <common-checkbox @change.native="check($event)">
+              <common-checkbox @change.native="checkAll($event)">
               </common-checkbox>
             </div>
             <div class="min-w-12"></div>
@@ -67,14 +67,14 @@
             </common-clients-data-head>
           </div>
           <common-acba-list
-            v-for="item in CaseData"
+            v-for="item in LineData"
             :key="item.id"
             :data="item"
-            :uploadData="updateData"
             :head="header"
             @history="getHistory"
             @info="getInfo"
             @file="getFile"
+            @setValue="setValue($event, item.id)"
             :style="cssVar"
           ></common-acba-list>
         </div>
@@ -123,8 +123,8 @@ export default {
       showInfo: false,
       showFile: false,
       historyModal: false,
-      updateData: false,
       header: [],
+      params: this.$route.params.id,
       CaseData: this.$store.getters.CaseData,
       HistoryList: [
         {
@@ -153,6 +153,13 @@ export default {
     this.$refs.table.addEventListener("scroll", eventHandler);
   },
   computed: {
+    LineData() {
+      if (this.SearchColumn) {
+        return this.CaseData.filter((v) =>
+          v[`${this.SearchColumn}`].includes(this.SearchText)
+        );
+      } else return this.CaseData;
+    },
     defaultHead() {
       return this.selHead.filter((v) => v.checked);
     },
@@ -166,11 +173,29 @@ export default {
     },
   },
   methods: {
-    uploadTable(event) {
-      this.CaseData = event;
-      this.updateData = true;
+    setValue(data, id) {
+      let setVal = {
+        newValue: data.newValue,
+        column: data.column,
+        id,
+        params: this.params,
+      };
+      console.log("hi");
+      // console.log(setVal);
     },
-    check(e) {
+    Search(event, column) {
+      this.SearchColumn = column;
+      this.SearchText = event;
+    },
+    uploadTableMethod(event) {
+      let data = {
+        id: this.params,
+        newTable: event,
+        header: this.header,
+      };
+      this.$store.dispatch("uploadTable", data);
+    },
+    checkAll(e) {
       this.CaseData.forEach((i) => (i.checked = e.target.checked));
     },
     getHistory(id) {

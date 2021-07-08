@@ -1,5 +1,5 @@
         <template>
-  <div class="part-grid">
+  <div class="part-grid" v-outside-click="outsideEdit">
     <div class="bord p-3 d-flex justify-content-center align-items-center">
       <common-checkbox @check="onCheck" :value="checked"></common-checkbox>
     </div>
@@ -25,17 +25,17 @@
       <div class="bg-27 w-10 h-10 bg-contain bg-no-repeat"></div>
     </div>
     <div
-      @click="edit = true"
+      @click="onEdit(item)"
       class="bord p-3"
       v-for="item in cols"
       :key="item.id"
     >
       <input
         class="edit w-full h-full outline-none bg-indigo-100"
-        v-if="edit"
+        v-if="edit && !item.value"
         type="text"
         :value="item.value"
-        @keyup.enter="hi()"
+        @keyup.enter="setValue($event.target.value, item.column)"
       />
       <span class="fs-8 text-gray-600" v-else>{{ item.value }}</span>
     </div>
@@ -67,6 +67,9 @@ export default {
       );
       return arr;
     },
+    admin() {
+      return this.$store.getters.userperm.some((v) => v === "editInfo");
+    },
   },
   methods: {
     onCheck(event) {
@@ -77,6 +80,11 @@ export default {
         table: this.cols,
       });
     },
+    onEdit(item) {
+      if (!item.value) {
+        this.edit = true;
+      } else return;
+    },
     getHistort() {
       this.$emit("history", this.data.id);
     },
@@ -86,8 +94,11 @@ export default {
     getFile() {
       this.$emit("file", this.data.id);
     },
-    hi() {
-      console.log("hi");
+    setValue(item, column) {
+      item && this.$emit("setValue", { newValue: item, column });
+    },
+    outsideEdit() {
+      this.edit = false;
     },
   },
 };

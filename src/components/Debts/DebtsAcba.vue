@@ -40,15 +40,44 @@
     </transition>
 
     <transition name="fade">
-      <builder-acba-modal
-        :modal="'showRepaymentSchedule'"
-        v-if="$store.state.showRepaymentSchedule"
-      ></builder-acba-modal>
+      <common-modal
+        v-if="showRepaymentSchedule"
+        @close="showRepaymentSchedule = false"
+      >
+        <div>
+          <div class="row my-12">
+            <div class="col px-0 me-10">
+              <span class="text-gray-500 fs-8">Ամիսների քանակ</span>
+            </div>
+            <div class="col px-0">
+              <input class="max-w-25" type="text" />
+            </div>
+          </div>
+          <div class="row my-12">
+            <div class="col px-0 me-10">
+              <span class="text-gray-500 fs-8">Ներման տոկոս</span>
+            </div>
+            <div class="col px-0">
+              <input class="max-w-25" type="text" />
+            </div>
+          </div>
+          <div class="row my-12">
+            <div class="col px-0 me-10">
+              <span class="text-gray-500 fs-8">Կանխավճարի չափ</span>
+            </div>
+            <div class="col px-0">
+              <input class="max-w-25" type="text" />
+            </div>
+          </div>
+        </div>
+        <template v-slot:sub> Արտահանել </template>
+      </common-modal>
     </transition>
 
     <transition name="fade">
       <builder-file
-        v-if="$store.state.showFile"
+        v-if="showFile"
+        @close="showFile = false"
         :files="files"
         :modal="'fileModal'"
       ></builder-file>
@@ -81,6 +110,7 @@
               @info="getInfo"
               @file="getFile"
               @onCheck="onCheck"
+              @setValue="setValue($event, item.id)"
               @contextmenu.prevent.native="$refs.menu.open"
               :style="cssVar"
             ></common-acba-list>
@@ -107,15 +137,23 @@
               <div class="ctx-grid" v-if="showMenu">
                 <li class="ls-none"></li>
                 <li
-                  class="ls-none py-7 ps-10 shadow-1 border-bottom subMenu"
+                  class="
+                    ls-none
+                    py-7
+                    ps-10
+                    shadow-1
+                    border-bottom
+                    subMenu
+                    bg-white
+                  "
                   role="button"
                 >
                   <span class="text-gray-500 fs-8">Մեկանգամյա մարման</span>
                 </li>
                 <li
-                  class="ls-none py-7 ps-10 shadow-1 subMenu"
+                  class="ls-none py-7 ps-10 shadow-1 subMenu bg-white"
                   role="button"
-                  @click="$store.state.showRepaymentSchedule = true"
+                  @click="showRepaymentSchedule = true"
                 >
                   <span class="text-gray-500 fs-8">Գրաֆիկով մարման</span>
                 </li>
@@ -144,11 +182,11 @@ import BuilderChangesModal from "../Builder/BuilderChangesModal.vue";
 import BuilderInfoModal from "../Builder/BuilderInfoModal.vue";
 import BuilderFile from "../Builder/BuilderFile.vue";
 import CommonAcbaList from "./CommonDebts/CommonAcbaList.vue";
-import BuilderAcbaModal from "./BuilderDebts/BuilderAcbaModal.vue";
 import CommonShow from "./CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "./BuilderDebts/BuilderDebtsSelectHead.vue";
 import xlsx from "xlsx";
 import CommonUpdate from "@/common/CommonUpdate.vue";
+import CommonModal from "@/common/CommonModal.vue";
 
 export default {
   components: {
@@ -160,10 +198,10 @@ export default {
     BuilderInfoModal,
     BuilderFile,
     CommonAcbaList,
-    BuilderAcbaModal,
     CommonShow,
     BuilderDebtsSelectHead,
     CommonUpdate,
+    CommonModal,
   },
   props: ["selHead"],
   data() {
@@ -171,12 +209,13 @@ export default {
       dropdown: false,
       showMenu: false,
       showInfo: false,
-      SearchColumn: null,
+      showFile: false,
+      showRepaymentSchedule: false,
+      SearchColumn: "",
       SearchText: "",
       params: this.$route.params.id,
       header: [],
       exportTable: [],
-      uploadTable: [],
       count: 1,
       CaseData: this.$store.getters.CaseData,
       HistoryList: [
@@ -214,22 +253,6 @@ export default {
         );
       } else return this.CaseData;
     },
-    uploadCols() {
-      let arr = [];
-      this.uploadTable.forEach((v) => {
-        let array = [];
-        this.header.forEach((i) =>
-          array.push({
-            id: i.id,
-            value: v[i.name],
-            column: i.column,
-          })
-        );
-        arr.push(array);
-      });
-      return arr;
-    },
-
     admin() {
       return this.$store.getters.userperm.some((v) => v === "addClient");
     },
@@ -243,14 +266,27 @@ export default {
     },
   },
   methods: {
+    setValue(data, id) {
+      let setVal = {
+        newValue: data.newValue,
+        column: data.column,
+        id,
+        params: this.params,
+      };
+      console.log(this.$route);
+      // console.log(setVal);
+    },
+    uploadTableMethod(event) {
+      let data = {
+        id: this.params,
+        newTable: event,
+        header: this.header,
+      };
+      this.$store.dispatch("uploadTable", data);
+    },
     Search(event, column) {
       this.SearchColumn = column;
       this.SearchText = event;
-    },
-    uploadTableMethod(event) {
-      this.uploadTable = event;
-      let data = { id: this.params, table: this.uploadCols };
-      this.$store.dispatch("uploadTable", data);
     },
     onCheck(event) {
       let arr = [];
@@ -279,7 +315,7 @@ export default {
     },
     getFile(id) {
       console.log(id);
-      this.$store.commit("fileModal", true);
+      this.showFile = true;
     },
     getInfo(id) {
       this.showInfo = true;

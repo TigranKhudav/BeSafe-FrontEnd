@@ -78,6 +78,21 @@ export default new Vuex.Store({
     ],
   },
   mutations: {
+    uploadCols(_, data) {
+      let arr = [];
+      data.newTable.forEach((v) => {
+        let array = [];
+        data.header.forEach((i) =>
+          array.push({
+            id: i.id,
+            value: v[i.name],
+            column: i.column,
+          })
+        );
+        arr.push(array);
+      });
+      return arr;
+    },
     showRepaymentSchedule(state, value) {
       state.showRepaymentSchedule = value
     },
@@ -118,9 +133,7 @@ export default new Vuex.Store({
         .catch(err => console.log(err))
     },
     login(_, data) {
-      axios.post('api/login', data)
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+      axios.post('api/login', data).then(res => console.log(res))
     },
     createPartner({ state }, data) {
       axios.post('createPartner', data)
@@ -145,8 +158,9 @@ export default new Vuex.Store({
         .then(res => state.Partners = res)
         .catch(err => console.log(err))
     },
-    uploadTable(_, data) {
-      axios.post('api/partners/upload-table/' + data.id, data.table)
+    uploadTable({ commit }, data) {
+      let changeTable = { newTable: data.newTable, header: data.header }
+      axios.post('api/partners/upload-table/' + data.id, commit.uploadCols(changeTable))
         .then(res => state.CaseData = res)
         .catch(err => console.log(err))
     },
