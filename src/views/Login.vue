@@ -15,7 +15,7 @@
           :placeholder="'Գաղտնաբառ'"
         ></common-input>
         <transition name="fade">
-          <div v-if="errMessig" class="mt-6">
+          <div v-if="$store.state.errMessig" class="mt-6">
             <span class="fs-8 text-red-800">*Ձեր գաղտնաբառը սխալ է</span>
           </div>
         </transition>
@@ -33,19 +33,16 @@ export default {
   components: { CommonButton, CommonInput },
   data() {
     return {
-      errMessig: false,
       username: "",
       password: "",
     };
   },
   methods: {
     ShowInputs() {
-      this.$store
-        .dispatch("login", {
-          login: this.username,
-          pass: this.password,
-        })
-        .catch((this.errMessig = true));
+      this.$store.dispatch("login", {
+        username: this.username,
+        password: this.password,
+      });
     },
   },
 };

@@ -62,6 +62,16 @@ const router = new VueRouter({
           name: 'DataOfCase',
           component: () => import('@/components/Lawyer/DataOfCase.vue'),
         },
+        {
+          path: 'list-of-courts',
+          name: 'ListOfCourts',
+          component: () => import('@/components/Lawyer/ListOfCourts.vue'),
+        },
+        {
+          path: 'list-of-sessions',
+          name: 'ListOfSessions',
+          component: () => import('@/components/Lawyer/ListOfSessions.vue'),
+        },
       ]
     },
     {
@@ -106,6 +116,7 @@ const router = new VueRouter({
           props: getHead,
           beforeEnter: async (to, from, next) => {
             param = to.params.id
+            store.state.menu = false;
             await store.dispatch('getPartData', { name: to.params.id, id: 0 })
             next()
           },
@@ -151,17 +162,18 @@ const router = new VueRouter({
   ]
 })
 
-// router.beforeEach((to, from, next) => {
-//   const token = localStorage.getItem('besafe')
-//   if (token) {
-//     axios.post('auth').then(result => {
-//       store.commit("userData", result)
-//       next()
-//     }).catch(() => next({ name: "Login" }))
-//   }
-//   else if (to.path === '/login') next()
-//   else next({ name: "Login" })
-// })
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('besafe')
+  if (token) {
+    next()
+    // axios.post('auth').then(result => {
+    //   store.commit("userData", result)
+    //   next()
+    // }).catch(() => next({ name: "Login" }))
+  }
+  else if (to.path === '/login') next()
+  else next({ name: "Login" })
+})
 // router.beforeEach((to, from, next) => {
 //   const role = 'debts'
 //   const auth = to.meta.authorize

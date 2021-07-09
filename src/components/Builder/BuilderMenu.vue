@@ -1,14 +1,13 @@
 <template>
-  <!-- position-absolute -->
-  <div class="w-full max-w-33">
-    <transition name="fade">
-      <div v-if="$store.state.menu" class="w-full">
+  <transition name="fade">
+    <div class="w-full max-w-33 position-absolute" v-if="$store.state.menu">
+      <div class="w-full">
         <div v-if="role !== 'debts'">
           <router-link class="text-dec-none" :to="{ path: '/' }">
-            <common-button class="h-17 mt-5">{{ lawyer.title }}</common-button>
+            <common-button class="h-17">{{ lawyer.title }}</common-button>
           </router-link>
           <div class="bord">
-            <ul class="px-12 mb-0">
+            <ul class="px-12 mb-0 bg-white">
               <router-link
                 v-for="item in lawyer.menuItems"
                 :key="item.id"
@@ -27,7 +26,7 @@
             <common-button class="h-17 mt-5">{{ debts.title2 }}</common-button>
           </router-link>
           <div class="bord">
-            <ul class="px-12 mb-0">
+            <ul class="px-12 mb-0 bg-white">
               <router-link
                 v-for="item in debts.menuItems"
                 :key="item.id"
@@ -56,8 +55,8 @@
           </router-link>
         </div>
       </div>
-    </transition>
-  </div>
+    </div>
+  </transition>
 </template>
 <script>
 import CommonButton from "@/common/CommonButton.vue";
@@ -69,18 +68,21 @@ export default {
       lawyer: {
         title: "Փաստաբանական բաժին",
         menuItems: [
-          { id: 1, name: "Հաճախորդների բազա" },
+          { id: 1, name: "Հաճախորդների բազա", path: "" },
           {
             id: 2,
             name: "Գործերի բազա",
+            path: "dataofcase",
           },
           {
             id: 3,
             name: "Նիստերի ցանկ",
+            path: "list-of-sessions",
           },
           {
             id: 4,
             name: "Դատարանների ցանկ",
+            path: "list-of-courts",
           },
         ],
       },

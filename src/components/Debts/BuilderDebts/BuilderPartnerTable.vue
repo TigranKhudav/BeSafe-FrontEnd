@@ -72,6 +72,7 @@
             :data="item"
             :head="header"
             @history="getHistory"
+            @onCheck="onCheck"
             @info="getInfo"
             @file="getFile"
             @setValue="setValue($event, item.id)"
@@ -101,6 +102,7 @@ import CommonAcbaList from "../CommonDebts/CommonAcbaList.vue";
 import CommonShow from "../CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "./BuilderDebtsSelectHead.vue";
 import CommonUpdate from "@/common/CommonUpdate.vue";
+import { mapActions } from "vuex";
 
 export default {
   components: {
@@ -153,12 +155,17 @@ export default {
     this.$refs.table.addEventListener("scroll", eventHandler);
   },
   computed: {
-    LineData() {
-      if (this.SearchColumn) {
-        return this.CaseData.filter((v) =>
-          v[`${this.SearchColumn}`].includes(this.SearchText)
-        );
-      } else return this.CaseData;
+    LineData: {
+      get() {
+        if (this.SearchColumn) {
+          return this.CaseData.filter((v) =>
+            v[this.SearchColumn].includes(this.SearchText)
+          );
+        } else return this.CaseData;
+      },
+      set(check) {
+        this.CaseData.forEach((i) => (i.checked = check));
+      },
     },
     defaultHead() {
       return this.selHead.filter((v) => v.checked);
@@ -173,19 +180,18 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["setNewValue", "uploadTable"]),
     setValue(data, id) {
+      this.CaseData.forEach((v) => {
+        if (v.id === id) v[data.column] = data.newValue;
+      });
       let setVal = {
         newValue: data.newValue,
         column: data.column,
         id,
         params: this.params,
       };
-      console.log("hi");
-      // console.log(setVal);
-    },
-    Search(event, column) {
-      this.SearchColumn = column;
-      this.SearchText = event;
+      this.setNewValue(setVal);
     },
     uploadTableMethod(event) {
       let data = {
@@ -193,10 +199,24 @@ export default {
         newTable: event,
         header: this.header,
       };
-      this.$store.dispatch("uploadTable", data);
+      this.uploadTable(data);
+    },
+    Search(event, column) {
+      this.SearchColumn = column;
+      this.SearchText = event;
+    },
+    onCheck(event) {
+      let arr = [];
+      event.table.forEach((v) => arr.push(v.value));
+      this.exportTable.push(arr);
+      this.CaseData.forEach((i) => {
+        if (i.id === event.id) {
+          i.checked = event.value;
+        }
+      });
     },
     checkAll(e) {
-      this.CaseData.forEach((i) => (i.checked = e.target.checked));
+      this.LineData = e;
     },
     getHistory(id) {
       console.log(id);

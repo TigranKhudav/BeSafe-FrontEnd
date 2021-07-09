@@ -32,7 +32,7 @@
       </div>
       <template v-slot:sub>Հաստատել</template>
     </common-modal>
-    <div class="container d-flex flex-dir-column align-items-center px-18">
+    <div class="container d-flex flex-dir-column align-items-center px-21">
       <div class="d-flex justify-content-between w-full">
         <button
           role="button"

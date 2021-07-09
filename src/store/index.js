@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from '@/utils/axios'
+import router from "@/router"
 import acba from './modules/acba'
 import ucom from './modules/ucom'
 import global_credit from './modules/global-credit'
@@ -25,6 +26,7 @@ export default new Vuex.Store({
   },
   state: {
     menu: true,
+    errMessig: false,
     CaseData: [
       {
         "id": 1,
@@ -140,8 +142,13 @@ export default new Vuex.Store({
         .then(res => console.log(res))
         .catch(err => console.log(err))
     },
-    login(_, data) {
-      axios.post('api/login', data).then(res => console.log(res))
+    login({ state }, data) {
+      axios.post('api/login', data).then(res => {
+        localStorage.setItem('besafe', res.access_token)
+        router.replace("/")
+        state.user.userData = res.user
+      })
+        .catch(() => state.errMessig = true)
     },
     createPartner({ state }, data) {
       axios.post('createPartner', data)

@@ -316,7 +316,6 @@ export default {
       xlsx.writeFile(wb, "besafe.xlsx");
     },
     checkAll(e) {
-      // this.CaseData.forEach((i) => (i.checked = e));
       this.LineData = e;
     },
     getHistory(id) {
