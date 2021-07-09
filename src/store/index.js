@@ -25,22 +25,27 @@ export default new Vuex.Store({
   },
   state: {
     menu: true,
-    showRepaymentSchedule: false,
     CaseData: [
       {
         "id": 1,
         "branch": "efefewf",
-        "client_num": "ewfwefewf"
+        "client_num": "ewfwefewf",
+        "name": "",
+        checked: false
       },
       {
         "id": 2,
         "branch": "efefeewfwefwf",
-        "client_num": "eewfewfwfwefewf"
+        "client_num": "eewfewfwfwefewf",
+        "name": "",
+        checked: false
       },
       {
         "id": 3,
         "branch": "babfewfw",
-        "client_num": "eewfewfwfwefewf"
+        "client_num": "eewfewfwfwefewf",
+        "name": "",
+        checked: false
       }
     ],
     newPartnerHead: [
@@ -78,6 +83,12 @@ export default new Vuex.Store({
     ],
   },
   mutations: {
+    addChecked(state, data) {
+      data.forEach(v => {
+        v.checked = false
+        state.CaseData.push(v)
+      })
+    },
     uploadCols(_, data) {
       let arr = [];
       data.newTable.forEach((v) => {
@@ -92,9 +103,6 @@ export default new Vuex.Store({
         arr.push(array);
       });
       return arr;
-    },
-    showRepaymentSchedule(state, value) {
-      state.showRepaymentSchedule = value
     },
     userData(state, data) {
       state.UserData = data
@@ -148,9 +156,9 @@ export default new Vuex.Store({
         .then(res => console.log(res))
         .catch(err => console.log(err))
     },
-    getPartData({ state }, data) {
+    getPartData({ commit }, data) {
       axios.get('api/partners/' + data.name + '?page=' + data.id)
-        .then(res => state.CaseData.push(...res))
+        .then(res => commit.addChecked(res))
         .catch(err => console.log(err))
     },
     getPartners({ state }) {
@@ -162,6 +170,11 @@ export default new Vuex.Store({
       let changeTable = { newTable: data.newTable, header: data.header }
       axios.post('api/partners/upload-table/' + data.id, commit.uploadCols(changeTable))
         .then(res => state.CaseData = res)
+        .catch(err => console.log(err))
+    },
+    setNewValue(_, data) {
+      axios.post('api/set-new-value/' + data.id + '?id=' + data.id, data)
+        .then(res => console.log(err))
         .catch(err => console.log(err))
     },
     onexport() {

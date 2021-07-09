@@ -3,6 +3,7 @@
     class="w-11 h-11 outline-none"
     role="button"
     type="checkbox"
+    :value="value"
     :checked="value"
     @change="$emit('check', $event.target.checked)"
   />

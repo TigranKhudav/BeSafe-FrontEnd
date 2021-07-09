@@ -7,10 +7,20 @@ Vue.use(VueRouter)
 
 function getHead(route) {
   if (route.params.id === 'ucom') return { selHead: store.getters.Ucom, PartName: 'Ucom' }
+  else if (route.params.id === 'acba') return { selHead: store.getters.Acba }
   else if (route.params.id === 'global-credit') return { selHead: store.getters.GlobalCredit, PartName: 'GlobalCredit' }
   else if (route.params.id === 'good-credit') return { selHead: store.getters.GoodCredit, PartName: 'GoodCredit' }
   else return { selHead: store.getters.NewPartner, PartName: store.state.Partners.filter(v => v.key === route.params.id)[0].name }
 }
+
+let param
+
+function getComp() {
+  if (param === 'acba') {
+    return import('@/components/Debts/DebtsAcba.vue')
+  } else return import('@/components/Debts/BuilderDebts/BuilderPartnerTable.vue')
+}
+
 
 const router = new VueRouter({
   mode: 'history',
@@ -90,20 +100,15 @@ const router = new VueRouter({
           component: () => import('@/components/Debts/DebtsPartners.vue'),
         },
         {
-          path: 'partners/acba',
-          name: 'Acba',
-          component: () => import('@/components/Debts/DebtsAcba.vue'),
-          beforeEnter: async (to, from, next) => {
-            await store.dispatch('getPartData', { name: 'acba', id: 0 })
-            next()
-          },
-          props: { selHead: store.getters.Acba }
-        },
-        {
           path: 'partners/:id',
           name: 'Patrner',
-          component: () => import('@/components/Debts/BuilderDebts/BuilderPartnerTable.vue'),
-          props: getHead
+          component: getComp,
+          props: getHead,
+          beforeEnter: async (to, from, next) => {
+            param = to.params.id
+            await store.dispatch('getPartData', { name: to.params.id, id: 0 })
+            next()
+          },
         },
         {
           path: 'subjectday',

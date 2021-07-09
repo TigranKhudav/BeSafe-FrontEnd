@@ -25,10 +25,10 @@
       <div class="bg-27 w-10 h-10 bg-contain bg-no-repeat"></div>
     </div>
     <div
-      @click="onEdit(item)"
       class="bord p-3"
       v-for="item in cols"
       :key="item.id"
+      @click="onEdit(item.value)"
     >
       <input
         class="edit w-full h-full outline-none bg-indigo-100"
@@ -52,20 +52,22 @@ export default {
   data() {
     return {
       edit: false,
-      checked: this.data.checked,
+      lineData: this.data,
     };
   },
   computed: {
-    cols() {
-      let arr = [];
-      this.head.forEach((i) =>
-        arr.push({
-          id: i.id,
-          value: this.data[i.column],
-          column: i.column,
-        })
-      );
-      return arr;
+    checked() {
+      return this.data.checked;
+    },
+    cols: {
+      get() {
+        return this.head.map((i) => {
+          return { id: i.id, value: this.lineData[i.column], column: i.column };
+        });
+      },
+      // set(param) {
+      //   this.lineData[param.column] = param.value;
+      // },
     },
     admin() {
       return this.$store.getters.userperm.some((v) => v === "editInfo");
@@ -73,15 +75,14 @@ export default {
   },
   methods: {
     onCheck(event) {
-      this.checked = event;
       this.$emit("onCheck", {
         id: this.data.id,
         value: event,
         table: this.cols,
       });
     },
-    onEdit(item) {
-      if (!item.value) {
+    onEdit(value) {
+      if (!value) {
         this.edit = true;
       } else return;
     },
@@ -94,8 +95,9 @@ export default {
     getFile() {
       this.$emit("file", this.data.id);
     },
-    setValue(item, column) {
-      item && this.$emit("setValue", { newValue: item, column });
+    setValue(value, column) {
+      this.cols = { value, column };
+      this.$emit("setValue", { newValue: value, column });
     },
     outsideEdit() {
       this.edit = false;
