@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div class="w-full max-w-33 position-absolute" v-if="$store.state.menu">
-      <div class="w-full">
+      <div class="w-full" @click="$store.state.menu = false">
         <div v-if="role !== 'debts'">
           <router-link class="text-dec-none" :to="{ path: '/' }">
             <common-button class="h-17">{{ lawyer.title }}</common-button>

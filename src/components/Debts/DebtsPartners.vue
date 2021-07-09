@@ -38,7 +38,7 @@
           role="button"
           v-for="item in Partners"
           :key="item.id"
-          @click="$router.push(item.key)"
+          @click="$router.push('' + item.key)"
           class="bg-part rounded-8 w-full max-w-24 py-13 border-0"
         >
           <span class="fs-10 fw-600 text-white">{{ item.name }}</span>
@@ -54,7 +54,7 @@ export default {
   components: { CommonModal },
   computed: {
     admin() {
-      return this.$store.getters.userperm.some((v) => v === "addPartners");
+      return this.$store.getters.user.perm.some((v) => v === "addPartners");
     },
     Partners() {
       return this.$store.getters.Partners;

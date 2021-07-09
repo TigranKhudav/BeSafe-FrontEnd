@@ -11,7 +11,6 @@ import admin from './modules/admin'
 
 Vue.use(Vuex)
 
-
 export default new Vuex.Store({
   modules: {
     acba,
@@ -22,30 +21,36 @@ export default new Vuex.Store({
     admin
   },
   state: {
-    menu: true,
+    menu: false,
     errMessig: false,
     CaseData: [
       {
-        "id": 1,
-        "branch": "efefewf",
-        "client_num": "ewfwefewf",
-        "name": "",
-        checked: false
+        branch: "efefeewfwefwf",
+        checked: false,
+        client_num: "eewfewfwfwefewf",
+        id: 1,
+        name: "",
+        serial_number: "",
+        main_debt: ""
       },
       {
-        "id": 2,
-        "branch": "efefeewfwefwf",
-        "client_num": "eewfewfwfwefewf",
-        "name": "",
-        checked: false
+        branch: "",
+        checked: false,
+        client_num: "eewfewfwfwefewf",
+        id: 2,
+        name: "",
+        serial_number: "qwdwqdw",
+        main_debt: ""
       },
       {
-        "id": 3,
-        "branch": "babfewfw",
-        "client_num": "eewfewfwfwefewf",
-        "name": "",
-        checked: false
-      }
+        branch: "",
+        checked: false,
+        client_num: "eewfewfwfwefewf",
+        id: 3,
+        name: "",
+        serial_number: "qwdwqdw",
+        main_debt: ""
+      },
     ],
     newPartnerHead: [
       {
@@ -73,7 +78,6 @@ export default new Vuex.Store({
         column: 'social_card'
       },
     ],
-    // back
     Prioritys: [
       {
         id: 1,
@@ -200,7 +204,7 @@ export default new Vuex.Store({
     },
     getPartData({ commit }, data) {
       axios.get('api/partners/' + data.name + '?page=' + data.id)
-        .then(res => commit.addChecked(res))
+        .then(res => commit('addChecked', res))
         .catch(err => console.log(err))
     },
     getPartners({ state }) {
@@ -215,7 +219,7 @@ export default new Vuex.Store({
         .catch(err => console.log(err))
     },
     setNewValue(_, data) {
-      axios.post('api/set-new-value/' + data.id + '?id=' + data.id, data)
+      axios.put('api/set-value/' + data.params + '?id=' + data.id + '?column=' + data.column + '?value=' + data.newValue)
         .then(res => console.log(err))
         .catch(err => console.log(err))
     },
@@ -237,5 +241,6 @@ export default new Vuex.Store({
     CaseData: state => state.CaseData,
     Prioritys: state => state.Prioritys,
     HistoryList: state => state.HistoryList,
+    user: () => JSON.parse(localStorage.getItem("user"))
   }
 })

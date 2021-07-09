@@ -45,10 +45,7 @@
 import CommonCheckbox from "@/common/CommonCheckbox.vue";
 export default {
   components: { CommonCheckbox },
-  props: {
-    data: { type: Object },
-    head: { type: Array },
-  },
+  props: { data: { type: Object }, head: { type: Array } },
   data() {
     return {
       edit: false,
@@ -65,12 +62,12 @@ export default {
           return { id: i.id, value: this.lineData[i.column], column: i.column };
         });
       },
-      // set(param) {
-      //   this.lineData[param.column] = param.value;
-      // },
+      set(param) {
+        this.lineData[param.column] = param.value;
+      },
     },
     admin() {
-      return this.$store.getters.userperm.some((v) => v === "editInfo");
+      return this.$store.getters.user.perm.some((v) => v === "editInfo");
     },
   },
   methods: {

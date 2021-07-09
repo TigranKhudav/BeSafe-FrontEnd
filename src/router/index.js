@@ -61,19 +61,11 @@ const router = new VueRouter({
           path: 'clientsdata',
           name: 'ClientsData',
           component: () => import('@/components/Lawyer/ClientsData.vue'),
-          beforeEnter: async (to, from, next) => {
-            store.state.menu = false;
-            next()
-          },
         },
         {
           path: 'dataofcase',
           name: 'DataOfCase',
           component: () => import('@/components/Lawyer/DataOfCase.vue'),
-          beforeEnter: async (to, from, next) => {
-            store.state.menu = false;
-            next()
-          },
         },
         {
           path: 'list-of-courts',
@@ -129,7 +121,6 @@ const router = new VueRouter({
           props: getHead,
           beforeEnter: async (to, from, next) => {
             param = to.params.id
-            store.state.menu = false;
             await store.dispatch('getPartData', { name: to.params.id, id: 0 })
             next()
           },

@@ -13,7 +13,7 @@
     </common-update>
 
     <common-show
-      @click.native="dropdown = !dropdown"
+      @click="dropdown = !dropdown"
       :dropdown="dropdown"
     ></common-show>
     <!-- Modals -->
@@ -97,8 +97,8 @@
               v-for="item in (header = defaultHead)"
               :key="item.id"
               @search="Search($event, item.column)"
-              >{{ item.name }}</common-clients-data-head
-            >
+              >{{ item.name }}
+            </common-clients-data-head>
           </div>
           <div>
             <common-acba-list
@@ -219,15 +219,7 @@ export default {
       exportTable: [],
       count: 1,
       CaseData: this.$store.getters.CaseData,
-      HistoryList: [
-        {
-          id: 1,
-          name: "gurgenstepanyan",
-          change: "Անձնագիր    AU8562  >   AU8562",
-          date: "02.06.21",
-          hour: "12.:30",
-        },
-      ],
+      HistoryList: this.$store.getters.HistoryList,
       files: [],
     };
   },
@@ -260,7 +252,7 @@ export default {
       },
     },
     admin() {
-      return this.$store.getters.userperm.some((v) => v === "addClient");
+      return this.$store.getters.user.perm.some((v) => v === "addClient");
     },
     defaultHead() {
       return this.selHead.filter((v) => v.checked);

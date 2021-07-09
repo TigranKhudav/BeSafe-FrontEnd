@@ -54,8 +54,7 @@
         <div ref="table" class="w-full overflow-x-auto">
           <div class="part-grid mb-2" :style="cssVar">
             <div class="d-flex p-3 justify-content-center align-items-center">
-              <common-checkbox @change.native="checkAll($event)">
-              </common-checkbox>
+              <common-checkbox @check="checkAll($event)"> </common-checkbox>
             </div>
             <div class="min-w-12"></div>
             <div class="min-w-12"></div>
@@ -63,6 +62,7 @@
             <common-clients-data-head
               v-for="item in (header = defaultHead)"
               :key="item.id"
+              @search="Search($event, item.column)"
               >{{ item.name }}
             </common-clients-data-head>
           </div>
@@ -124,19 +124,13 @@ export default {
       showMenu: false,
       showInfo: false,
       showFile: false,
+      SearchColumn: "",
+      SearchText: "",
       historyModal: false,
       header: [],
       params: this.$route.params.id,
       CaseData: this.$store.getters.CaseData,
-      HistoryList: [
-        {
-          id: 1,
-          name: "gurgenstepanyan",
-          change: "Անձնագիր    AU8562  >   AU8562",
-          date: "02.06.21",
-          hour: "12.:30",
-        },
-      ],
+      HistoryList: this.$store.getters.HistoryList,
       files: [],
     };
   },
@@ -176,7 +170,7 @@ export default {
       };
     },
     admin() {
-      return this.$store.getters.userperm.some((v) => v === "addClient");
+      return this.$store.getters.user.perm.some((v) => v === "addClient");
     },
   },
   methods: {
@@ -184,6 +178,7 @@ export default {
     setValue(data, id) {
       this.CaseData.forEach((v) => {
         if (v.id === id) v[data.column] = data.newValue;
+        console.log("hi");
       });
       let setVal = {
         newValue: data.newValue,
@@ -191,7 +186,7 @@ export default {
         id,
         params: this.params,
       };
-      this.setNewValue(setVal);
+      // this.setNewValue(setVal);
     },
     uploadTableMethod(event) {
       let data = {
