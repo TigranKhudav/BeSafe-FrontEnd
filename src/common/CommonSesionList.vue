@@ -7,7 +7,7 @@
       <div
         role="button"
         @click="getInfo"
-        class="bg-16 w-12 h-12 bg-contain bg-no-repeat"
+        class="bg-16 w-12 h-12 bg-contain bg-no-repeat bg-p-center"
       ></div>
     </div>
     <div class="bord d-flex justify-content-center align-items-center">
@@ -79,7 +79,7 @@ export default {
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 4fr 2fr 4fr 4fr;
+  grid-template-columns: 1fr 1fr 1fr 7fr 2fr 7fr 7fr;
 }
 .bord {
   border: 1px solid rgb(202, 202, 202);

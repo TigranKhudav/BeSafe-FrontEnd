@@ -61,11 +61,19 @@ const router = new VueRouter({
           path: 'clientsdata',
           name: 'ClientsData',
           component: () => import('@/components/Lawyer/ClientsData.vue'),
+          beforeEnter: async (to, from, next) => {
+            store.state.menu = false;
+            next()
+          },
         },
         {
           path: 'dataofcase',
           name: 'DataOfCase',
           component: () => import('@/components/Lawyer/DataOfCase.vue'),
+          beforeEnter: async (to, from, next) => {
+            store.state.menu = false;
+            next()
+          },
         },
         {
           path: 'list-of-courts',
@@ -151,11 +159,6 @@ const router = new VueRouter({
           path: 'statuses',
           name: 'Statuses',
           component: () => import('@/components/Debts/DebtsStatuses.vue'),
-        },
-        {
-          path: 'listofcourts',
-          name: 'ListOfCourts',
-          component: () => import('@/components/Lawyer/ListOfCourts.vue'),
         },
         {
           path: 'templates',

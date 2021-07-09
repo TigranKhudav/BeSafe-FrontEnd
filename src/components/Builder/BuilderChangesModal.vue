@@ -6,7 +6,6 @@
           <div class="bg-17 w-14 h-14 bg-contain bg-no-repeat me-12"></div>
           <span class="fs-10 text-gray-400">Փոփոխությունների պատմություն</span>
         </div>
-
         <div
           @click="$emit('close')"
           role="button"
@@ -15,7 +14,7 @@
       </div>
       <ul class="mt-15 p-0">
         <li
-          class="bord d-flex align-items-center list-style d-flex py-8"
+          class="bord-top d-flex align-items-center list-style d-flex py-8"
           v-for="item in chagesList"
           :key="item.id"
         >
@@ -33,7 +32,6 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
   props: {
@@ -46,9 +44,8 @@ export default {
   },
 };
 </script>
-
 <style scoped>
-.bord {
+.bord-top {
   border-top: 1px solid rgb(194, 194, 194);
 }
 .change-bord {

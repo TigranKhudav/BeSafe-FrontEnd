@@ -20,22 +20,25 @@
 
     <transition name="fade">
       <builder-changes-modal
+        @close="showHistory = false"
         :chagesList="HistoryList"
-        v-if="$store.state.showHistory"
+        v-if="showHistory"
       ></builder-changes-modal>
     </transition>
 
     <transition name="fade">
-      <builder-info-modal v-if="$store.state.showInfo"></builder-info-modal>
+      <builder-info-modal
+        @close="showInfo = false"
+        v-if="showInfo"
+      ></builder-info-modal>
     </transition>
 
     <div class="d-flex justify-content-center w-full h-83 mt-13">
       <div class="d-flex h-full w-full">
         <div class="w-full">
-          <div class="grid-case mb-8">
+          <div class="grid-case mb-6">
             <div class="d-flex justify-content-center align-items-center">
-              <common-checkbox @change.native="check($event)">
-              </common-checkbox>
+              <common-checkbox @check="check"></common-checkbox>
             </div>
             <div></div>
             <div></div>
@@ -71,12 +74,13 @@
 </template>
 <script>
 import CommonButton from "@/common/CommonButton.vue";
-import CommonCheckbox from "../../common/CommonCheckbox.vue";
-import CommonClientsDataHead from "../../common/CommonClientsDataHead.vue";
+import CommonCheckbox from "@/common/CommonCheckbox.vue";
+import CommonClientsDataHead from "@/common/CommonClientsDataHead.vue";
 import BuilderChangesModal from "../Builder/BuilderChangesModal.vue";
 import BuilderInfoModal from "../Builder/BuilderInfoModal.vue";
 import BuilderAddCase from "../Builder/BuilderAddCase.vue";
-import CommonCaseList from "../../common/CommonCaseList.vue";
+import CommonCaseList from "@/common/CommonCaseList.vue";
+import { mapGetters } from "vuex";
 export default {
   components: {
     CommonCheckbox,
@@ -90,6 +94,8 @@ export default {
   data() {
     return {
       showFile: false,
+      showHistory: false,
+      showInfo: false,
       addCaseModal: null,
       CaseData: [
         {
@@ -123,56 +129,21 @@ export default {
           amountPaid: "",
         },
       ],
-      Prioritys: [
-        {
-          id: 1,
-          name: "ՎԿ փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
-        },
-        {
-          id: 2,
-          name: "Հայցադիմումի փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
-        },
-        { id: 3, name: "ՎԿ-2 փաստաթղթերը տրամադրված են կատարողին" },
-        {
-          id: 4,
-          name: "ՎԿ փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
-        },
-        {
-          id: 5,
-          name: "Հայցադիմումի փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
-        },
-        { id: 6, name: "ՎԿ-2 փաստաթղթերը տրամադրված են կատարողին" },
-        {
-          id: 7,
-          name: "ՎԿ փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
-        },
-        {
-          id: 8,
-          name: "Հայցադիմումի փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
-        },
-        { id: 9, name: "ՎԿ-2 փաստաթղթերը տրամադրված են կատարողին" },
-      ],
-      HistoryList: [
-        {
-          id: 1,
-          name: "gurgenstepanyan",
-          change: "Անձնագիր    AU8562  >   AU8562",
-          date: "02.06.21",
-          hour: "12.:30",
-        },
-      ],
     };
+  },
+  computed: {
+    ...mapGetters(["Prioritys", "HistoryList"]),
   },
   methods: {
     check(e) {
-      this.CaseData.forEach((i) => (i.checked = e.target.checked));
+      this.CaseData.forEach((i) => (i.checked = e));
     },
     getHistory(id) {
       console.log(id);
-      this.$store.commit("historyModal", true);
+      this.showHistory = true;
     },
     getInfo(id) {
-      this.$store.commit("getInfoModal", true);
+      this.showInfo = true;
     },
   },
 };

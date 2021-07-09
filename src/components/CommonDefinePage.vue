@@ -19,7 +19,7 @@
         <div class="d-flex border-right">
           <div class="bg-2 w-13 h-13 bg-no-repeat bg-contain"></div>
           <div class="w-20 d-flex align-items-end mx-8">
-            <span class="text-gray-400">{{ $store.getters.username }}</span>
+            <span class="text-gray-400">{{ userData.username }}</span>
           </div>
           <div class="d-flex align-items-end" @click="dropdown = !dropdown">
             <div
@@ -131,6 +131,11 @@ export default {
   props: {
     notifyCount: { type: Number },
     notifycations: { type: Array },
+  },
+  computed: {
+    userData() {
+      return JSON.parse(localStorage.getItem("user"));
+    },
   },
   data() {
     return {

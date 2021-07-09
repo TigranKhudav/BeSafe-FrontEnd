@@ -5,15 +5,19 @@
         <span>{{ clientData.name }}</span>
       </div>
       <common-input
-        :class="'text-align-center'"
+        :clas="{ 'is-invalid': $v.email.$error }"
+        class="mb-14 text-align-center"
         :img="'bg-26'"
         :value="clientData.email"
-        @onInput="email = $event"
-        class="mb-14"
+        v-model.trim.native="$v.email.$model"
       ></common-input>
+      <div class="invalid-feedback">
+        Username must not be empty and must have at least 3 letters.
+      </div>
+      <!-- @onInput="email = $event" -->
       <textarea
         class="w-full min-h-30 max-h-36 resize-none"
-        v-model="textareaData"
+        v-model.trim="$v.textareaData.$model"
       ></textarea>
       <div class="d-flex justify-content-between ps-10 my-10">
         <div class="d-flex align-items-center">
@@ -34,6 +38,8 @@ import CommonButton from "@/common/CommonButton.vue";
 import CommonInput from "@/common/CommonInput.vue";
 import CommonModal from "@/common/CommonModal.vue";
 import CommonUploadFile from "@/common/CommonUploadFile.vue";
+import { required, email } from "vuelidate/lib/validators";
+
 export default {
   components: { CommonInput, CommonButton, CommonModal, CommonUploadFile },
   props: { clientData: { type: Object } },
@@ -44,6 +50,14 @@ export default {
       email: this.clientData.email,
       files: null,
     };
+  },
+  validations: {
+    textareaData: {
+      required,
+    },
+    email: {
+      email,
+    },
   },
   methods: {
     sendEmail() {

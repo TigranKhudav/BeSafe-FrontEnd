@@ -7,12 +7,10 @@ import ucom from './modules/ucom'
 import global_credit from './modules/global-credit'
 import good_credit from './modules/good-credit'
 import statuses from './modules/statuses'
-import user from './modules/user'
 import admin from './modules/admin'
 
 Vue.use(Vuex)
 
-const userURL = 'users/'
 
 export default new Vuex.Store({
   modules: {
@@ -21,7 +19,6 @@ export default new Vuex.Store({
     global_credit,
     good_credit,
     statuses,
-    user,
     admin
   },
   state: {
@@ -77,6 +74,44 @@ export default new Vuex.Store({
       },
     ],
     // back
+    Prioritys: [
+      {
+        id: 1,
+        name: "ՎԿ փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
+      },
+      {
+        id: 2,
+        name: "Հայցադիմումի փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
+      },
+      { id: 3, name: "ՎԿ-2 փաստաթղթերը տրամադրված են կատարողին" },
+      {
+        id: 4,
+        name: "ՎԿ փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
+      },
+      {
+        id: 5,
+        name: "Հայցադիմումի փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
+      },
+      { id: 6, name: "ՎԿ-2 փաստաթղթերը տրամադրված են կատարողին" },
+      {
+        id: 7,
+        name: "ՎԿ փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
+      },
+      {
+        id: 8,
+        name: "Հայցադիմումի փաստաթղթերը ուղարկվել են դատարան առանց պայմանագրի",
+      },
+      { id: 9, name: "ՎԿ-2 փաստաթղթերը տրամադրված են կատարողին" },
+    ],
+    HistoryList: [
+      {
+        id: 1,
+        name: "gurgenstepanyan",
+        change: "Անձնագիր    AU8562  >   AU8562",
+        date: "02.06.21",
+        hour: "12.:30",
+      },
+    ],
     Partners: [
       { id: 1, name: "Acba", key: 'acba' },
       { id: 2, name: "UCOM", key: 'ucom' },
@@ -145,8 +180,8 @@ export default new Vuex.Store({
     login({ state }, data) {
       axios.post('api/login', data).then(res => {
         localStorage.setItem('besafe', res.access_token)
+        localStorage.setItem('user', JSON.stringify(res.user))
         router.replace("/")
-        state.user.userData = res.user
       })
         .catch(() => state.errMessig = true)
     },
@@ -199,6 +234,8 @@ export default new Vuex.Store({
     NewPartner: state => [...state.Acba, ...state.newPartnerHead],
     Partners: state => state.Partners,
     menu: state => state.menu,
-    CaseData: state => state.CaseData
+    CaseData: state => state.CaseData,
+    Prioritys: state => state.Prioritys,
+    HistoryList: state => state.HistoryList,
   }
 })

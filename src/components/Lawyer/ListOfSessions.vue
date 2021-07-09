@@ -44,13 +44,17 @@
 
     <transition name="fade">
       <builder-changes-modal
+        @close="historyModal = false"
         :chagesList="HistoryList"
-        v-if="$store.state.showHistory"
+        v-if="historyModal"
       ></builder-changes-modal>
     </transition>
 
     <transition name="fade">
-      <builder-info-modal v-if="$store.state.showInfo"></builder-info-modal>
+      <builder-info-modal
+        @close="showInfo = false"
+        v-if="showInfo"
+      ></builder-info-modal>
     </transition>
 
     <!-- static heigth -->
@@ -95,8 +99,8 @@
 </template>
 <script>
 import CommonButton from "@/common/CommonButton.vue";
-import CommonCheckbox from "../../common/CommonCheckbox.vue";
-import CommonClientsDataHead from "../../common/CommonClientsDataHead.vue";
+import CommonCheckbox from "@/common/CommonCheckbox.vue";
+import CommonClientsDataHead from "@/common/CommonClientsDataHead.vue";
 import BuilderChangesModal from "../Builder/BuilderChangesModal.vue";
 import BuilderInfoModal from "../Builder/BuilderInfoModal.vue";
 import CommonSesionList from "@/common/CommonSesionList.vue";
@@ -119,6 +123,8 @@ export default {
     return {
       UpcomingSessionsModal: true,
       showAddSession: false,
+      showInfo: false,
+      historyModal: false,
       SessionData: [
         {
           id: 1,
@@ -156,10 +162,10 @@ export default {
     },
     getHistory(id) {
       console.log(id);
-      this.$store.commit("historyModal", true);
+      this.historyModal = true;
     },
     getInfo(id) {
-      this.$store.commit("getInfoModal", true);
+      this.showInfo = true;
     },
   },
 };
@@ -167,6 +173,6 @@ export default {
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 4fr 2fr 4fr 4fr;
+  grid-template-columns: 1fr 1fr 1fr 7fr 2fr 7fr 7fr;
 }
 </style>
