@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-mask" v-if="close">
+  <div class="modal-mask">
     <div class="py-11 px-12 bg-white w-full max-w-40">
       <div class="d-flex justify-content-between">
         <div class="d-flex">
@@ -9,7 +9,7 @@
           </div>
         </div>
         <div
-          @click="close = false"
+          @click="$emit('close')"
           role="button"
           class="bg-25 w-10 h-10 bg-contain bg-no-repeat"
         ></div>
@@ -33,16 +33,8 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
   props: { UpComSes: { type: Array } },
-  data() {
-    return {
-      close: true,
-    };
-  },
 };
-// modal: { type: String },
-// $store.commit(modal, false)
 </script>

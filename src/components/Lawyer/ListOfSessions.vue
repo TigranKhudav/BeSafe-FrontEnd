@@ -1,8 +1,8 @@
 <template>
   <div>
     <common-button
-      @click.native="$store.commit('addSessionModal', true)"
-      class="position-absolute top-23 right-22 w-full max-w-28"
+      @click="showAddSession = true"
+      class="position-absolute top-22 right-22 w-full max-w-28"
     >
       <div class="d-flex align-items-center p-4">
         <div class="bg-15 w-10 h-10 bg-contain bg-no-repeat me-3"></div>
@@ -10,18 +10,36 @@
       </div>
     </common-button>
     <!-- Modals -->
-    <!-- :modal="'upcoming'" -->
     <transition name="fade">
       <builder-upcoming-sessions
-        v-if="UpcomingSessions.length"
+        @close="UpcomingSessionsModal = false"
+        v-if="UpcomingSessions.length && UpcomingSessionsModal"
         :UpComSes="UpcomingSessions"
       ></builder-upcoming-sessions>
     </transition>
 
     <transition name="fade">
-      <builder-add-session
-        v-if="$store.state.showAddSession"
-      ></builder-add-session>
+      <common-modal @close="showAddSession = false" v-if="showAddSession">
+        <div class="max-w-36">
+          <common-input
+            :img="'py-13 text-gray-500 text-align-center'"
+            :placeholder="'Նիստի ամսաթիվ'"
+          ></common-input>
+          <common-input
+            :img="'py-13 text-gray-500 text-align-center'"
+            :placeholder="'Ժամ'"
+          ></common-input>
+          <common-input
+            :img="'py-13 text-gray-500 text-align-center'"
+            :placeholder="'Դատավորի անուն ազգանուն'"
+          ></common-input>
+          <common-input
+            :img="'py-13 text-gray-500 text-align-center'"
+            :placeholder="'Նստավայր'"
+          ></common-input>
+        </div>
+        <template v-slot:submit></template>
+      </common-modal>
     </transition>
 
     <transition name="fade">
@@ -76,14 +94,15 @@
   </div>
 </template>
 <script>
-import CommonButton from "../../common/CommonButton.vue";
+import CommonButton from "@/common/CommonButton.vue";
 import CommonCheckbox from "../../common/CommonCheckbox.vue";
 import CommonClientsDataHead from "../../common/CommonClientsDataHead.vue";
 import BuilderChangesModal from "../Builder/BuilderChangesModal.vue";
 import BuilderInfoModal from "../Builder/BuilderInfoModal.vue";
 import CommonSesionList from "@/common/CommonSesionList.vue";
-import BuilderAddSession from "../Builder/BuilderAddSession.vue";
 import BuilderUpcomingSessions from "../Builder/BuilderUpcomingSessions.vue";
+import CommonModal from "@/common/CommonModal.vue";
+import CommonInput from "@/common/CommonInput.vue";
 export default {
   components: {
     CommonCheckbox,
@@ -92,11 +111,14 @@ export default {
     BuilderChangesModal,
     BuilderInfoModal,
     CommonSesionList,
-    BuilderAddSession,
     BuilderUpcomingSessions,
+    CommonModal,
+    CommonInput,
   },
   data() {
     return {
+      UpcomingSessionsModal: true,
+      showAddSession: false,
       SessionData: [
         {
           id: 1,
