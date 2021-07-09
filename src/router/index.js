@@ -55,6 +55,11 @@ const router = new VueRouter({
         {
           path: '',
           name: 'Lawyer',
+          component: () => import('@/components/Debts/DebtsHomeModal.vue'),
+        },
+        {
+          path: 'clientsdata',
+          name: 'ClientsData',
           component: () => import('@/components/Lawyer/ClientsData.vue'),
         },
         {
