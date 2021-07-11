@@ -1,6 +1,6 @@
 <template>
   <div class="modal-mask">
-    <div class="py-11 px-12 bg-white w-full max-w-40">
+    <div class="py-11 px-12 bg-white w-full max-w-40 text-white">
       <div class="d-flex justify-content-between">
         <div class="d-flex">
           <div class="bg-32 w-18 h-18 bg-contain bg-no-repeat"></div>
@@ -34,7 +34,5 @@
   </div>
 </template>
 <script>
-export default {
-  props: { UpComSes: { type: Array } },
-};
+export default { props: { UpComSes: { type: Array } } };
 </script>

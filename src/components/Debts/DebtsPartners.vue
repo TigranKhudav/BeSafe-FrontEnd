@@ -38,7 +38,7 @@
           role="button"
           v-for="item in Partners"
           :key="item.id"
-          @click="$router.push('' + item.key)"
+          @click="$router.push({ name: 'Patrner', params: { id: item.key } })"
           class="bg-part rounded-8 w-full max-w-24 py-13 border-0"
         >
           <span class="fs-10 fw-600 text-white">{{ item.name }}</span>

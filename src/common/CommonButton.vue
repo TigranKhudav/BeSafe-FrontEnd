@@ -9,6 +9,7 @@
       d-flex
       align-items-center
       justify-content-center
+      text-white
     "
   >
     <span class="text-white fs-sm-18"><slot>Ուղարկել</slot></span>

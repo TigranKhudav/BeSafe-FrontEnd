@@ -120,6 +120,7 @@
             >
               <div class="ctx-grid max-w-29">
                 <li
+                  @click="exportLawsuit"
                   class="ls-none py-7 ps-10 bg-pink-350 border-bottom ctx-btn"
                   role="button"
                 >
@@ -192,7 +193,7 @@ import BuilderDebtsSelectHead from "./BuilderDebts/BuilderDebtsSelectHead.vue";
 import xlsx from "xlsx";
 import CommonUpdate from "@/common/CommonUpdate.vue";
 import CommonModal from "@/common/CommonModal.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
@@ -223,9 +224,10 @@ export default {
       header: [],
       exportTable: [],
       count: 1,
-      CaseData: this.$store.getters.CaseData,
-      HistoryList: this.$store.getters.HistoryList,
+      // CaseData: this.$store.getters.CaseData,
+      // HistoryList: this.$store.getters.HistoryList,
       files: [],
+      exportFile: null,
     };
   },
   mounted() {
@@ -244,6 +246,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(["CaseData", "HistoryList", "user", "exportLT"]),
     LineData: {
       get() {
         if (this.SearchColumn) {
@@ -257,7 +260,7 @@ export default {
       },
     },
     admin() {
-      return this.$store.getters.user.perm.some((v) => v === "addClient");
+      return this.user.perm.some((v) => v === "addClient");
     },
     defaultHead() {
       return this.selHead.filter((v) => v.checked);
@@ -269,7 +272,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["setNewValue", "uploadTable"]),
+    ...mapActions(["setNewValue", "uploadTable", "exportAcbaWord"]),
     setValue(data, id) {
       this.CaseData.forEach((v) => {
         if (v.id === id) v[data.column] = data.newValue;
@@ -330,8 +333,34 @@ export default {
       this.header = item;
     },
     contextMenu(e, item) {
-      console.log(item);
+      this.exportFile = item;
       this.$refs.menu.open(e);
+    },
+    exportLawsuit() {
+      const item = this.exportFile;
+      let key;
+      if (item.loan_type) {
+        const loan_key = this.exportLT.find(
+          (v) => v.name === item.loan_type
+        ).key;
+        if (loan_key === "express_business") {
+          const gcn = item.guarantee_contract_num;
+          key = gcn ? "guarantee_express_business" : "express_business";
+        } else key = loyan_key;
+      }
+      let data = {
+        name: item.name,
+        address: item.client_address,
+        obligations: item.common_obligations,
+        amount: item.balance_principal_amount,
+        balance: item.interest_balance,
+        fine: item.fine,
+        rate: item.daily_fine_rate,
+        num: item.contract_num,
+        price: item.contract_price,
+        file: key,
+      };
+      this.exportAcbaWord(data);
     },
   },
 };

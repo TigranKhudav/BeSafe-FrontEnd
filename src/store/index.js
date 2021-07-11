@@ -28,21 +28,31 @@ export default new Vuex.Store({
         branch: "efefeewfwefwf",
         checked: false,
         client_num: "eewfewfwfwefewf",
+        client_address: "Client_Address",
+        common_obligations: "120",
+        balance_principal_amount: "Palance_Principal_Amount",
+        interest_balance: "Interest_Balance",
+        fine: "Fine",
+        daily_fine_rate: "Daily_Fine_Rate",
+        contract_num: "Contract_Num",
+        contract_price: "Contract_Price",
         id: 1,
-        name: "",
+        name: "NAME",
         serial_number: "",
         main_debt: "",
-        loan_type: ""
+        loan_type: "Էքսպրես բիզնես վարկ",
+        guarantee_contract_num: ""
       },
       {
-        branch: "",
+        branch: "efefeewfwefwf",
         checked: false,
         client_num: "eewfewfwfwefewf",
         id: 2,
         name: "",
-        serial_number: "qwdwqdw",
+        serial_number: "",
         main_debt: "",
-        loan_type: ""
+        loan_type: "Բիզնես վարկ",
+        guarantee_contract_num: "qwdqwdqdwqd"
       },
       {
         branch: "",
@@ -52,7 +62,30 @@ export default new Vuex.Store({
         name: "",
         serial_number: "qwdwqdw",
         main_debt: "",
-        loan_type: ""
+        loan_type: "Էքսպրես գյուղատնտեսական վարկ",
+        guarantee_contract_num: "wdwqd"
+      },
+      {
+        branch: "",
+        checked: false,
+        client_num: "eewfewfwfwefewf",
+        id: 4,
+        name: "",
+        serial_number: "qwdwqdw",
+        main_debt: "",
+        loan_type: "",
+        guarantee_contract_num: "dqdwfqd"
+      },
+      {
+        branch: "",
+        checked: false,
+        client_num: "eewfewfwfwefewf",
+        id: 5,
+        name: "",
+        serial_number: "qwdwqdw",
+        main_debt: "",
+        loan_type: "Ավանդի գրավով սպառողական վարկ",
+        guarantee_contract_num: ""
       },
     ],
     newPartnerHead: [
@@ -222,7 +255,7 @@ export default new Vuex.Store({
         .catch(err => console.log(err))
     },
     setNewValue(_, data) {
-      axios.put('api/set-value/' + data.params + '?id=' + data.id + '?column=' + data.column + '?value=' + data.newValue)
+      axios.put('api/set-value/' + data.params + '?id=' + data.id + '&column=' + data.column + '&value=' + data.newValue)
         .then(res => console.log(err))
         .catch(err => console.log(err))
     },
@@ -230,6 +263,31 @@ export default new Vuex.Store({
       axios.post('api/change-pass', data)
         .then(res => console.log(res))
         .catch(err => console.log(err))
+    },
+    exportAcbaWord(_, data) {
+      const url = 'api/word-download?name=' + data.name + '&client_address=' + data.address + '&common_obligations=' + data.obligations + '&balance_principal_amount=' + data.amount + '&interest_balance=' + data.balance + '&fine=' + data.fine + '&daily_fine_rate=' + data.rate + '&contract_num=' + data.num + '&contract_price=' + data.price + '&filename=' + data.file
+      axios.get(url, { responseType: 'blob' }).then(res => {
+        let blob = new Blob([res]);
+        if (typeof window.navigator.msSaveBlob !== 'undefined') {
+          window.navigator.msSaveBlob(blob, "besafe.docx");
+        }
+        else {
+          let blobURL = (window.URL && window.URL.createObjectURL) ? window.URL.createObjectURL(blob) : window.webkitURL.createObjectURL(blob);
+          let tempLink = document.createElement('a');
+          tempLink.style.display = 'none';
+          tempLink.href = blobURL;
+          tempLink.setAttribute('download', "besafe.docx");
+          if (typeof tempLink.download === 'undefined') {
+            tempLink.setAttribute('target', '_blank');
+          }
+          document.body.appendChild(tempLink);
+          tempLink.click();
+          setTimeout(() => {
+            document.body.removeChild(tempLink);
+            window.URL.revokeObjectURL(blobURL);
+          }, 200)
+        }
+      }).catch(err => console.log(err))
     },
     onexport() {
       let column = this.header.map((v) => v.name);

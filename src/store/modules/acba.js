@@ -238,108 +238,113 @@ export default {
             {
                 id: 40,
                 checked: false,
+                name: "Երաշխավորության պայմանագրի համար",
+                column: 'guarantee_contract_num'
+            },
+            {
+                id: 41,
+                checked: false,
                 name: "Հիշեցումներ",
                 column: 'reminders'
             },
             {
-                id: 41,
+                id: 42,
                 checked: false,
                 name: "Մայր գումարի մնացորդ",
                 column: 'balance_principal_amount'
             },
             {
-                id: 42,
+                id: 43,
                 checked: false,
                 name: "Տոկոսագումարի մնացորդ",
                 column: 'interest_balance'
             },
             {
-                id: 43,
+                id: 44,
                 checked: false,
                 name: "Վարկային գծի չօգտագործված մասի տոկոսագումար",
                 column: 'interest_unusedPart_creditLine'
             },
             {
-                id: 44,
+                id: 45,
                 checked: false,
                 name: "Սպասարկման վճար",
                 column: 'service_fee'
             },
             {
-                id: 45,
+                id: 46,
                 checked: false,
                 name: "Տուգանք",
                 column: 'fine'
             },
             {
-                id: 46,
+                id: 47,
                 checked: false,
                 name: "Պետ․ տուրք",
                 column: 'chef_dan'
             },
             {
-                id: 47,
+                id: 48,
                 checked: false,
                 name: "Ապահովագրավճար",
                 column: 'insurance_premium'
             },
             {
-                id: 48,
+                id: 49,
                 checked: false,
                 name: "Տուգանքի օրական դրույքաչափ",
                 column: 'daily_fine_rate'
             },
             {
-                id: 49,
+                id: 50,
                 checked: false,
                 name: "Տուգանքի դադարեցման ա/թ",
                 column: 'termination_fine_date'
             },
             {
-                id: 50,
+                id: 51,
                 checked: false,
                 name: "Պետ. տուրքի փոխանցումից հետո տուգանքի դադարեցման ա/թ",
                 column: 'chefDan_afterTransfer_fineDutyDate'
             },
             {
-                id: 51,
+                id: 52,
                 checked: false,
                 name: "Պետ. տուրքեր (ա/թ.- գումար- չմարված գումար)",
                 column: 'chef_dan_money'
             },
             {
-                id: 52,
+                id: 53,
                 checked: false,
                 name: "Վերջին փուլի տեսակ - ամսաթիվ",
                 column: 'type_last_stage'
             },
             {
-                id: 53,
+                id: 54,
                 checked: false,
                 name: "Հայցի ապահովում - ամսաթիվ",
                 column: 'securing_claim_date'
             },
         ],
-        exportWord: [
-            { id: 1, name: "Ապառիկ տեղում վճարված ֆակտորինգ" },
-            { id: 2, name: "Սպառողական վարկ" },
-            { id: 3, name: "Պարզ գյուղատնտեսական վարկ" },
-            { id: 4, name: "Նվազող սահմանաչափով վարկային գիծ" },
-            { id: 5, name: "Քարտային վարկային գիծ" },
-            { id: 6, name: "Գյուղատնտեսական վարկային գիծ" },
-            { id: 7, name: "Էքսպրես բիզնես վարկ" },
-            { id: 8, name: "Լոմբարդային վարկ" },
-            { id: 9, name: "Արագ օվերդրաֆտ" },
-            { id: 10, name: "Ապառիկ վարկ" },
-            { id: 11, name: "Չվերականգնվող քարտային վարկային գիծ" },
-            { id: 12, name: "Էքսպրես գյուղատնտեսական վարկ" },
-            { id: 13, name: "Ստանդարտ գյուղատնտեսական վարկ" },
-            { id: 14, name: "Բիզնես վարկ" },
-            { id: 15, name: "Ավանդի գրավով սպառողական վարկ" },
+        exportLT: [
+            { id: 1, name: "Ապառիկ տեղում վճարված ֆակտորինգ", key: "term_payment_condition" },
+            { id: 2, name: "Սպառողական վարկ", key: "typical_consumer_credit" },
+            { id: 3, name: "Պարզ գյուղատնտեսական վարկ", key: "simple_agricultural" },
+            { id: 4, name: "Նվազող սահմանաչափով վարկային գիծ", key: "american_express_gold" },
+            { id: 5, name: "Քարտային վարկային գիծ", key: "standard_paid_cards" },
+            { id: 6, name: "Գյուղատնտեսական վարկային գիծ", key: "simplified_payment_agricultural" },
+            { id: 7, name: "Էքսպրես բիզնես վարկ", key: "express_business" },
+            { id: 8, name: "Լոմբարդային վարկ", key: "lombard_credit" },
+            { id: 9, name: "Արագ օվերդրաֆտ", key: "overdraft" },
+            { id: 10, name: "Ապառիկ վարկ", key: "term_payment_condition" },
+            { id: 11, name: "Չվերականգնվող քարտային վարկային գիծ", key: "guarantee_standart_payment_card" },
+            { id: 12, name: "Էքսպրես գյուղատնտեսական վարկ", key: "typical_express_agricultural" },
+            { id: 13, name: "Ստանդարտ գյուղատնտեսական վարկ", key: "typical_express_agricultural" },
+            { id: 14, name: "Բիզնես վարկ", key: "express_business" },
         ]
     },
     getters: {
         Acba: state => state.Acba,
-        exportWord: state => state.exportWord
+        exportLT: state => state.exportLT
     }
 }
