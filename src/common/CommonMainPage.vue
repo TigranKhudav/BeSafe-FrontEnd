@@ -1,6 +1,5 @@
 <template>
   <div class="d-flex">
-    <builder-menu></builder-menu>
     <div class="d-flex w-full justify-content-center">
       <slot />
     </div>

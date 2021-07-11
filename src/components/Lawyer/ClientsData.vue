@@ -180,6 +180,6 @@ export default {
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 3fr 3fr 3fr 2fr 2fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 6fr 6fr 6fr 3fr 3fr 1fr 1fr;
 }
 </style>

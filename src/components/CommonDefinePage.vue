@@ -58,6 +58,7 @@
           v-if="dropdown"
           class="
             position-absolute
+            top-15
             right-20
             w-full
             max-w-31
@@ -66,16 +67,18 @@
             z-index-1
           "
         >
-          <common-button>
-            <div class="d-flex align-items-center ps-5 py-5">
-              <div class="bg-2 w-12 h-12 bg-no-repeat bg-contain me-4"></div>
-              <span>Անձնական էջ</span>
-            </div>
+          <common-button @click="dropdown = false">
+            <router-link to="/profile" class="text-dec-none">
+              <div class="d-flex align-items-center ps-5 py-5">
+                <div class="bg-2 w-12 h-12 bg-no-repeat bg-contain me-4"></div>
+                <span class="text-white">Անձնական էջ</span>
+              </div>
+            </router-link>
           </common-button>
           <div class="w-full ps-5 pe-10">
             <div class="h-2 bg-white"></div>
           </div>
-          <common-button>
+          <common-button @click="logOut">
             <div class="d-flex align-items-center ps-5 py-5">
               <div class="bg-8 w-12 h-12 bg-no-repeat bg-contain me-4"></div>
               <span> Ելք </span>
@@ -139,6 +142,14 @@ export default {
       dropdown: false,
       notify: false,
     };
+  },
+  methods: {
+    logOut() {
+      this.dropdown = false;
+      localStorage.removeItem("user");
+      localStorage.removeItem("besafe");
+      this.$router.replace("/login");
+    },
   },
 };
 </script>

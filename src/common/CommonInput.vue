@@ -16,7 +16,6 @@
     @input="$emit('onInput', $event.target.value)"
   />
 </template>
-
 <script>
 export default {
   props: {
@@ -26,7 +25,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 input:focus {
   border-bottom: 2px rgb(163, 28, 48) solid;

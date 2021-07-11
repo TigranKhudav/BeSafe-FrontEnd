@@ -111,30 +111,35 @@
               @file="getFile"
               @onCheck="onCheck"
               @setValue="setValue($event, item.id)"
-              @contextmenu.prevent.native="$refs.menu.open"
+              @ctxmenu="contextMenu($event, item)"
               :style="cssVar"
             ></common-acba-list>
             <vue-context
               ref="menu"
-              class="position-absolute w-full max-w-35 ps-0 outline-none d-flex"
+              class="position-absolute w-full max-w-36 ps-0 outline-none d-flex"
             >
               <div class="ctx-grid max-w-29">
                 <li
-                  class="ls-none py-7 ps-10 bg-pink-350 border-bottom"
+                  class="ls-none py-7 ps-10 bg-pink-350 border-bottom ctx-btn"
                   role="button"
                 >
                   <span class="text-white fs-9">Հայցադիմում</span>
                 </li>
                 <li
-                  class="ls-none py-7 ps-10 bg-pink-350 part"
+                  class="ls-none py-7 ps-10 bg-pink-350 ctx-btn"
                   role="button"
                   @mouseover="showMenu = true"
+                  @mouseleave="showMenu = false"
                 >
                   <span class="text-white fs-9">Պարտավորագիր</span>
                 </li>
                 <li class="ls-none"></li>
               </div>
-              <div class="ctx-grid" v-if="showMenu">
+              <div
+                class="ctx-grid"
+                @mouseover="showMenu = true"
+                v-if="showMenu"
+              >
                 <li class="ls-none"></li>
                 <li
                   class="
@@ -324,8 +329,9 @@ export default {
     renderHead(item) {
       this.header = item;
     },
-    contextMenu(item) {
+    contextMenu(e, item) {
       console.log(item);
+      this.$refs.menu.open(e);
     },
   },
 };
@@ -338,5 +344,8 @@ export default {
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
   width: 100%;
+}
+.ctx-btn:hover {
+  background-color: rgb(163, 28, 48);
 }
 </style>

@@ -31,7 +31,8 @@ export default new Vuex.Store({
         id: 1,
         name: "",
         serial_number: "",
-        main_debt: ""
+        main_debt: "",
+        loan_type: ""
       },
       {
         branch: "",
@@ -40,7 +41,8 @@ export default new Vuex.Store({
         id: 2,
         name: "",
         serial_number: "qwdwqdw",
-        main_debt: ""
+        main_debt: "",
+        loan_type: ""
       },
       {
         branch: "",
@@ -49,7 +51,8 @@ export default new Vuex.Store({
         id: 3,
         name: "",
         serial_number: "qwdwqdw",
-        main_debt: ""
+        main_debt: "",
+        loan_type: ""
       },
     ],
     newPartnerHead: [
@@ -221,6 +224,11 @@ export default new Vuex.Store({
     setNewValue(_, data) {
       axios.put('api/set-value/' + data.params + '?id=' + data.id + '?column=' + data.column + '?value=' + data.newValue)
         .then(res => console.log(err))
+        .catch(err => console.log(err))
+    },
+    changePass(_, data) {
+      axios.post('api/change-pass', data)
+        .then(res => console.log(res))
         .catch(err => console.log(err))
     },
     onexport() {

@@ -1,5 +1,9 @@
         <template>
-  <div class="part-grid" v-outside-click="outsideEdit">
+  <div
+    class="part-grid"
+    v-outside-click="outsideEdit"
+    @contextmenu.prevent="$emit('ctxmenu', $event)"
+  >
     <div class="bord p-3 d-flex justify-content-center align-items-center">
       <common-checkbox @check="onCheck" :value="checked"></common-checkbox>
     </div>

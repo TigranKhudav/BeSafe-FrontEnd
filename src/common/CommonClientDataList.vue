@@ -1,5 +1,5 @@
 <template>
-  <div class="grid">
+  <div class="grid-cd">
     <div class="bord p-6 d-flex justify-content-center align-items-center">
       <common-checkbox :value="data.checked"></common-checkbox>
     </div>
@@ -7,7 +7,7 @@
       <div
         role="button"
         @click="getInfo"
-        class="bg-16 w-12 h-12 bg-contain bg-no-repeat"
+        class="bg-16 w-12 h-12 bg-contain bg-no-repeat bg-p-center"
       ></div>
     </div>
     <div @click="edit = true" class="bord" :class="{ 'p-6': !edit }">
@@ -97,9 +97,9 @@ export default {
 </script>
 
 <style scoped>
-.grid {
+.grid-cd {
   display: grid;
-  grid-template-columns: 1fr 1fr 3fr 3fr 3fr 2fr 2fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 6fr 6fr 6fr 3fr 3fr 1fr 1fr;
 }
 .edit {
   border: none;

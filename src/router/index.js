@@ -40,6 +40,10 @@ const router = new VueRouter({
       path: '/',
       name: 'Home',
       component: () => import('@/views/Home.vue'),
+      beforeEnter: (to, from, next) => {
+        store.state.menu = true
+        next()
+      },
       children: [
         {
           path: '/profile',

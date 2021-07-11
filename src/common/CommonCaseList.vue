@@ -94,10 +94,9 @@
 import CommonCheckbox from "./CommonCheckbox.vue";
 import CommonSelect from "./CommonSelect.vue";
 import BuilderFile from "@/components/Builder/BuilderFile.vue";
-import VueContext from "vue-context";
 
 export default {
-  components: { CommonCheckbox, CommonSelect, VueContext, BuilderFile },
+  components: { CommonCheckbox, CommonSelect, BuilderFile },
   props: {
     data: { type: Object },
     prioritys: { type: Array },
