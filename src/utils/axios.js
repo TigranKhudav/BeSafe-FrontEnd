@@ -10,7 +10,7 @@ axios.interceptors.response.use(res => {
 })
 
 axios.interceptors.request.use(config => {
-    const token = localStorage.getItem('')
+    const token = localStorage.getItem('besafe')
     config.withCredentials = true
     config.headers.common['Access-Control-Allow-Origin'] = process.env.VUE_APP_BASE_URL
     if (token) {

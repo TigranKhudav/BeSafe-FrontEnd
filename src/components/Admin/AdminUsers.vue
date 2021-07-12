@@ -79,7 +79,7 @@
           <div
             role="button"
             class="bg-34 w-11 h-11 bg-contain bg-no-repeat"
-            @click="$emit('removeUser', item.id)"
+            @click="removeUser(item.id)"
           ></div>
         </div>
       </div>
@@ -107,32 +107,16 @@ export default {
       addUserModal: false,
       editUserModal: false,
       UserInfo: null,
-      Users: [
-        {
-          id: 1,
-          name: "Anushavagyan",
-          role: "user",
-          access: "debts",
-        },
-        {
-          id: 2,
-          name: "Bnushavagyan",
-          role: "user",
-          access: "lawyer",
-        },
-        {
-          id: 3,
-          name: "banushavagyan",
-          role: "admin",
-          access: "two",
-        },
-      ],
+      Users: this.$store.getters.Users,
     };
   },
   methods: {
     onEdit(user) {
       this.editUserModal = true;
       this.UserInfo = user;
+    },
+    removeUser(id) {
+      this.$store.dispatch("removeUser", id);
     },
   },
 };

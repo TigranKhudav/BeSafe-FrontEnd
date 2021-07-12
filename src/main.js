@@ -7,7 +7,6 @@ import 'bootstrap'
 
 Vue.use(Vuelidate)
 Vue.config.devtools = true
-Vue.config.productionTip = true
 
 Vue.directive('outside-click', {
   bind: function (el, binding, vNode) {

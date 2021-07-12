@@ -26,7 +26,7 @@
         v-if="popup"
         class="
           position-absolute
-          bg-white
+          bg-white-100
           shadow-1
           ms-minus
           mt-4

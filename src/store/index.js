@@ -8,6 +8,7 @@ import global_credit from './modules/global-credit'
 import good_credit from './modules/good-credit'
 import statuses from './modules/statuses'
 import admin from './modules/admin'
+import xlsx from "xlsx";
 
 Vue.use(Vuex)
 
@@ -181,15 +182,19 @@ export default new Vuex.Store({
       });
       return arr;
     },
-    userData(state, data) {
-      state.UserData = data
-    },
     formData(_, files) {
       let formData = new FormData();
       for (let i = 0; i < files.length; i++) {
         formData.append("files[" + i + "]", files[i]);
       }
       return formData;
+    },
+    onexport(_, data) {
+      let column = data.header.map((v) => v.name);
+      let animalWS = xlsx.utils.aoa_to_sheet([column, ...data.exportTable]);
+      let wb = xlsx.utils.book_new();
+      xlsx.utils.book_append_sheet(wb, animalWS, "nameUsers");
+      xlsx.writeFile(wb, "besafe.xlsx");
     },
   },
   actions: {
@@ -204,16 +209,6 @@ export default new Vuex.Store({
       const config = { headers: { 'Content-Type': 'multipart/form-data' } }
       let dataFiles = commit('formData', data.files);
       axios.post('users/sendEmail', { ...data, files: dataFiles }, config)
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
-    },
-    createUser(_, data) {
-      axios.post('users/createUser', data)
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
-    },
-    editUser(_, data) {
-      axios.put('users/editUser', data)
         .then(res => console.log(res))
         .catch(err => console.log(err))
     },
@@ -289,24 +284,14 @@ export default new Vuex.Store({
         }
       }).catch(err => console.log(err))
     },
-    onexport() {
-      let column = this.header.map((v) => v.name);
-      const data = this.header.map((v) => [v.id, v.name, v.checked]);
-
-      let animalWS = XLSX.utils.aoa_to_sheet([column, ...data]);
-      var wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, animalWS, "nameUsers");
-
-      XLSX.writeFile(wb, "book.xlsx");
-    },
   },
   getters: {
-    NewPartner: state => [...state.Acba, ...state.newPartnerHead],
+    newPartner: state => [...state.newPartnerHead, ...state.acba.Acba],
     Partners: state => state.Partners,
     menu: state => state.menu,
     CaseData: state => state.CaseData,
     Prioritys: state => state.Prioritys,
     HistoryList: state => state.HistoryList,
-    user: () => JSON.parse(localStorage.getItem("user"))
+    user: () => JSON.parse(localStorage.getItem('user'))
   }
 })

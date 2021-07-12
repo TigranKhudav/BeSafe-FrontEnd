@@ -83,7 +83,7 @@
           <common-button
             ><div class="bg-19 w-12 h-12 bg-contain bg-no-repeat"></div
           ></common-button>
-          <common-button
+          <common-button @click="onexport"
             ><div class="bg-20 w-12 h-12 bg-contain bg-no-repeat"></div
           ></common-button>
         </div>
@@ -128,6 +128,7 @@ export default {
       SearchText: "",
       historyModal: false,
       header: [],
+      exportTable: [],
       params: this.$route.params.id,
       CaseData: this.$store.getters.CaseData,
       HistoryList: this.$store.getters.HistoryList,
@@ -178,7 +179,6 @@ export default {
     setValue(data, id) {
       this.CaseData.forEach((v) => {
         if (v.id === id) v[data.column] = data.newValue;
-        console.log("hi");
       });
       let setVal = {
         newValue: data.newValue,
@@ -186,7 +186,7 @@ export default {
         id,
         params: this.params,
       };
-      // this.setNewValue(setVal);
+      this.setNewValue(setVal);
     },
     uploadTableMethod(event) {
       let data = {
@@ -226,6 +226,13 @@ export default {
     },
     renderHead(item) {
       this.header = item;
+    },
+    onexport() {
+      let data = {
+        header: this.header,
+        exportTable: this.exportTable,
+      };
+      this.$store.commit("onexport", data);
     },
   },
 };

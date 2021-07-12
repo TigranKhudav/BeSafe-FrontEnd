@@ -124,7 +124,7 @@
                   class="ls-none py-7 ps-10 bg-pink-350 border-bottom ctx-btn"
                   role="button"
                 >
-                  <span class="text-white fs-9">Հայցադիմում</span>
+                  <span class="text-white-100 fs-9">Հայցադիմում</span>
                 </li>
                 <li
                   class="ls-none py-7 ps-10 bg-pink-350 ctx-btn"
@@ -132,7 +132,7 @@
                   @mouseover="showMenu = true"
                   @mouseleave="showMenu = false"
                 >
-                  <span class="text-white fs-9">Պարտավորագիր</span>
+                  <span class="text-white-100 fs-9">Պարտավորագիր</span>
                 </li>
                 <li class="ls-none"></li>
               </div>
@@ -150,14 +150,14 @@
                     shadow-1
                     border-bottom
                     subMenu
-                    bg-white
+                    bg-white-100
                   "
                   role="button"
                 >
                   <span class="text-gray-500 fs-8">Մեկանգամյա մարման</span>
                 </li>
                 <li
-                  class="ls-none py-7 ps-10 shadow-1 subMenu bg-white"
+                  class="ls-none py-7 ps-10 shadow-1 subMenu bg-white-100"
                   role="button"
                   @click="showRepaymentSchedule = true"
                 >
@@ -190,7 +190,6 @@ import BuilderFile from "../Builder/BuilderFile.vue";
 import CommonAcbaList from "./CommonDebts/CommonAcbaList.vue";
 import CommonShow from "./CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "./BuilderDebts/BuilderDebtsSelectHead.vue";
-import xlsx from "xlsx";
 import CommonUpdate from "@/common/CommonUpdate.vue";
 import CommonModal from "@/common/CommonModal.vue";
 import { mapActions, mapGetters } from "vuex";
@@ -305,12 +304,11 @@ export default {
       });
     },
     onexport() {
-      // this.$store.dispatch("onexport");
-      let column = this.header.map((v) => v.name);
-      let animalWS = xlsx.utils.aoa_to_sheet([column, ...this.exportTable]);
-      let wb = xlsx.utils.book_new();
-      xlsx.utils.book_append_sheet(wb, animalWS, "nameUsers");
-      xlsx.writeFile(wb, "besafe.xlsx");
+      let data = {
+        header: this.header,
+        exportTable: this.exportTable,
+      };
+      this.$store.commit("onexport", data);
     },
     checkAll(e) {
       this.LineData = e;
@@ -343,7 +341,7 @@ export default {
         if (loan_key === "express_business") {
           const gcn = item.guarantee_contract_num;
           key = gcn ? "guarantee_express_business" : "express_business";
-        } else key = loyan_key;
+        } else key = loan_key;
       }
       let data = {
         name: item.name,

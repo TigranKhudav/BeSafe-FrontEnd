@@ -123,10 +123,6 @@ export default {
       role: "",
       err: false,
       selPerm: null,
-      UserType: [
-        { id: 1, name: "Օգտագործող", role: "user" },
-        { id: 2, name: "Ադմին", role: "admin" },
-      ],
       // Subsection:
     };
   },

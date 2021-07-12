@@ -1,3 +1,5 @@
+import axios from '@/utils/axios'
+
 export default {
     state: {
         LawyerPerm: [
@@ -58,8 +60,51 @@ export default {
             { id: 1, name: "Օգտագործող", role: "user" },
             { id: 2, name: "Ադմին", role: "admin" },
         ],
+        Users: [
+            {
+                id: 1,
+                name: "Anushavagyan",
+                role: "user",
+                access: "debts",
+            },
+            {
+                id: 2,
+                name: "Bnushavagyan",
+                role: "user",
+                access: "lawyer",
+            },
+            {
+                id: 3,
+                name: "banushavagyan",
+                role: "admin",
+                access: "two",
+            },
+        ],
+    },
+    actions: {
+        createUser({ state }, data) {
+            axios.post('users', data)
+                .then(res => state.Users = res)
+                .catch(err => console.log(err))
+        },
+        editUser(_, data) {
+            axios.put('users', data)
+                .then(res => state.Users = res)
+                .catch(err => console.log(err))
+        },
+        removeUser({ state }, data) {
+            axios.delete('users', data)
+                .then(res => state.Users = res)
+                .catch(err => console.log(err))
+        },
+        getUsers({ state }) {
+            axios.get('users')
+                .then(res => state.Users = res)
+                .catch(err => console.log(err))
+        }
     },
     getters: {
+        Users: state => state.Users,
         LawyerPerm: state => state.LawyerPerm,
         AllPerm: state => [...state.LawyerPerm, ...state.Perm],
         Subsection: state => state.Subsection,

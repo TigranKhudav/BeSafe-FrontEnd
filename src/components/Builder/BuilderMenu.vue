@@ -64,7 +64,7 @@ export default {
   components: { CommonButton },
   data() {
     return {
-      role: this.$store.getters.userrole,
+      role: this.$store.getters.user.role,
       lawyer: {
         title: "Փաստաբանական բաժին",
         menuItems: [

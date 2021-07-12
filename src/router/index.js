@@ -8,7 +8,7 @@ function getHead(route) {
   if (route.params.id === 'ucom') return { selHead: store.getters.Ucom, PartName: 'Ucom' }
   else if (route.params.id === 'global-credit') return { selHead: store.getters.GlobalCredit, PartName: 'GlobalCredit' }
   else if (route.params.id === 'good-credit') return { selHead: store.getters.GoodCredit, PartName: 'GoodCredit' }
-  else return { selHead: store.getters.NewPartner, PartName: store.state.Partners.filter(v => v.key === route.params.id)[0].name }
+  else return { selHead: store.getters.newPartner, PartName: store.state.Partners.filter(v => v.key === route.params.id)[0].name }
 }
 
 let param
@@ -84,6 +84,10 @@ const router = new VueRouter({
     {
       path: '/admin',
       component: () => import('@/views/Home.vue'),
+      beforeEnter: async (to, from, next) => {
+        await store.dispatch('getUsers')
+        next()
+      },
       children: [
         {
           path: '',
@@ -150,7 +154,6 @@ const router = new VueRouter({
         },
         {
           path: 'list-of-courts',
-          name: 'ListOfCourts',
           component: () => import('@/components/Lawyer/ListOfCourts.vue'),
         },
         {

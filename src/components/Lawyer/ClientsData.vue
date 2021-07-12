@@ -2,7 +2,7 @@
   <div>
     <common-button
       @click="showModal = true"
-      class="position-absolute top-22 right-21 w-full max-w-32"
+      class="position-absolute top-vm1 right-21 w-full max-w-32"
     >
       <div class="d-flex align-items-center p-4">
         <div class="bg-15 w-10 h-10 bg-contain bg-no-repeat me-3"></div>

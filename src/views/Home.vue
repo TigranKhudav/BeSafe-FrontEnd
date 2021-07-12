@@ -15,7 +15,6 @@
 <script>
 import CommonDefinePage from "@/components/CommonDefinePage.vue";
 import BuilderMenu from "@/components/Builder/BuilderMenu.vue";
-
 export default {
   components: { CommonDefinePage, BuilderMenu },
 };
