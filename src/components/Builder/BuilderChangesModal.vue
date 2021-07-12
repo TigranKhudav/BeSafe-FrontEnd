@@ -1,16 +1,17 @@
 <template>
   <div class="modal-mask">
-    <div class="py-13 px-18 bg-white">
+    <div class="py-13 px-18 bg-white-100">
       <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex">
           <div class="bg-17 w-14 h-14 bg-contain bg-no-repeat me-12"></div>
           <span class="fs-10 text-gray-400">Փոփոխությունների պատմություն</span>
         </div>
-        <div
+        <button
           @click="$emit('close')"
-          role="button"
-          class="bg-25 w-10 h-10 bg-contain bg-no-repeat"
-        ></div>
+          type="button"
+          class="btn-close outline-none"
+          aria-label="Close"
+        ></button>
       </div>
       <ul class="mt-15 p-0">
         <li

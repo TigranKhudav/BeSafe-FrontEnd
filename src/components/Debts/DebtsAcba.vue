@@ -20,7 +20,7 @@
     <transition name="fade">
       <builder-debts-select-head
         v-if="dropdown"
-        :selHead="selHead"
+        :selHead="Acba"
         @renderHead="renderHead"
       ></builder-debts-select-head>
     </transition>
@@ -210,7 +210,6 @@ export default {
     CommonUpdate,
     CommonModal,
   },
-  props: ["selHead"],
   data() {
     return {
       dropdown: false,
@@ -224,8 +223,6 @@ export default {
       header: [],
       exportTable: [],
       count: 1,
-      // CaseData: this.$store.getters.CaseData,
-      // HistoryList: this.$store.getters.HistoryList,
       files: [],
       exportFile: null,
     };
@@ -246,7 +243,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["CaseData", "HistoryList", "user", "exportLT"]),
+    ...mapGetters(["CaseData", "HistoryList", "user", "exportLT", "Acba"]),
     LineData: {
       get() {
         if (this.SearchColumn) {
@@ -263,7 +260,7 @@ export default {
       return this.user.perm.some((v) => v === "addClient");
     },
     defaultHead() {
-      return this.selHead.filter((v) => v.checked);
+      return this.Acba.filter((v) => v.checked);
     },
     cssVar() {
       return {

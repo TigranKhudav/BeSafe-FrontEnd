@@ -2,7 +2,7 @@
   <div
     class="
       position-absolute
-      bg-white
+      bg-white-100
       shadow-1
       mt-minus
       w-full

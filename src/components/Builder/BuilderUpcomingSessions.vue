@@ -1,6 +1,6 @@
 <template>
   <div class="modal-mask">
-    <div class="py-11 px-12 bg-white w-full max-w-40 text-white">
+    <div class="py-11 px-12 bg-white-100 w-full max-w-41">
       <div class="d-flex justify-content-between">
         <div class="d-flex">
           <div class="bg-32 w-18 h-18 bg-contain bg-no-repeat"></div>

@@ -1,5 +1,7 @@
 <template>
-  <div class="d-flex position-absolute p-8 bg-white top-22 left-21 shadow-1">
+  <div
+    class="d-flex position-absolute p-8 bg-white-100 top-22 left-21 shadow-1"
+  >
     <div class="bg-31 w-18 h-18 bg-contain bg-no-repeat"></div>
     <div class="min-w-35 w-full mx-6" @click="editInfo = true">
       <input
@@ -10,11 +12,12 @@
       />
       <span v-else>{{ infoData }}</span>
     </div>
-    <div
+    <button
       @click="$emit('close')"
-      role="button"
-      class="bg-25 w-10 h-10 bg-contain bg-no-repeat"
-    ></div>
+      type="button"
+      class="btn-close outline-none"
+      aria-label="Close"
+    ></button>
   </div>
 </template>
 <script>

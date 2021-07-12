@@ -1,6 +1,7 @@
 <template>
   <div>
     <div
+      v-outside-click="() => (dropdown = false)"
       class="
         d-flex
         justify-content-between
@@ -58,11 +59,10 @@
           v-if="dropdown"
           class="
             position-absolute
-            top-15
             right-20
             w-full
             max-w-31
-            mt-25
+            mt-26
             bg-pink-350
             z-index-1
           "
@@ -71,12 +71,12 @@
             <router-link to="/profile" class="text-dec-none">
               <div class="d-flex align-items-center ps-5 py-5">
                 <div class="bg-2 w-12 h-12 bg-no-repeat bg-contain me-4"></div>
-                <span class="text-white">Անձնական էջ</span>
+                <span class="text-white-100">Անձնական էջ</span>
               </div>
             </router-link>
           </common-button>
           <div class="w-full ps-5 pe-10">
-            <div class="h-2 bg-white"></div>
+            <div class="h-2 bg-white-100"></div>
           </div>
           <common-button @click="logOut">
             <div class="d-flex align-items-center ps-5 py-5">

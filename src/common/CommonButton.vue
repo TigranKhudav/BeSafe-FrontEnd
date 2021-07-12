@@ -9,10 +9,12 @@
       d-flex
       align-items-center
       justify-content-center
-      text-white
+      text-white-100
     "
   >
-    <span class="text-white fs-sm-18"><slot>Ուղարկել</slot></span>
+    <span class="text-white-100">
+      <slot class="text-white-100">Ուղարկել</slot>
+    </span>
   </button>
 </template>
 <script>

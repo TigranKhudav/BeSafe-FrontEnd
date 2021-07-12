@@ -184,7 +184,7 @@ export default new Vuex.Store({
     userData(state, data) {
       state.UserData = data
     },
-    formData(files) {
+    formData(_, files) {
       let formData = new FormData();
       for (let i = 0; i < files.length; i++) {
         formData.append("files[" + i + "]", files[i]);
@@ -195,14 +195,14 @@ export default new Vuex.Store({
   actions: {
     uploadFile({ commit }, data) {
       const config = { headers: { 'Content-Type': 'multipart/form-data' } }
-      let dataFiles = commit.formData(data.files);
+      let dataFiles = commit('formData', data.files);
       axios.post(`customers/${data.id}/upload`, { id: data.id, files: dataFiles }, config)
         .then(res => console.log(res))
         .catch(err => console.log(err))
     },
     sendEmail({ commit }, data) {
       const config = { headers: { 'Content-Type': 'multipart/form-data' } }
-      let dataFiles = commit.formData(data.files);
+      let dataFiles = commit('formData', data.files);
       axios.post('users/sendEmail', { ...data, files: dataFiles }, config)
         .then(res => console.log(res))
         .catch(err => console.log(err))

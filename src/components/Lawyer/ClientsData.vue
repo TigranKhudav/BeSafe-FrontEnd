@@ -11,7 +11,7 @@
     </common-button>
     <!-- Modals -->
 
-    <!-- add client -->
+    <!-- Add Client -->
     <transition name="fade">
       <common-modal v-if="showModal" @close="showModal = false">
         <div class="w-full max-w-35">

@@ -28,7 +28,7 @@
     <transition name="fade">
       <builder-debts-select-head
         v-if="dropdown"
-        :selHead="selHead"
+        :selHead="Acba"
         @renderHead="renderHead"
       ></builder-debts-select-head>
     </transition>
@@ -46,14 +46,6 @@
         @close="showInfo = false"
         v-if="showInfo"
       ></builder-info-modal>
-    </transition>
-
-    <transition name="fade">
-      <builder-file
-        v-if="$store.state.showFile"
-        :files="files"
-        :modal="'fileModal'"
-      ></builder-file>
     </transition>
 
     <div class="d-flex justify-content-center w-full h-83 mt-13">
@@ -108,11 +100,11 @@ import CommonCheckbox from "@/common/CommonCheckbox.vue";
 import CommonClientsDataHead from "@/common/CommonClientsDataHead.vue";
 import BuilderChangesModal from "@/components/Builder/BuilderChangesModal.vue";
 import BuilderInfoModal from "@/components/Builder/BuilderInfoModal.vue";
-import BuilderFile from "@/components/Builder/BuilderFile.vue";
 import CommonAcbaList from "../CommonDebts/CommonAcbaList.vue";
 import CommonShow from "../CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "../BuilderDebts/BuilderDebtsSelectHead.vue";
 import CommonUpdate from "@/common/CommonUpdate.vue";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -121,7 +113,6 @@ export default {
     CommonButton,
     BuilderChangesModal,
     BuilderInfoModal,
-    BuilderFile,
     CommonAcbaList,
     CommonShow,
     BuilderDebtsSelectHead,
@@ -136,34 +127,13 @@ export default {
       updateData: false,
       loadingPopup: false,
       header: [],
-      selHead: this.$store.getters.Acba,
-      CaseData: [
-        {
-          id: 1,
-          // checked: false,
-          info: "",
-          name: "Մուսաելյան Արսեն Ալյոշայի",
-          passport: "00663555",
-          caseNum: "568599",
-          priority: "",
-          amountPaid: "",
-        },
-      ],
-      HistoryList: [
-        {
-          id: 1,
-          name: "gurgenstepanyan",
-          change: "Անձնագիր    AU8562  >   AU8562",
-          date: "02.06.21",
-          hour: "12.:30",
-        },
-      ],
       files: [],
     };
   },
   computed: {
+    ...mapGetters(["CaseData", "HistoryList", "user", "Acba"]),
     defaultHead() {
-      return this.selHead.filter((v) => v.checked);
+      return this.Acba.filter((v) => v.checked);
     },
     cssVar() {
       return {
@@ -171,7 +141,7 @@ export default {
       };
     },
     admin() {
-      return this.$store.getters.userperm.some((v) => v === "updateSubjectDay");
+      return this.user.perm.some((v) => v === "updateSubjectDay");
     },
   },
   methods: {
@@ -191,7 +161,6 @@ export default {
     },
     getFile(id) {
       console.log(id);
-      this.$store.commit("fileModal", true);
     },
     getInfo(id) {
       this.showInfo = true;

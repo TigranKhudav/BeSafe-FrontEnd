@@ -5,11 +5,9 @@
 .fade-enter-active, .fade-leave-active {
     transition: opacity .3s;
 }
-
 .fade-enter, .fade-leave-to{
     opacity: 0;
 }
-
 .modal-mask {
     position: fixed;
     z-index: 9998;
@@ -23,17 +21,20 @@
     align-items: center;
     transition: opacity 0.3s ease;
 }
-
 .bord {
     border: 1px solid rgb(221, 221, 221);
 }
 .part-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr repeat(var(--cols), minmax(270px, 5fr));
+    grid-template-columns: minmax(45px, 1fr) minmax(45px, 1fr) minmax(45px, 1fr) minmax(45px, 1fr) repeat(var(--cols), minmax(300px, 5fr));
   }
   .is-invalid{
       border-bottom: rgb(255, 54, 54) 2px solid !important;
   }
   .is-valid{
       border-bottom: green 2px solid !important;
+  }
+  .btn-close:focus {
+    outline: none;
+    box-shadow: none;
   }

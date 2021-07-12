@@ -108,7 +108,6 @@ export default {
       files: [],
     };
   },
-
   methods: {
     getHistort() {
       this.$emit("history", this.data.id);

@@ -6,17 +6,15 @@ import Vuelidate from 'vuelidate'
 import 'bootstrap'
 
 Vue.use(Vuelidate)
-// priduction
 Vue.config.devtools = true
-Vue.config.productionTip = false
+Vue.config.productionTip = true
 
 Vue.directive('outside-click', {
   bind: function (el, binding, vNode) {
     if (typeof binding.value !== 'function') {
       const compName = vNode.context.name
       let warn = `[Vue-outside-click:] provided expression '${binding.expression}' is not a function, but has to be`
-      if (compName) { warn += `Found in component '${compName}'` }
-      console.warn(warn)
+      warn += compName && `Found in component '${compName}'`
     }
     const bubble = binding.modifiers.bubble
     const handler = (e) => (bubble || (!el.contains(e.target) && el !== e.target)) && binding.value(e)
@@ -28,9 +26,6 @@ Vue.directive('outside-click', {
     el.__vueClickOutside__ = null
   }
 })
-
-
-
 new Vue({
   router,
   store,

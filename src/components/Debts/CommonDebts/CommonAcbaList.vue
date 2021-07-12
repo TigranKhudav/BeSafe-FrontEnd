@@ -23,11 +23,22 @@
     </div>
     <div
       role="button"
-      @click="getFile"
-      class="bord p-3 d-flex justify-content-center align-items-center"
+      class="bord d-flex justify-content-center align-items-center"
     >
-      <div class="bg-27 w-10 h-10 bg-contain bg-no-repeat"></div>
+      <div
+        @click="showFile = true"
+        class="bg-27 w-10 h-10 bg-contain bg-no-repeat"
+      ></div>
+      <transition name="fade">
+        <builder-file
+          v-if="showFile"
+          :files="files"
+          @uploadFile="uploadFile"
+          @close="showFile = false"
+        ></builder-file>
+      </transition>
     </div>
+
     <div
       class="bord p-3"
       v-for="item in cols"
@@ -47,13 +58,17 @@
 </template>
 <script>
 import CommonCheckbox from "@/common/CommonCheckbox.vue";
+import BuilderFile from "@/components/Builder/BuilderFile.vue";
+
 export default {
-  components: { CommonCheckbox },
+  components: { CommonCheckbox, BuilderFile },
   props: { data: { type: Object }, head: { type: Array } },
   data() {
     return {
       edit: false,
       lineData: this.data,
+      showFile: false,
+      files: [],
     };
   },
   computed: {
@@ -94,11 +109,15 @@ export default {
       this.$emit("info", this.data.id);
     },
     getFile() {
+      this.showFile = true;
       this.$emit("file", this.data.id);
     },
     setValue(value, column) {
       this.cols = { value, column };
       this.$emit("setValue", { newValue: value, column });
+    },
+    uploadFile(files) {
+      this.$store.dispatch("uploadFile", { id: this.data.id, files });
     },
     outsideEdit() {
       this.edit = false;

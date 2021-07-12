@@ -31,7 +31,7 @@
         class="
           position-absolute
           shadow-1
-          bg-white
+          bg-white-100
           py-7
           mt-3
           px-6

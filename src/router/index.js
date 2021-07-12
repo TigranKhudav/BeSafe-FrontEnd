@@ -1,13 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store'
-import axios from '@/utils/axios'
 
 Vue.use(VueRouter)
 
 function getHead(route) {
   if (route.params.id === 'ucom') return { selHead: store.getters.Ucom, PartName: 'Ucom' }
-  else if (route.params.id === 'acba') return { selHead: store.getters.Acba }
   else if (route.params.id === 'global-credit') return { selHead: store.getters.GlobalCredit, PartName: 'GlobalCredit' }
   else if (route.params.id === 'good-credit') return { selHead: store.getters.GoodCredit, PartName: 'GoodCredit' }
   else return { selHead: store.getters.NewPartner, PartName: store.state.Partners.filter(v => v.key === route.params.id)[0].name }
@@ -149,6 +147,11 @@ const router = new VueRouter({
           path: 'reports',
           name: 'Reports',
           component: () => import('@/components/Debts/Reports/Reports.vue'),
+        },
+        {
+          path: 'list-of-courts',
+          name: 'ListOfCourts',
+          component: () => import('@/components/Lawyer/ListOfCourts.vue'),
         },
         {
           path: 'statuses',

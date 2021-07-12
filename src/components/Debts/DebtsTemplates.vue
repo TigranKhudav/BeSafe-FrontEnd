@@ -30,7 +30,7 @@
 export default {
   computed: {
     admin() {
-      return this.$store.getters.userperm.some((v) => v === "removeInfo");
+      return this.$store.getters.user.perm.some((v) => v === "removeInfo");
     },
   },
   data() {
