@@ -5,10 +5,12 @@ import store from '../store'
 Vue.use(VueRouter)
 
 function getHead(route) {
-  if (route.params.id === 'ucom') return { selHead: store.getters.Ucom, PartName: 'Ucom' }
-  else if (route.params.id === 'global-credit') return { selHead: store.getters.GlobalCredit, PartName: 'GlobalCredit' }
-  else if (route.params.id === 'good-credit') return { selHead: store.getters.GoodCredit, PartName: 'GoodCredit' }
-  else return { selHead: store.getters.newPartner, PartName: store.state.Partners.filter(v => v.key === route.params.id)[0].name }
+  if (route.params.id !== "acba") {
+    if (route.params.id === 'ucom') return { selHead: store.getters.Ucom, PartName: 'Ucom' }
+    else if (route.params.id === 'global-credit') return { selHead: store.getters.GlobalCredit, PartName: 'GlobalCredit' }
+    else if (route.params.id === 'good-credit') return { selHead: store.getters.GoodCredit, PartName: 'GoodCredit' }
+    else return { selHead: store.getters.newPartner, PartName: store.state.Partners.filter(v => v.key === route.params.id)[0].name }
+  }
 }
 
 let param
@@ -107,10 +109,10 @@ const router = new VueRouter({
           path: 'partners',
           name: 'Partners',
           component: () => import('@/components/Debts/DebtsPartners.vue'),
-          // beforeEnter: async (to, from, next) => {
-          //   await store.dispatch('getPartners')
-          //   next()
-          // },
+          beforeEnter: async (to, from, next) => {
+            await store.dispatch('getPartners')
+            next()
+          },
         },
         {
           path: 'partners/:id',
@@ -132,6 +134,10 @@ const router = new VueRouter({
           path: 'subjectday',
           name: 'SubjectDay',
           component: () => import('@/components/Debts/SubjectDay/SubjectDay.vue'),
+          beforeEnter: async (to, from, next) => {
+            await store.dispatch('getSubjectDay')
+            next()
+          },
         },
         {
           path: 'archive',

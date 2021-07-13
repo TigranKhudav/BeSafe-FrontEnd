@@ -25,76 +25,7 @@ export default new Vuex.Store({
     menu: false,
     errMessig: false,
     user: JSON.parse(localStorage.getItem('besafe_us')),
-    CaseData: [
-      {
-        branch: "efefeewfwefwf",
-        checked: false,
-        client_num: "eewfewfwfwefewf",
-        client_address: "Client_Address",
-        common_obligations: "120",
-        balance_principal_amount: "Palance_Principal_Amount",
-        interest_balance: "Interest_Balance",
-        fine: "Fine",
-        daily_fine_rate: "Daily_Fine_Rate",
-        contract_num: "Contract_Num",
-        contract_price: "Contract_Price",
-        id: 1,
-        name: "NAME",
-        serial_number: "",
-        main_debt: "",
-        loan_type: "Էքսպրես բիզնես վարկ",
-        guarantee_contract_num: "",
-        amount_collected: 1500
-      },
-      {
-        branch: "efefeewfwefwf",
-        checked: false,
-        client_num: "eewfewfwfwefewf",
-        id: 2,
-        name: "",
-        serial_number: "",
-        main_debt: "",
-        loan_type: "Բիզնես վարկ",
-        guarantee_contract_num: "qwdqwdqdwqd",
-        amount_collected: 1020
-      },
-      {
-        branch: "",
-        checked: false,
-        client_num: "eewfewfwfwefewf",
-        id: 3,
-        name: "",
-        serial_number: "qwdwqdw",
-        main_debt: "",
-        loan_type: "Էքսպրես գյուղատնտեսական վարկ",
-        guarantee_contract_num: "wdwqd",
-        amount_collected: 2000
-      },
-      {
-        branch: "",
-        checked: false,
-        client_num: "eewfewfwfwefewf",
-        id: 4,
-        name: "",
-        serial_number: "qwdwqdw",
-        main_debt: "",
-        loan_type: "",
-        guarantee_contract_num: "dqdwfqd",
-        amount_collected: 3000
-      },
-      {
-        branch: "",
-        checked: false,
-        client_num: "eewfewfwfwefewf",
-        id: 5,
-        name: "",
-        serial_number: "qwdwqdw",
-        main_debt: "",
-        loan_type: "Ավանդի գրավով սպառողական վարկ",
-        guarantee_contract_num: "",
-        amount_collected: 4000
-      },
-    ],
+    CaseData: [],
     newPartnerHead: [
       {
         id: 1,
@@ -159,20 +90,9 @@ export default new Vuex.Store({
         hour: "12.:30",
       },
     ],
-    Partners: [
-      { id: 1, name: "Acba", key: 'acba' },
-      { id: 2, name: "UCOM", key: 'ucom' },
-      { id: 3, name: "Global Credit", key: 'global-credit' },
-      { id: 4, name: "Good Credit", key: 'good-credit' },
-    ],
+    Partners: [],
   },
   mutations: {
-    addChecked(state, data) {
-      data.forEach(v => {
-        v.checked = false
-        state.CaseData.push(v)
-      })
-    },
     formData(_, files) {
       let formData = new FormData();
       for (let i = 0; i < files.length; i++) {
@@ -225,46 +145,51 @@ export default new Vuex.Store({
         .then(res => console.log(res))
         .catch(err => console.log(err))
     },
-    getPartData({ commit }, data) {
-      axios.get('partners/' + data.name + '?page=' + data.id)
-        .then(res => commit('addChecked', res))
+    getPartData({ state }, value) {
+      axios.get('partners/' + value.name + '?page=' + value.id)
+        .then(res => state.CaseData = [...state.CaseData, ...res.data])
         .catch(err => console.log(err))
     },
     getPartners({ state }) {
       axios.get('partners')
-        .then(res => state.Partners = res)
+        .then(res => {
+          console.log(res.partners);
+          state.Partners = res.partners
+        })
         .catch(err => console.log(err))
     },
     uploadCols(_, data) {
       let arr = [];
       data.newTable.forEach((v) => {
         let array = [];
-        data.header.forEach((i) =>
-          array.push({
-            id: i.id,
-            value: v[i.name],
-            column: i.column,
-          })
-        );
+        data.header.forEach((i) => {
+          if (v[i.name]) {
+            array.push({
+              id: i.id,
+              value: v[i.name],
+              column: i.column,
+            })
+          }
+        });
         arr.push(array);
       });
       return arr;
     },
-    uploadSubjecDay({ dispatch }, data) {
-      let x = { data: null }
+    uploadSubjecDay({ dispatch, state }, data) {
       dispatch('uploadCols', { newTable: data.newTable, header: data.header }).then((res) => {
-        x.data = res
-        console.log(x);
-        axios.post('day-subjects', x)
-          .then(res => console.log(res))
+        axios.post('day-subjects', { data: res })
+          .then(res => state.CaseData = res.data)
           .catch(err => console.log(err))
       })
     },
-    uploadTable({ commit }, data) {
-      let changeTable = { newTable: data.newTable, header: data.header }
-      axios.post('partners/upload-table/' + data.id, commit('uploadCols', changeTable))
-        .then(res => state.CaseData = res)
-        .catch(err => console.log(err))
+    uploadTable({ state, dispatch }, value) {
+      dispatch('uploadCols', { newTable: value.newTable, header: value.header }).then(res => {
+        axios.post('partners/upload-table/' + value.id, { data: res })
+          .then(res => {
+            state.CaseData = [...state.CaseData, ...res.data]
+          })
+          .catch(err => console.log(err))
+      })
     },
     setNewValue(_, data) {
       axios.put('api/set-value/' + data.params + '?id=' + data.id + '&column=' + data.column + '&value=' + data.newValue)
@@ -300,6 +225,11 @@ export default new Vuex.Store({
         }
       }).catch(err => console.log(err))
     },
+    getSubjectDay({ state }) {
+      axios.get('day-subjects')
+        .then(res => state.CaseData = res.data)
+        .catch(err => console.log(err))
+    }
   },
   getters: {
     newPartner: state => [...state.newPartnerHead, ...state.acba.Acba],

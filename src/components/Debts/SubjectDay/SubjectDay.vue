@@ -145,14 +145,6 @@ export default {
     },
   },
   methods: {
-    // uploadTable(event) {
-    //   this.loadingPopup = true;
-    //   // this.$store.dispatch("toArchive", this.CaseData).then(() => {
-    //   //   this.CaseData = event;
-    //   //   this.updateData = true;
-    //   // });
-    //   this.loadingPopup = false;
-    // },
     uploadTableMethod(event) {
       this.$store.dispatch("uploadSubjecDay", {
         newTable: event,

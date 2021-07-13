@@ -116,8 +116,8 @@
           </div>
           <div>
             <common-acba-list
-              v-for="item in LineData"
-              :key="item.id"
+              v-for="(item, i) in LineData"
+              :key="i"
               :head="header"
               :data="item"
               @history="getHistory"
@@ -250,7 +250,7 @@ export default {
         let scrollHeight = this.$refs.table.scrollHeight;
         let atTheBottom = scrollTop + offsetHeight === scrollHeight;
         if (atTheBottom) {
-          this.$store.dispatch("getPartData", this.count);
+          this.$store.dispatch("getPartData", { name: "acba", id: this.count });
           this.count++;
         }
       };
