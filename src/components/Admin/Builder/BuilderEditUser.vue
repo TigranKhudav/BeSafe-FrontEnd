@@ -171,7 +171,7 @@ export default {
         }, 3000);
       } else {
         let data = {
-          name: this.userName,
+          username: this.userName,
           newPass: this.newPass,
           role: this.role,
           access: this.access,

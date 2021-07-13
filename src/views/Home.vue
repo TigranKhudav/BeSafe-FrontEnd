@@ -6,7 +6,7 @@
       role="button"
       @click="$store.state.menu = !$store.state.menu"
     ></div>
-    <div class="w-full h-83">
+    <div class="w-full h-83 mt-minus">
       <builder-menu></builder-menu>
       <router-view></router-view>
     </div>
@@ -15,7 +15,5 @@
 <script>
 import CommonDefinePage from "@/components/CommonDefinePage.vue";
 import BuilderMenu from "@/components/Builder/BuilderMenu.vue";
-export default {
-  components: { CommonDefinePage, BuilderMenu },
-};
+export default { components: { CommonDefinePage, BuilderMenu } };
 </script>

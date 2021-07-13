@@ -146,8 +146,7 @@ export default {
   methods: {
     logOut() {
       this.dropdown = false;
-      localStorage.removeItem("user");
-      localStorage.removeItem("besafe");
+      localStorage.clear();
       this.$router.replace("/login");
     },
   },

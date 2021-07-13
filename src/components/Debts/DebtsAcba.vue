@@ -3,6 +3,7 @@
     <div class="position-absolute left-23 top-22">
       <h3 class="fs-11 text-gray-500">Acba</h3>
     </div>
+
     <common-update
       @table="uploadTableMethod"
       v-if="admin"
@@ -41,6 +42,7 @@
 
     <transition name="fade">
       <common-modal
+        @send="exportRepayment"
         v-if="showRepaymentSchedule"
         @close="showRepaymentSchedule = false"
       >
@@ -50,7 +52,11 @@
               <span class="text-gray-500 fs-8">Ամիսների քանակ</span>
             </div>
             <div class="col px-0">
-              <input class="max-w-25" type="text" />
+              <input
+                @input="MonthsNum = $event.target.value"
+                class="max-w-25"
+                type="text"
+              />
             </div>
           </div>
           <div class="row my-12">
@@ -58,7 +64,11 @@
               <span class="text-gray-500 fs-8">Ներման տոկոս</span>
             </div>
             <div class="col px-0">
-              <input class="max-w-25" type="text" />
+              <input
+                @input="ForgivenessPercent = $event.target.value"
+                class="max-w-25"
+                type="text"
+              />
             </div>
           </div>
           <div class="row my-12">
@@ -66,7 +76,11 @@
               <span class="text-gray-500 fs-8">Կանխավճարի չափ</span>
             </div>
             <div class="col px-0">
-              <input class="max-w-25" type="text" />
+              <input
+                @input="PrepaymentAmount = $event.target.value"
+                class="max-w-25"
+                type="text"
+              />
             </div>
           </div>
         </div>
@@ -220,10 +234,12 @@ export default {
       SearchText: "",
       params: this.$route.params.id,
       header: [],
-      exportTable: [],
       count: 1,
       files: [],
       exportFile: null,
+      MonthsNum: null,
+      ForgivenessPercent: null,
+      PrepaymentAmount: null,
     };
   },
   mounted() {
@@ -256,7 +272,7 @@ export default {
       },
     },
     admin() {
-      return this.user.perm.some((v) => v === "addClient");
+      return this.user.perm.some((v) => v === "addPartnerCustomers");
     },
     defaultHead() {
       return this.Acba.filter((v) => v.checked);
@@ -285,7 +301,7 @@ export default {
       let data = {
         id: this.params,
         newTable: event,
-        header: this.header,
+        header: this.Acba,
       };
       this.uploadTable(data);
     },
@@ -294,19 +310,21 @@ export default {
       this.SearchText = event;
     },
     onCheck(event) {
-      let arr = [];
-      event.table.forEach((v) => arr.push(v.value));
-      this.exportTable.push(arr);
       this.CaseData.forEach((i) => {
-        if (i.id === event.id) {
-          i.checked = event.value;
-        }
+        if (i.id === event.id) i.checked = event.value;
       });
     },
     onexport() {
+      let arr = [];
+      let x = this.LineData.filter((v) => v.checked);
+      x.forEach((i) => {
+        let y = [];
+        this.header.forEach((v) => y.push(i[v.column]));
+        arr.push(y);
+      });
       let data = {
         header: this.header,
-        exportTable: this.exportTable,
+        exportTable: arr,
       };
       this.$store.commit("onexport", data);
     },
@@ -339,23 +357,62 @@ export default {
           (v) => v.name === item.loan_type
         ).key;
         if (loan_key === "express_business") {
-          const gcn = item.guarantee_contract_num;
-          key = gcn ? "guarantee_express_business" : "express_business";
+          key = item.guarantee_contract_num
+            ? "guarantee_express_business"
+            : "express_business";
         } else key = loan_key;
       }
-      let data = {
-        name: item.name,
-        address: item.client_address,
-        obligations: item.common_obligations,
-        amount: item.balance_principal_amount,
-        balance: item.interest_balance,
-        fine: item.fine,
-        rate: item.daily_fine_rate,
-        num: item.contract_num,
-        price: item.contract_price,
-        file: key,
-      };
-      this.exportAcbaWord(data);
+      const url =
+        "word-download?name=" +
+        item.name +
+        "&client_address=" +
+        item.address +
+        "&common_obligations=" +
+        item.obligations +
+        "&balance_principal_amount=" +
+        item.amount +
+        "&interest_balance=" +
+        item.balance +
+        "&fine=" +
+        item.fine +
+        "&daily_fine_rate=" +
+        item.rate +
+        "&contract_num=" +
+        item.num +
+        "&contract_price=" +
+        item.price +
+        "&filename=" +
+        key;
+      this.exportAcbaWord(url);
+    },
+    exportRepayment() {
+      const item = this.exportFile;
+      if (!this.ForgivenessPercent) {
+        const formula =
+          (item.amount_collected - this.PrepaymentAmount) / this.MonthsNum;
+        const url =
+          "word-download?name=" +
+          item.name +
+          "&client_address=" +
+          item.address +
+          "&common_obligations=" +
+          item.obligations +
+          "&balance_principal_amount=" +
+          item.amount +
+          "&interest_balance=" +
+          item.balance +
+          "&fine=" +
+          item.fine +
+          "&daily_fine_rate=" +
+          item.rate +
+          "&contract_num=" +
+          item.num +
+          "&contract_price=" +
+          item.price +
+          "&filename=by_months";
+        this.exportAcbaWord(url);
+      } else {
+      }
     },
   },
 };

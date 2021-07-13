@@ -91,11 +91,7 @@ export default {
   },
   methods: {
     onCheck(event) {
-      this.$emit("onCheck", {
-        id: this.data.id,
-        value: event,
-        table: this.cols,
-      });
+      this.$emit("onCheck", { id: this.data.id, value: event });
     },
     onEdit(value) {
       if (!value) {

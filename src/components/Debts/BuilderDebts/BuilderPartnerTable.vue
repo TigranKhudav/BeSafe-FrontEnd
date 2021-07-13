@@ -171,7 +171,9 @@ export default {
       };
     },
     admin() {
-      return this.$store.getters.user.perm.some((v) => v === "addClient");
+      return this.$store.getters.user.perm.some(
+        (v) => v === "addPartnerCustomers"
+      );
     },
   },
   methods: {
@@ -201,13 +203,8 @@ export default {
       this.SearchText = event;
     },
     onCheck(event) {
-      let arr = [];
-      event.table.forEach((v) => arr.push(v.value));
-      this.exportTable.push(arr);
       this.CaseData.forEach((i) => {
-        if (i.id === event.id) {
-          i.checked = event.value;
-        }
+        if (i.id === event.id) i.checked = event.value;
       });
     },
     checkAll(e) {
@@ -228,9 +225,16 @@ export default {
       this.header = item;
     },
     onexport() {
+      let arr = [];
+      let x = this.LineData.filter((v) => v.checked);
+      x.forEach((i) => {
+        let y = [];
+        this.header.forEach((v) => y.push(i[v.column]));
+        arr.push(y);
+      });
       let data = {
         header: this.header,
-        exportTable: this.exportTable,
+        exportTable: arr,
       };
       this.$store.commit("onexport", data);
     },

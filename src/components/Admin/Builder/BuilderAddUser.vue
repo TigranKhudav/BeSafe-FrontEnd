@@ -108,9 +108,11 @@ export default {
       } else return this.AllPerm;
     },
     userPermission() {
-      let arr = [];
-      this.selPerm.forEach((v) => arr.push(v.val));
-      return arr;
+      if (this.role === "admin") {
+        let arr = [];
+        this.selPerm.forEach((v) => arr.push(v.val));
+        return arr;
+      } else return null;
     },
   },
   data() {
@@ -123,7 +125,6 @@ export default {
       role: "",
       err: false,
       selPerm: null,
-      // Subsection:
     };
   },
   validations: {
@@ -149,13 +150,14 @@ export default {
         }, 3000);
       } else {
         let data = {
-          name: this.userName,
-          pass: this.pass,
+          username: this.userName,
+          password: this.pass,
           role: this.role,
           access: this.access,
-          selPerm: this.userPermission,
+          permissions: this.userPermission,
         };
         this.$store.dispatch("createUser", data);
+        this.$emit("close");
       }
     },
   },

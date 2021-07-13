@@ -13,13 +13,6 @@ function getHead(route) {
 
 let param
 
-function getComp() {
-  if (param === 'acba') {
-    return import('@/components/Debts/DebtsAcba.vue')
-  } else return import('@/components/Debts/BuilderDebts/BuilderPartnerTable.vue')
-}
-
-
 const router = new VueRouter({
   mode: 'history',
   routes: [
@@ -91,11 +84,6 @@ const router = new VueRouter({
       children: [
         {
           path: '',
-          name: 'Admin',
-          component: () => import('@/components/Admin/AdminHome.vue'),
-        },
-        {
-          path: 'users',
           name: 'AdminUsers',
           component: () => import('@/components/Admin/AdminUsers.vue'),
         },
@@ -119,16 +107,25 @@ const router = new VueRouter({
           path: 'partners',
           name: 'Partners',
           component: () => import('@/components/Debts/DebtsPartners.vue'),
+          // beforeEnter: async (to, from, next) => {
+          //   await store.dispatch('getPartners')
+          //   next()
+          // },
         },
         {
           path: 'partners/:id',
           name: 'Patrner',
-          component: getComp,
           props: getHead,
           beforeEnter: async (to, from, next) => {
             param = to.params.id
             await store.dispatch('getPartData', { name: to.params.id, id: 0 })
             next()
+          },
+          component: async () => {
+            if (param === 'acba') {
+              console.log(param);
+              return import('@/components/Debts/DebtsAcba.vue')
+            } else return import('@/components/Debts/BuilderDebts/BuilderPartnerTable.vue')
           },
         },
         {
@@ -173,24 +170,18 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('besafe')
-  if (token) {
-    next()
-    // axios.post('auth').then(result => {
-    //   store.commit("userData", result)
-    //   next()
-    // }).catch(() => next({ name: "Login" }))
-  }
+  if (token) next()
   else if (to.path === '/login') next()
   else next({ name: "Login" })
 })
-// router.beforeEach((to, from, next) => {
-//   const role = 'debts'
-//   const auth = to.meta.authorize
-//   if (auth) {
-//     if (role === auth) {
-//       next()
-//     } else next({ name: '404' });
-//   } else next()
-// })
+
+router.onError((error) => {
+  const pattern = /Loading chunk (\d)+ failed/g;
+  const isChunkLoadFailed = error.message.match(pattern);
+  const targetPath = router.history.pending.fullPath;
+  if (isChunkLoadFailed) {
+    router.replace(targetPath);
+  }
+})
 
 export default router

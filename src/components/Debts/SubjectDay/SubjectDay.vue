@@ -2,7 +2,7 @@
   <div>
     <div class="position-absolute left-23 top-21">
       <span class="fs-12 text-gray-500">Օրվա ենթակա</span>
-      <common-update @table="uploadTable" v-if="admin" class="mt-6">
+      <common-update @table="uploadTableMethod" v-if="admin" class="mt-6">
         <div class="bg-41 w-11 h-11 bg-no-repeat bg-contain"></div>
         <span class="ms-6">Թարմացում</span>
       </common-update>
@@ -145,13 +145,19 @@ export default {
     },
   },
   methods: {
-    uploadTable(event) {
-      this.loadingPopup = true;
-      this.$store.dispatch("toArchive", this.CaseData).then(() => {
-        this.CaseData = event;
-        this.updateData = true;
+    // uploadTable(event) {
+    //   this.loadingPopup = true;
+    //   // this.$store.dispatch("toArchive", this.CaseData).then(() => {
+    //   //   this.CaseData = event;
+    //   //   this.updateData = true;
+    //   // });
+    //   this.loadingPopup = false;
+    // },
+    uploadTableMethod(event) {
+      this.$store.dispatch("uploadSubjecDay", {
+        newTable: event,
+        header: this.Acba,
       });
-      this.loadingPopup = false;
     },
     check(e) {
       this.CaseData.forEach((i) => (i.checked = e.target.checked));

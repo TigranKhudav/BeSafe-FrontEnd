@@ -24,6 +24,7 @@ export default new Vuex.Store({
   state: {
     menu: false,
     errMessig: false,
+    user: JSON.parse(localStorage.getItem('besafe_us')),
     CaseData: [
       {
         branch: "efefeewfwefwf",
@@ -42,7 +43,8 @@ export default new Vuex.Store({
         serial_number: "",
         main_debt: "",
         loan_type: "Էքսպրես բիզնես վարկ",
-        guarantee_contract_num: ""
+        guarantee_contract_num: "",
+        amount_collected: 1500
       },
       {
         branch: "efefeewfwefwf",
@@ -53,7 +55,8 @@ export default new Vuex.Store({
         serial_number: "",
         main_debt: "",
         loan_type: "Բիզնես վարկ",
-        guarantee_contract_num: "qwdqwdqdwqd"
+        guarantee_contract_num: "qwdqwdqdwqd",
+        amount_collected: 1020
       },
       {
         branch: "",
@@ -64,7 +67,8 @@ export default new Vuex.Store({
         serial_number: "qwdwqdw",
         main_debt: "",
         loan_type: "Էքսպրես գյուղատնտեսական վարկ",
-        guarantee_contract_num: "wdwqd"
+        guarantee_contract_num: "wdwqd",
+        amount_collected: 2000
       },
       {
         branch: "",
@@ -75,7 +79,8 @@ export default new Vuex.Store({
         serial_number: "qwdwqdw",
         main_debt: "",
         loan_type: "",
-        guarantee_contract_num: "dqdwfqd"
+        guarantee_contract_num: "dqdwfqd",
+        amount_collected: 3000
       },
       {
         branch: "",
@@ -86,7 +91,8 @@ export default new Vuex.Store({
         serial_number: "qwdwqdw",
         main_debt: "",
         loan_type: "Ավանդի գրավով սպառողական վարկ",
-        guarantee_contract_num: ""
+        guarantee_contract_num: "",
+        amount_collected: 4000
       },
     ],
     newPartnerHead: [
@@ -167,21 +173,6 @@ export default new Vuex.Store({
         state.CaseData.push(v)
       })
     },
-    uploadCols(_, data) {
-      let arr = [];
-      data.newTable.forEach((v) => {
-        let array = [];
-        data.header.forEach((i) =>
-          array.push({
-            id: i.id,
-            value: v[i.name],
-            column: i.column,
-          })
-        );
-        arr.push(array);
-      });
-      return arr;
-    },
     formData(_, files) {
       let formData = new FormData();
       for (let i = 0; i < files.length; i++) {
@@ -213,9 +204,10 @@ export default new Vuex.Store({
         .catch(err => console.log(err))
     },
     login({ state }, data) {
-      axios.post('api/login', data).then(res => {
+      axios.post('login', data).then(res => {
+        state.user = res.user
         localStorage.setItem('besafe', res.access_token)
-        localStorage.setItem('user', JSON.stringify(res.user))
+        localStorage.setItem('besafe_us', JSON.stringify(res.user))
         router.replace("/")
       })
         .catch(() => state.errMessig = true)
@@ -234,18 +226,43 @@ export default new Vuex.Store({
         .catch(err => console.log(err))
     },
     getPartData({ commit }, data) {
-      axios.get('api/partners/' + data.name + '?page=' + data.id)
+      axios.get('partners/' + data.name + '?page=' + data.id)
         .then(res => commit('addChecked', res))
         .catch(err => console.log(err))
     },
     getPartners({ state }) {
-      axios.get('api/partners')
+      axios.get('partners')
         .then(res => state.Partners = res)
         .catch(err => console.log(err))
     },
+    uploadCols(_, data) {
+      let arr = [];
+      data.newTable.forEach((v) => {
+        let array = [];
+        data.header.forEach((i) =>
+          array.push({
+            id: i.id,
+            value: v[i.name],
+            column: i.column,
+          })
+        );
+        arr.push(array);
+      });
+      return arr;
+    },
+    uploadSubjecDay({ dispatch }, data) {
+      let x = { data: null }
+      dispatch('uploadCols', { newTable: data.newTable, header: data.header }).then((res) => {
+        x.data = res
+        console.log(x);
+        axios.post('day-subjects', x)
+          .then(res => console.log(res))
+          .catch(err => console.log(err))
+      })
+    },
     uploadTable({ commit }, data) {
       let changeTable = { newTable: data.newTable, header: data.header }
-      axios.post('api/partners/upload-table/' + data.id, commit.uploadCols(changeTable))
+      axios.post('partners/upload-table/' + data.id, commit('uploadCols', changeTable))
         .then(res => state.CaseData = res)
         .catch(err => console.log(err))
     },
@@ -255,12 +272,11 @@ export default new Vuex.Store({
         .catch(err => console.log(err))
     },
     changePass(_, data) {
-      axios.post('api/change-pass', data)
+      axios.post('change-pass', data)
         .then(res => console.log(res))
         .catch(err => console.log(err))
     },
-    exportAcbaWord(_, data) {
-      const url = 'api/word-download?name=' + data.name + '&client_address=' + data.address + '&common_obligations=' + data.obligations + '&balance_principal_amount=' + data.amount + '&interest_balance=' + data.balance + '&fine=' + data.fine + '&daily_fine_rate=' + data.rate + '&contract_num=' + data.num + '&contract_price=' + data.price + '&filename=' + data.file
+    exportAcbaWord(_, url) {
       axios.get(url, { responseType: 'blob' }).then(res => {
         let blob = new Blob([res]);
         if (typeof window.navigator.msSaveBlob !== 'undefined') {
@@ -292,6 +308,6 @@ export default new Vuex.Store({
     CaseData: state => state.CaseData,
     Prioritys: state => state.Prioritys,
     HistoryList: state => state.HistoryList,
-    user: () => JSON.parse(localStorage.getItem('user'))
+    user: state => state.user
   }
 })

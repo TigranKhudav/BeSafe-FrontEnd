@@ -31,6 +31,8 @@
           ms-minus
           mt-4
           w-full
+          max-h-25
+          overflow-y-scroll
           max-w-36
         "
       >

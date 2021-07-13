@@ -4,7 +4,7 @@ export default {
             {
                 id: 1,
                 checked: true,
-                name: "Մասնաճյուղ",
+                name: "Մ/Ճ",
                 column: 'branch'
             },
             {

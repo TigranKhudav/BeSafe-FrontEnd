@@ -29,7 +29,7 @@ export default {
             {
                 id: 7,
                 checked: false,
-                val: "addClient",
+                val: "addPartnerCustomers",
                 name: "Ներմուծել հաճախորդ",
             },
             {
@@ -60,31 +60,12 @@ export default {
             { id: 1, name: "Օգտագործող", role: "user" },
             { id: 2, name: "Ադմին", role: "admin" },
         ],
-        Users: [
-            {
-                id: 1,
-                name: "Anushavagyan",
-                role: "user",
-                access: "debts",
-            },
-            {
-                id: 2,
-                name: "Bnushavagyan",
-                role: "user",
-                access: "lawyer",
-            },
-            {
-                id: 3,
-                name: "banushavagyan",
-                role: "admin",
-                access: "two",
-            },
-        ],
+        Users: [],
     },
     actions: {
         createUser({ state }, data) {
             axios.post('users', data)
-                .then(res => state.Users = res)
+                .then(res => state.Users.push(res.original))
                 .catch(err => console.log(err))
         },
         editUser(_, data) {
@@ -92,15 +73,14 @@ export default {
                 .then(res => state.Users = res)
                 .catch(err => console.log(err))
         },
-        removeUser({ state }, data) {
-            axios.delete('users', data)
-                .then(res => state.Users = res)
+        removeUser(_, id) {
+            axios.delete('users/' + id)
                 .catch(err => console.log(err))
         },
         getUsers({ state }) {
             axios.get('users')
-                .then(res => state.Users = res)
-                .catch(err => console.log(err))
+                .then(res => state.Users = res.data)
+                .catch(err => console.log("err", err))
         }
     },
     getters: {

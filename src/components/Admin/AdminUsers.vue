@@ -1,105 +1,99 @@
 <template>
-  <common-main-page class="mt-10" :role="'admin'">
-    <common-button
-      @click="addUserModal = true"
-      class="position-absolute top-22 right-22 w-full max-w-31 rounded-16"
-    >
-      <div class="p-4 d-flex">
-        <div class="bg-15 w-10 h-10 bg-contain bg-no-repeat me-3"></div>
-        <span>Ավելացնել oգտագործող</span>
-      </div>
-    </common-button>
-    <!-- Modals -->
-    <transition name="fade">
-      <builder-add-user
-        @close="addUserModal = false"
-        v-if="addUserModal"
-      ></builder-add-user>
-    </transition>
-
-    <transition name="fade">
-      <builder-edit-user
-        v-if="editUserModal"
-        @close="editUserModal = false"
-        :UserInfo="UserInfo"
-      ></builder-edit-user>
-    </transition>
-
-    <div class="w-full max-w-38">
-      <div class="d-flex bord py-4 ps-8">
-        <div class="bg-12 w-11 h-11 bg-contain bg-no-repeat"></div>
-        <input
-          type="text"
-          class="search ms-10 border-0 outline-none"
-          placeholder="Փնտրել օգտագործող"
-          v-model="searchUser"
-        />
-      </div>
-      <div class="row mx-0" v-for="item in users" :key="item.id">
-        <div @click="onEdit(item)" role="button" class="row col-10 px-0 mx-0">
-          <div
-            class="
-              bord
-              col
-              d-flex
-              align-items-center
-              justify-content-center
-              py-4
-              px-0
-            "
-          >
-            <span>{{ item.name }}</span>
-          </div>
-          <div
-            class="
-              bord
-              col
-              d-flex
-              align-items-center
-              justify-content-center
-              py-4
-              px-0
-            "
-          >
-            <span v-if="item.role === 'admin'">Ադմին</span>
-            <span v-else>Օգտագործող</span>
-          </div>
+  <div class="d-flex">
+    <div class="d-flex w-full justify-content-center mt-10">
+      <common-button
+        @click="addUserModal = true"
+        class="position-absolute top-22 right-22 w-full max-w-31 rounded-16"
+      >
+        <div class="p-4 d-flex">
+          <div class="bg-15 w-10 h-10 bg-contain bg-no-repeat me-3"></div>
+          <span>Ավելացնել oգտագործող</span>
         </div>
-        <div
-          class="
-            bord
-            d-flex
-            align-items-center
-            justify-content-center
-            px-14
-            py-4
-            col-2
-          "
-        >
+      </common-button>
+      <!-- Modals -->
+      <transition name="fade">
+        <builder-add-user
+          @close="addUserModal = false"
+          v-if="addUserModal"
+        ></builder-add-user>
+      </transition>
+
+      <transition name="fade">
+        <builder-edit-user
+          v-if="editUserModal"
+          @close="editUserModal = false"
+          :UserInfo="UserInfo"
+        ></builder-edit-user>
+      </transition>
+
+      <div class="w-full max-w-38">
+        <div class="d-flex bord py-4 ps-8">
+          <div class="bg-12 w-11 h-11 bg-contain bg-no-repeat"></div>
+          <input
+            type="text"
+            class="search ms-10 border-0 outline-none"
+            placeholder="Փնտրել օգտագործող"
+            v-model="searchUser"
+          />
+        </div>
+        <div class="row mx-0" v-for="(item, i) in fitereduser" :key="i">
+          <div @click="onEdit(item)" role="button" class="row col-10 px-0 mx-0">
+            <div
+              class="
+                bord
+                col
+                d-flex
+                align-items-center
+                justify-content-center
+                py-4
+                px-0
+              "
+            >
+              <span>{{ item.username }}</span>
+            </div>
+            <div
+              class="
+                bord
+                col
+                d-flex
+                align-items-center
+                justify-content-center
+                py-4
+                px-0
+              "
+            >
+              <span v-if="item.role === 'admin'">Ադմին</span>
+              <span v-else>Օգտագործող</span>
+            </div>
+          </div>
           <div
-            role="button"
-            class="bg-34 w-11 h-11 bg-contain bg-no-repeat"
-            @click="removeUser(item.id)"
-          ></div>
+            class="
+              bord
+              d-flex
+              align-items-center
+              justify-content-center
+              px-14
+              py-4
+              col-2
+            "
+          >
+            <div
+              role="button"
+              class="bg-34 w-11 h-11 bg-contain bg-no-repeat"
+              @click="removeUser(item.id)"
+            ></div>
+          </div>
         </div>
       </div>
     </div>
-  </common-main-page>
+  </div>
 </template>
 <script>
-import CommonMainPage from "@/common/CommonMainPage.vue";
 import CommonButton from "@/common/CommonButton.vue";
 import BuilderAddUser from "./Builder/BuilderAddUser.vue";
 import BuilderEditUser from "./Builder/BuilderEditUser.vue";
 export default {
-  components: { CommonMainPage, CommonButton, BuilderAddUser, BuilderEditUser },
-  computed: {
-    users() {
-      return this.Users.filter((item) =>
-        item.name.toLowerCase().includes(this.searchUser.toLowerCase())
-      );
-    },
-  },
+  components: { CommonButton, BuilderAddUser, BuilderEditUser },
   data() {
     return {
       settings: false,
@@ -107,8 +101,17 @@ export default {
       addUserModal: false,
       editUserModal: false,
       UserInfo: null,
-      Users: this.$store.getters.Users,
     };
+  },
+  computed: {
+    fitereduser() {
+      return this.Users.filter((v) =>
+        v.username.toLowerCase().includes(this.searchUser.toLowerCase())
+      );
+    },
+    Users() {
+      return this.$store.getters.Users;
+    },
   },
   methods: {
     onEdit(user) {
