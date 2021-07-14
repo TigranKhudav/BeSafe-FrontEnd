@@ -125,7 +125,6 @@ const router = new VueRouter({
           },
           component: async () => {
             if (param === 'acba') {
-              console.log(param);
               return import('@/components/Debts/DebtsAcba.vue')
             } else return import('@/components/Debts/BuilderDebts/BuilderPartnerTable.vue')
           },

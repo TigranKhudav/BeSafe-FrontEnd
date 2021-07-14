@@ -390,27 +390,42 @@ export default {
       if (!this.ForgivenessPercent) {
         const formula =
           (item.amount_collected - this.PrepaymentAmount) / this.MonthsNum;
+        let d = new Date();
+        d.setMonth(this.MonthsNum);
+
+        function getMount(val) {
+          console.log(val);
+          let x = new Date();
+          console.log(x.getMonth());
+          let i = x.getMonth() + val;
+          console.log(i);
+          if (i > 12) {
+            getMount(i - 12);
+          } else return i;
+        }
+
+        let date = `20.${getMount(this.MonthsNum)}.${d.getFullYear()}`;
         const url =
-          "word-download?name=" +
+          "word-download?branch=" +
+          item.branch +
+          "&name=" +
           item.name +
-          "&client_address=" +
-          item.address +
-          "&common_obligations=" +
-          item.obligations +
+          "&contract_num=" +
+          item.contract_num +
+          "&amount_collected=" +
+          item.amount_collected +
           "&balance_principal_amount=" +
-          item.amount +
+          item.balance_principal_amount +
           "&interest_balance=" +
-          item.balance +
+          item.interest_balance +
+          "&service_fee=" +
+          item.service_fee +
           "&fine=" +
           item.fine +
-          "&daily_fine_rate=" +
-          item.rate +
-          "&contract_num=" +
-          item.num +
-          "&contract_price=" +
-          item.price +
+          "&chef_dan=" +
+          item.chef_dan +
           "&filename=by_months";
-        this.exportAcbaWord(url);
+        // this.exportAcbaWord(url);
       } else {
       }
     },

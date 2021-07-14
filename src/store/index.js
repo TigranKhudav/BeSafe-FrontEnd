@@ -152,10 +152,7 @@ export default new Vuex.Store({
     },
     getPartners({ state }) {
       axios.get('partners')
-        .then(res => {
-          console.log(res.partners);
-          state.Partners = res.partners
-        })
+        .then(res => state.Partners = res.partners)
         .catch(err => console.log(err))
     },
     uploadCols(_, data) {

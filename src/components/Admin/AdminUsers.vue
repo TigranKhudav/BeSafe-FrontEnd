@@ -2,7 +2,7 @@
   <div class="d-flex">
     <div class="d-flex w-full justify-content-center mt-10">
       <common-button
-        @click="addUserModal = true"
+        @click="showAddUserModal"
         class="position-absolute top-22 right-22 w-full max-w-31 rounded-16"
       >
         <div class="p-4 d-flex">
@@ -120,6 +120,10 @@ export default {
     },
     removeUser(id) {
       this.$store.dispatch("removeUser", id);
+    },
+    showAddUserModal() {
+      this.addUserModal = true;
+      this.$store.dispatch("getPartners");
     },
   },
 };

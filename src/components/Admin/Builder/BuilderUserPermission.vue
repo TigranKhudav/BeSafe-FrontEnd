@@ -32,7 +32,7 @@
           mt-4
           w-full
           max-h-25
-          overflow-y-scroll
+          overflow-y-auto
           max-w-36
         "
       >
@@ -82,7 +82,9 @@ export default {
   methods: {
     select(item) {
       item.checked = !item.checked;
-      this.$emit("selectedPerm", this.selectedPerm);
+      console.log(this.Permission);
+      console.log(this.selectedPerm);
+      // this.$emit("selectedPerm", this.selectedPerm);
     },
   },
 };

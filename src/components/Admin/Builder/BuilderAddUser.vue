@@ -71,9 +71,25 @@
               @onSelect="access = $event.access"
             ></common-select>
           </div>
+
+          <transition name="fade">
+            <div>
+              <div class="mt-8">
+                <span class="fs-8 text-gray-500">Գործընկեր</span>
+              </div>
+              <div class="bord p-3 mb-8">
+                <builder-user-permission
+                  :value="'Գործընկեր'"
+                  :Permission="Part"
+                  @selectedPerm="selPart = $event"
+                ></builder-user-permission>
+              </div>
+            </div>
+          </transition>
+
           <transition name="fade">
             <div v-if="permissions">
-              <div class="mt-8">
+              <div class="">
                 <span class="fs-8 text-gray-500">Իրավասություններ</span>
               </div>
               <div class="bord p-3 mb-18">
@@ -101,7 +117,13 @@ import { mapGetters } from "vuex";
 export default {
   components: { CommonModal, CommonSelect, BuilderUserPermission },
   computed: {
-    ...mapGetters(["LawyerPerm", "AllPerm", "Subsection", "UserType"]),
+    ...mapGetters([
+      "LawyerPerm",
+      "AllPerm",
+      "Subsection",
+      "UserType",
+      "Partners",
+    ]),
     Competencies() {
       if (this.access === "lawyer") {
         return this.LawyerPerm;
@@ -114,6 +136,14 @@ export default {
         return arr;
       } else return null;
     },
+    Part() {
+      let arr = [];
+      this.Partners.forEach((v) => {
+        v.checked = false;
+        arr.push(v);
+      });
+      return arr;
+    },
   },
   data() {
     return {
@@ -125,6 +155,7 @@ export default {
       role: "",
       err: false,
       selPerm: null,
+      selPart: null,
     };
   },
   validations: {
@@ -155,8 +186,9 @@ export default {
           role: this.role,
           access: this.access,
           permissions: this.userPermission,
+          partners: this.selPart,
         };
-        this.$store.dispatch("createUser", data);
+        // this.$store.dispatch("createUser", data);
         this.$emit("close");
       }
     },
