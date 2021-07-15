@@ -107,6 +107,9 @@ export default new Vuex.Store({
       xlsx.utils.book_append_sheet(wb, animalWS, "nameUsers");
       xlsx.writeFile(wb, "besafe.xlsx");
     },
+    setUserData: state => {
+      state.user = JSON.parse(localStorage.getItem('besafe_us'))
+    }
   },
   actions: {
     uploadFile({ commit }, data) {
@@ -226,7 +229,7 @@ export default new Vuex.Store({
       axios.get('day-subjects')
         .then(res => state.CaseData = res.data)
         .catch(err => console.log(err))
-    }
+    },
   },
   getters: {
     newPartner: state => [...state.newPartnerHead, ...state.acba.Acba],

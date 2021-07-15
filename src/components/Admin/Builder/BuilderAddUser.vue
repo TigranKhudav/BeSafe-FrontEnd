@@ -190,8 +190,7 @@ export default {
           permissions: this.userPermission,
           partners: this.filterResPart,
         };
-        console.log(data);
-        // this.$store.dispatch("createUser", data);
+        this.$store.dispatch("createUser", data);
         this.$emit("close");
       }
     },

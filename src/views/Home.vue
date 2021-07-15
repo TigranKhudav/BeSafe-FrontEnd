@@ -15,5 +15,10 @@
 <script>
 import CommonDefinePage from "@/components/CommonDefinePage.vue";
 import BuilderMenu from "@/components/Builder/BuilderMenu.vue";
-export default { components: { CommonDefinePage, BuilderMenu } };
+export default {
+  components: { CommonDefinePage, BuilderMenu },
+  created() {
+    this.$store.commit("setUserData");
+  },
+};
 </script>
