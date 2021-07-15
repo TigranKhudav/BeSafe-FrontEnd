@@ -104,13 +104,13 @@ export default {
     };
   },
   computed: {
+    Users() {
+      return this.$store.getters.Users;
+    },
     fitereduser() {
       return this.Users.filter((v) =>
         v.username.toLowerCase().includes(this.searchUser.toLowerCase())
       );
-    },
-    Users() {
-      return this.$store.getters.Users;
     },
   },
   methods: {

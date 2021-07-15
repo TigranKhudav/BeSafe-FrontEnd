@@ -128,6 +128,7 @@
               @ctxmenu="contextMenu($event, item)"
               :style="cssVar"
             ></common-acba-list>
+            <div v-observe-visibility="visibilityChanged"></div>
             <vue-context
               ref="menu"
               class="position-absolute w-full max-w-36 ps-0 outline-none d-flex"
@@ -242,21 +243,6 @@ export default {
       PrepaymentAmount: null,
     };
   },
-  mounted() {
-    if (!this.updateData) {
-      const eventHandler = () => {
-        let scrollTop = this.$refs.table.scrollTop;
-        let offsetHeight = this.$refs.table.offsetHeight;
-        let scrollHeight = this.$refs.table.scrollHeight;
-        let atTheBottom = scrollTop + offsetHeight === scrollHeight;
-        if (atTheBottom) {
-          this.$store.dispatch("getPartData", { name: "acba", id: this.count });
-          this.count++;
-        }
-      };
-      this.$refs.table.addEventListener("scroll", eventHandler);
-    }
-  },
   computed: {
     ...mapGetters(["CaseData", "HistoryList", "user", "exportLT", "Acba"]),
     LineData: {
@@ -285,6 +271,26 @@ export default {
   },
   methods: {
     ...mapActions(["setNewValue", "uploadTable", "exportAcbaWord"]),
+
+    visibilityChanged(isVisible) {
+      console.log(isVisible);
+      if (isVisible) {
+        this.count++;
+        this.$store.dispatch("getPartData", { name: "acba", id: this.count });
+      }
+    },
+
+    loadMore() {
+      this.busy = true;
+
+      setTimeout(() => {
+        for (var i = 0, j = 10; i < j; i++) {
+          this.data.push({ name: count++ });
+        }
+        this.busy = false;
+      }, 1000);
+    },
+
     setValue(data, id) {
       this.CaseData.forEach((v) => {
         if (v.id === id) v[data.column] = data.newValue;
@@ -350,40 +356,41 @@ export default {
       this.$refs.menu.open(e);
     },
     exportLawsuit() {
-      const item = this.exportFile;
       let key;
-      if (item.loan_type) {
+      if (this.exportFile.loan_type) {
         const loan_key = this.exportLT.find(
-          (v) => v.name === item.loan_type
+          (v) => v.name === this.exportFile.loan_type
         ).key;
         if (loan_key === "express_business") {
-          key = item.guarantee_contract_num
+          key = this.exportFile.guarantee_contract_num
             ? "guarantee_express_business"
             : "express_business";
         } else key = loan_key;
       }
-      const url =
+      this.exportAcbaWord(
         "word-download?name=" +
-        item.name +
-        "&client_address=" +
-        item.address +
-        "&common_obligations=" +
-        item.obligations +
-        "&balance_principal_amount=" +
-        item.amount +
-        "&interest_balance=" +
-        item.balance +
-        "&fine=" +
-        item.fine +
-        "&daily_fine_rate=" +
-        item.rate +
-        "&contract_num=" +
-        item.num +
-        "&contract_price=" +
-        item.price +
-        "&filename=" +
-        key;
-      this.exportAcbaWord(url);
+          this.exportFile.name +
+          "&client_address=" +
+          this.exportFile.client_address +
+          "&common_obligations=" +
+          this.exportFile.common_obligations +
+          "&balance_principal_amount=" +
+          this.exportFile.balance_principal_amount +
+          "&interest_balance=" +
+          this.exportFile.interest_balance +
+          "&fine=" +
+          this.exportFile.fine +
+          "&daily_fine_rate=" +
+          this.exportFile.daily_fine_rate +
+          "&contract_num=" +
+          this.exportFile.contract_num +
+          "&contract_price=" +
+          this.exportFile.contract_price +
+          "&principal_balance_amount=" +
+          this.exportFile.principal_balance_amount +
+          "&filename=" +
+          key
+      );
     },
     exportRepayment() {
       const item = this.exportFile;

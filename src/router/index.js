@@ -17,11 +17,12 @@ let param
 
 const router = new VueRouter({
   mode: 'history',
+  base: process.env.BASE_URL,
   routes: [
     {
       path: '/login',
       name: 'Login',
-      component: () => import('@/views/Login.vue')
+      component: () => import('@/views/Login.vue'),
     },
     {
       name: '404',

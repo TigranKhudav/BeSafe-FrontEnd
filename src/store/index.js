@@ -128,9 +128,8 @@ export default new Vuex.Store({
         state.user = res.user
         localStorage.setItem('besafe', res.access_token)
         localStorage.setItem('besafe_us', JSON.stringify(res.user))
-        router.replace("/")
-      })
-        .catch(() => state.errMessig = true)
+        router.replace({ name: 'Home' })
+      }).catch(() => state.errMessig = true)
     },
     createPartner({ state }, data) {
       axios.post('createPartner', data)
@@ -174,6 +173,7 @@ export default new Vuex.Store({
     },
     uploadSubjecDay({ dispatch, state }, data) {
       dispatch('uploadCols', { newTable: data.newTable, header: data.header }).then((res) => {
+        console.log("hi");
         axios.post('day-subjects', { data: res })
           .then(res => state.CaseData = res.data)
           .catch(err => console.log(err))

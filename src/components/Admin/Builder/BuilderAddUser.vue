@@ -80,7 +80,7 @@
               <div class="bord p-3 mb-8">
                 <builder-user-permission
                   :value="'Գործընկեր'"
-                  :Permission="Part"
+                  :Permission="selPartData"
                   @selectedPerm="selPart = $event"
                 ></builder-user-permission>
               </div>
@@ -116,6 +116,19 @@ import { mapGetters } from "vuex";
 
 export default {
   components: { CommonModal, CommonSelect, BuilderUserPermission },
+  data() {
+    return {
+      dialog: null,
+      permissions: false,
+      userName: "",
+      pass: "",
+      access: "",
+      role: "",
+      err: false,
+      selPerm: null,
+      selPart: null,
+    };
+  },
   computed: {
     ...mapGetters([
       "LawyerPerm",
@@ -136,27 +149,16 @@ export default {
         return arr;
       } else return null;
     },
-    Part() {
-      let arr = [];
-      this.Partners.forEach((v) => {
-        v.checked = false;
-        arr.push(v);
+    selPartData() {
+      return this.Partners.map((v) => {
+        return { id: v.id, checked: false, name: v.name };
       });
-      return arr;
     },
-  },
-  data() {
-    return {
-      dialog: null,
-      permissions: false,
-      userName: "",
-      pass: "",
-      access: "",
-      role: "",
-      err: false,
-      selPerm: null,
-      selPart: null,
-    };
+    filterResPart() {
+      return this.selPart.map((v) => {
+        return v.id;
+      });
+    },
   },
   validations: {
     pass: { minLength: minLength(8) },
@@ -186,8 +188,9 @@ export default {
           role: this.role,
           access: this.access,
           permissions: this.userPermission,
-          partners: this.selPart,
+          partners: this.filterResPart,
         };
+        console.log(data);
         // this.$store.dispatch("createUser", data);
         this.$emit("close");
       }

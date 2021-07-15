@@ -5,6 +5,9 @@ import store from './store'
 import Vuelidate from 'vuelidate'
 import 'bootstrap'
 
+import VueObserveVisibility from 'vue-observe-visibility'
+Vue.use(VueObserveVisibility)
+
 Vue.use(Vuelidate)
 Vue.config.devtools = true
 // Vue.config.productionTip = true

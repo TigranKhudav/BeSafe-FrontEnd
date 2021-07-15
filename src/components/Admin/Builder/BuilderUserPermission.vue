@@ -71,20 +71,16 @@ export default {
     Permission: { type: Array, required: true },
     value: { type: String },
   },
-  computed: {
-    selectedPerm() {
-      return this.Permission.filter((v) => v.checked);
-    },
-  },
   data() {
     return { popup: false };
   },
   methods: {
+    selectedPerm() {
+      return this.Permission.filter((v) => v.checked);
+    },
     select(item) {
       item.checked = !item.checked;
-      console.log(this.Permission);
-      console.log(this.selectedPerm);
-      // this.$emit("selectedPerm", this.selectedPerm);
+      this.$emit("selectedPerm", this.selectedPerm());
     },
   },
 };
