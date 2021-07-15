@@ -97,8 +97,8 @@
       ></builder-file>
     </transition>
 
-    <div class="d-flex justify-content-center w-full h-83 mt-13">
-      <div class="d-flex h-full w-full">
+    <div class="d-flex justify-content-center w-full h-full resp-height mt-13">
+      <div class="d-flex w-full">
         <div ref="table" class="w-full overflow-x-auto">
           <div class="part-grid mb-3" :style="cssVar">
             <div class="d-flex p-3 justify-content-center align-items-center">
@@ -128,7 +128,6 @@
               @ctxmenu="contextMenu($event, item)"
               :style="cssVar"
             ></common-acba-list>
-            <div v-observe-visibility="visibilityChanged"></div>
             <vue-context
               ref="menu"
               class="position-absolute w-full max-w-36 ps-0 outline-none d-flex"
@@ -145,7 +144,6 @@
                   class="ls-none py-7 ps-10 bg-pink-350 ctx-btn"
                   role="button"
                   @mouseover="showMenu = true"
-                  @mouseleave="showMenu = false"
                 >
                   <span class="text-white-100 fs-9">Պարտավորագիր</span>
                 </li>
@@ -154,6 +152,7 @@
               <div
                 class="ctx-grid"
                 @mouseover="showMenu = true"
+                @mouseleave="showMenu = false"
                 v-if="showMenu"
               >
                 <li class="ls-none"></li>
@@ -181,6 +180,7 @@
               </div>
             </vue-context>
           </div>
+          <div v-observe-visibility="visibilityChanged"></div>
         </div>
         <div class="my-auto">
           <common-button
@@ -273,22 +273,10 @@ export default {
     ...mapActions(["setNewValue", "uploadTable", "exportAcbaWord"]),
 
     visibilityChanged(isVisible) {
-      console.log(isVisible);
       if (isVisible) {
         this.count++;
         this.$store.dispatch("getPartData", { name: "acba", id: this.count });
       }
-    },
-
-    loadMore() {
-      this.busy = true;
-
-      setTimeout(() => {
-        for (var i = 0, j = 10; i < j; i++) {
-          this.data.push({ name: count++ });
-        }
-        this.busy = false;
-      }, 1000);
     },
 
     setValue(data, id) {
@@ -386,8 +374,8 @@ export default {
           this.exportFile.contract_num +
           "&contract_price=" +
           this.exportFile.contract_price +
-          "&principal_balance_amount=" +
-          this.exportFile.principal_balance_amount +
+          "&balance_principal_amount=" +
+          balance_principal_amount +
           "&filename=" +
           key
       );

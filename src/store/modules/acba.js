@@ -88,7 +88,7 @@ export default {
             {
                 id: 15,
                 checked: false,
-                name: "Փոխանցման ա/թ /ամսաթիվ/",
+                name: "Փոխանցման ա/թ",
                 column: 'transfer_date'
             },
             {
@@ -106,7 +106,7 @@ export default {
             {
                 id: 18,
                 checked: false,
-                name: "Պայմանագրային գումար /արժույթով/",
+                name: "Պայմանագրային գումար (արժույթով)",
                 column: 'contract_price'
             },
             {
@@ -274,7 +274,7 @@ export default {
             {
                 id: 46,
                 checked: false,
-                name: "Տուգանք",
+                name: "Տուժանք",
                 column: 'fine'
             },
             {
@@ -292,19 +292,19 @@ export default {
             {
                 id: 49,
                 checked: false,
-                name: "Տուգանքի օրական դրույքաչափ",
+                name: "Տուժանքի օրական դրույքաչափ",
                 column: 'daily_fine_rate'
             },
             {
                 id: 50,
                 checked: false,
-                name: "Տուգանքի դադարեցման ա/թ",
+                name: "Տուժանքի դադարեցման ա/թ",
                 column: 'termination_fine_date'
             },
             {
                 id: 51,
                 checked: false,
-                name: "Պետ. տուրքի փոխանցումից հետո տուգանքի դադարեցման ա/թ",
+                name: "Պետ. տուրքի փոխանցումից հետո տուժանքի դադարեցման ա/թ",
                 column: 'chefDan_afterTransfer_fineDutyDate'
             },
             {

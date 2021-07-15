@@ -49,8 +49,8 @@
       ></builder-file>
     </transition>
 
-    <div class="d-flex justify-content-center w-full h-83 mt-13">
-      <div class="d-flex h-full w-full">
+    <div class="d-flex justify-content-center w-full resp-height mt-13">
+      <div class="d-flex w-full">
         <div ref="table" class="w-full overflow-x-auto">
           <div class="part-grid mb-2" :style="cssVar">
             <div class="d-flex p-3 justify-content-center align-items-center">
@@ -79,6 +79,7 @@
             :style="cssVar"
           ></common-acba-list>
         </div>
+        <div v-observe-visibility="visibilityChanged"></div>
         <div class="my-auto">
           <common-button
             ><div class="bg-19 w-12 h-12 bg-contain bg-no-repeat"></div
@@ -128,26 +129,13 @@ export default {
       SearchText: "",
       historyModal: false,
       header: [],
+      count: 1,
       exportTable: [],
       params: this.$route.params.id,
       CaseData: this.$store.getters.CaseData,
       HistoryList: this.$store.getters.HistoryList,
       files: [],
     };
-  },
-  mounted() {
-    const eventHandler = () => {
-      let scrollTop = this.$refs.table.scrollTop;
-      let offsetHeight = this.$refs.table.offsetHeight;
-      let scrollHeight = this.$refs.table.scrollHeight;
-      let atTheBottom = scrollTop + offsetHeight === scrollHeight;
-      let data = { name: this.$route.params.id, id: count };
-      if (atTheBottom) {
-        this.$store.dispatch("getPartData", data);
-        this.count++;
-      }
-    };
-    this.$refs.table.addEventListener("scroll", eventHandler);
   },
   computed: {
     LineData: {
@@ -178,6 +166,17 @@ export default {
   },
   methods: {
     ...mapActions(["setNewValue", "uploadTable"]),
+
+    visibilityChanged(isVisible) {
+      if (isVisible) {
+        this.count++;
+        this.$store.dispatch("getPartData", {
+          name: this.params,
+          id: this.count,
+        });
+      }
+    },
+
     setValue(data, id) {
       this.CaseData.forEach((v) => {
         if (v.id === id) v[data.column] = data.newValue;
@@ -194,7 +193,7 @@ export default {
       let data = {
         id: this.params,
         newTable: event,
-        header: this.header,
+        header: this.selHead,
       };
       this.uploadTable(data);
     },

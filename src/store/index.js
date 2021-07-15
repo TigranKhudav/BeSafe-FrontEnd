@@ -149,7 +149,11 @@ export default new Vuex.Store({
     },
     getPartData({ state }, value) {
       axios.get('partners/' + value.name + '?page=' + value.id)
-        .then(res => state.CaseData = [...state.CaseData, ...res.data])
+        .then(res => {
+          console.log("ewfew");
+          console.log(res);
+          state.CaseData = [...state.CaseData, ...res.data]
+        })
         .catch(err => console.log(err))
     },
     getPartners({ state }) {
@@ -187,8 +191,7 @@ export default new Vuex.Store({
         axios.post('partners/upload-table/' + value.id, { data: res })
           .then(res => {
             state.CaseData = [...state.CaseData, ...res.data]
-          })
-          .catch(err => console.log(err))
+          }).catch(err => console.log(err))
       })
     },
     setNewValue(_, data) {

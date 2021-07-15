@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-outside-click="() => (popup = false)">
     <div
       role="button"
       class="d-flex justify-content-between w-full row px-0 mx-0"
@@ -29,7 +29,7 @@
           bg-white-100
           shadow-1
           ms-minus
-          mt-4
+          mt-2
           w-full
           max-h-25
           overflow-y-auto

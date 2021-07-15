@@ -1,5 +1,8 @@
 <template>
-  <div class="d-flex align-items-center justify-content-center h-100">
+  <div
+    class="d-flex align-items-center justify-content-center h-100"
+    @keyup.enter="ShowInputs"
+  >
     <div class="w-full max-w-35 mb-25">
       <div class="bg-1 w-23 h-23 bg-contain bg-no-repeat"></div>
       <div class="mb-20">

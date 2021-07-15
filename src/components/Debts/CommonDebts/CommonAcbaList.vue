@@ -94,7 +94,7 @@ export default {
       this.$emit("onCheck", { id: this.data.id, value: event });
     },
     onEdit(value) {
-      if (!value) {
+      if (!value || this.admin) {
         this.edit = true;
       } else return;
     },

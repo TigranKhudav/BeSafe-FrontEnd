@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <common-modal @close="$emit('close')" @send="createUser">
+    <common-modal @close="close" @send="createUser">
       <transition name="fade">
         <div v-if="err" class="w-full d-flex justify-content-center">
           <p class="pb-0 text-red-500">Please fill in the fields</p>
@@ -50,7 +50,7 @@
             <span class="fs-8 text-gray-500">Օգտագործողի տեսակ</span>
           </div>
           <div>
-            <div class="bord p-2 mb-8">
+            <div class="bord p-3 mb-8">
               <common-select
                 :Datavalue="UserType"
                 :Size="'max-h-21 max-w-36 ms-minus'"
@@ -77,7 +77,7 @@
               <div class="mt-8">
                 <span class="fs-8 text-gray-500">Գործընկեր</span>
               </div>
-              <div class="bord p-3 mb-8">
+              <div class="bord mb-8">
                 <builder-user-permission
                   :value="'Գործընկեր'"
                   :Permission="selPartData"
@@ -92,7 +92,7 @@
               <div class="">
                 <span class="fs-8 text-gray-500">Իրավասություններ</span>
               </div>
-              <div class="bord p-3 mb-18">
+              <div class="bord mb-18">
                 <builder-user-permission
                   :value="'Իրավասություններ'"
                   :Permission="Competencies"
@@ -170,6 +170,10 @@ export default {
     access: { required },
   },
   methods: {
+    close() {
+      this.Competencies.forEach((v) => (v.checked = false));
+      this.$emit("close");
+    },
     userType(val) {
       this.permissions = val.role === "admin" && true;
       this.role = val.role;

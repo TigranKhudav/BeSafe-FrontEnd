@@ -38,3 +38,11 @@
     outline: none;
     box-shadow: none;
   }
+  .resp-height{
+    max-height: 77vh;
+}
+  @media only screen and (min-height: 1000px) {
+    .resp-height{
+        max-height: 83vh;
+    }
+  }

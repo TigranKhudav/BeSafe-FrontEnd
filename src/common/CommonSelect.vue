@@ -1,5 +1,5 @@
 <template>
-  <div v-outside-click="outside">
+  <div v-outside-click="() => (popup = false)">
     <div
       role="button"
       :class="padding"
@@ -75,9 +75,6 @@ export default {
     onSelect(item) {
       this.selectedValue = item.name;
       this.$emit("onSelect", item);
-      this.popup = false;
-    },
-    outside() {
       this.popup = false;
     },
   },

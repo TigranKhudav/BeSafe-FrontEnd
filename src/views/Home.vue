@@ -6,7 +6,7 @@
       role="button"
       @click="$store.state.menu = !$store.state.menu"
     ></div>
-    <div class="w-full h-83 mt-minus">
+    <div class="w-full h-full resp-height mt-minus">
       <builder-menu></builder-menu>
       <router-view></router-view>
     </div>
