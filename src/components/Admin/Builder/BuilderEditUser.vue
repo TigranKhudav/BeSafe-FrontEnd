@@ -47,12 +47,12 @@
           </div>
           <div
             class="bord p-4 mb-8"
-            :class="{ 'is-invalid': $v.userName.$error }"
+            :class="{ 'is-invalid': $v.username.$error }"
           >
             <input
               class="w-full border-0 p-0 outline-none"
               type="text"
-              v-model.trim="$v.userName.$model"
+              v-model.trim="$v.username.$model"
               required
             />
           </div>
@@ -68,7 +68,7 @@
             <common-select
               :Datavalue="UserType"
               :Size="'max-h-21 max-w-36 ms-minus'"
-              :value="role"
+              :value="UserInfo.role === 'admin' ? 'Ադմին' : 'Օգտագործող'"
               @onSelect="userType"
             ></common-select>
           </div>
@@ -86,7 +86,7 @@
           ></common-select>
         </div>
         <transition name="fade">
-          <div v-if="permissions">
+          <div v-if="permissionsSelect">
             <div class="mt-8">
               <span class="fs-8 text-gray-500">Իրավասություններ</span>
             </div>
@@ -113,13 +113,40 @@ import { mapGetters } from "vuex";
 
 export default {
   components: { CommonModal, CommonSelect, BuilderUserPermission },
-  props: { UserInfo: { type: Object, required: true } },
+  props: { UserInfo: { type: Object } },
+  data() {
+    return {
+      dialog: null,
+      permissionsSelect: this.UserInfo.role === "admin" ? true : false,
+      username: this.UserInfo.username,
+      access: this.UserInfo.access,
+      role: this.UserInfo.role,
+      newPass: "",
+      err: false,
+      selPerm: null,
+      newPassInp: false,
+    };
+  },
+  validations: {
+    newPass: { minLength: minLength(8) },
+    username: {
+      required,
+      minLength: minLength(3),
+    },
+  },
   computed: {
     ...mapGetters(["LawyerPerm", "AllPerm", "Subsection", "UserType"]),
     Competencies() {
       if (this.access === "lawyer") {
+        this.LawyerPerm.forEach((v) => {
+          if (this.UserInfo.perm.includes(v.val)) v.checked = true;
+        });
         return this.LawyerPerm;
-      } else return this.AllPerm;
+      } else
+        this.AllPerm.forEach((v) => {
+          if (this.UserInfo.perm.includes(v.val)) v.checked = true;
+        });
+      return this.AllPerm;
     },
     userPermission() {
       let arr = [];
@@ -134,29 +161,9 @@ export default {
       }
     },
   },
-  data() {
-    return {
-      dialog: null,
-      permissions: this.UserInfo.role === "admin" ? true : false,
-      userName: this.UserInfo.name,
-      access: this.UserInfo.access,
-      newPass: "",
-      role: this.UserInfo.role === "admin" ? "Ադմին" : "Օգտագործող",
-      err: false,
-      selPerm: null,
-      newPassInp: false,
-    };
-  },
-  validations: {
-    newPass: { minLength: minLength(8) },
-    userName: {
-      required,
-      minLength: minLength(3),
-    },
-  },
   methods: {
     userType(val) {
-      this.permissions = val.role === "admin" && true;
+      this.permissionsSelect = val.role === "admin" && true;
       this.role = val.role;
     },
     changeAccess(event) {
@@ -171,13 +178,15 @@ export default {
         }, 3000);
       } else {
         let data = {
-          username: this.userName,
-          newPass: this.newPass,
+          id: this.UserInfo.id,
+          username: this.username,
+          ...(this.newPassInp && { password: this.newPass }),
           role: this.role,
           access: this.access,
-          selPerm: this.userPermission,
+          permissions: this.role === "admin" ? this.userPermission : "",
         };
         this.$store.dispatch("editUser", data);
+        this.$emit("close");
       }
     },
   },

@@ -1,7 +1,19 @@
 <template>
-  <div class="d-flex align-items-center ms-6" v-outside-click="OutsideSearch">
-    <div role="button" class="bg-13 w-9 h-9 bg-contain bg-no-repeat"></div>
-    <div role="button" class="bg-14 w-9 h-9 bg-contain bg-no-repeat"></div>
+  <div
+    class="d-flex align-items-center ms-6"
+    v-outside-click="OutsideSearch"
+    @keyup.enter="searchFunc"
+  >
+    <div
+      role="button"
+      @click="$emit('sort', 'asc')"
+      class="bg-13 w-9 h-9 bg-contain bg-no-repeat"
+    ></div>
+    <div
+      role="button"
+      @click="$emit('sort', 'desc')"
+      class="bg-14 w-9 h-9 bg-contain bg-no-repeat"
+    ></div>
     <div
       @click="searchFunc"
       role="button"
@@ -9,6 +21,7 @@
     ></div>
     <input
       v-if="search"
+      ref="input"
       class="
         w-full
         border-0 border-bottom
@@ -38,11 +51,15 @@ export default {
   },
   methods: {
     searchFunc() {
-      if (this.search) {
-        this.$emit("search", this.searchTxt);
-        return;
-      }
       this.search = true;
+      if (this.search) {
+        this.$nextTick(() => {
+          this.$refs.input.focus();
+        });
+        if (this.searchTxt) {
+          return this.$emit("search", this.searchTxt);
+        }
+      }
     },
     OutsideSearch() {
       this.searchTxt = "";

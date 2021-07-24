@@ -147,15 +147,6 @@ export default {
           date: "11.06.21",
         },
       ],
-      HistoryList: [
-        {
-          id: 1,
-          name: "gurgenstepanyan",
-          change: "Անձնագիր    AU8562  >   AU8562",
-          date: "02.06.21",
-          hour: "12.:30",
-        },
-      ],
     };
   },
   methods: {

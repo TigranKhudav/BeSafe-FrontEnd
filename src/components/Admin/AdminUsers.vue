@@ -10,7 +10,7 @@
           <span>Ավելացնել oգտագործող</span>
         </div>
       </common-button>
-      <!-- Modals -->
+
       <transition name="fade">
         <builder-add-user
           @close="addUserModal = false"
@@ -107,10 +107,16 @@ export default {
     Users() {
       return this.$store.getters.Users;
     },
-    fitereduser() {
-      return this.Users.filter((v) =>
-        v.username.toLowerCase().includes(this.searchUser.toLowerCase())
-      );
+    fitereduser: {
+      get() {
+        return this.Users.filter((v) =>
+          v.username.toLowerCase().includes(this.searchUser.toLowerCase())
+        );
+      },
+      set(id) {
+        let i = this.Users.findIndex((v) => v.id === id);
+        this.Users.splice(i, 1);
+      },
     },
   },
   methods: {
@@ -119,6 +125,7 @@ export default {
       this.UserInfo = user;
     },
     removeUser(id) {
+      this.fitereduser = id;
       this.$store.dispatch("removeUser", id);
     },
     showAddUserModal() {

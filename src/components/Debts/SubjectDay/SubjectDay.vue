@@ -2,7 +2,7 @@
   <div>
     <div class="position-absolute left-23 top-21">
       <span class="fs-12 text-gray-500">Օրվա ենթակա</span>
-      <common-update @table="uploadTableMethod" v-if="admin" class="mt-6">
+      <common-update @table="uploadTableMethod" v-if="admin" class="mt-5">
         <div class="bg-41 w-11 h-11 bg-no-repeat bg-contain"></div>
         <span class="ms-6">Թարմացում</span>
       </common-update>
@@ -12,7 +12,12 @@
       @click.native="dropdown = !dropdown"
       :dropdown="dropdown"
     ></common-show>
-    <!-- Modals -->
+
+    <div class="position-absolute right-23 top-25">
+      <router-link to="/debts/archive">
+        <span class="fs-10 fw-600 text-gray-400">Արխիվ</span>
+      </router-link>
+    </div>
 
     <transition name="fade">
       <builder-popup v-if="loadingPopup" @close="loadingPopup = false">
@@ -48,18 +53,12 @@
       ></builder-info-modal>
     </transition>
 
-    <div class="d-flex justify-content-center w-full h-83 mt-13">
-      <div class="d-flex h-full w-full">
+    <div class="d-flex justify-content-center w-full h-full resp-height mt-18">
+      <div class="d-flex w-full">
         <div class="w-full overflow-x-auto">
-          <div class="w-full d-flex justify-content-end mt-3">
-            <router-link to="/debts/archive">
-              <span class="fs-10 fw-600 text-gray-400">Արխիվ</span>
-            </router-link>
-          </div>
-          <div class="part-grid mb-8" :style="cssVar">
+          <div class="part-grid mb-3" :style="cssVar">
             <div class="d-flex p-3 justify-content-center align-items-center">
-              <common-checkbox @change.native="check($event)">
-              </common-checkbox>
+              <common-checkbox @check="checkAll($event)"></common-checkbox>
             </div>
             <div class="min-w-12"></div>
             <div class="min-w-12"></div>
@@ -67,29 +66,35 @@
             <common-clients-data-head
               v-for="item in (header = defaultHead)"
               :key="item.id"
-              >{{ item.name }}</common-clients-data-head
-            >
+              @sort="sortColm($event, item.column)"
+              @search="Search($event, item.column)"
+              >{{ item.name }}
+            </common-clients-data-head>
           </div>
-          <common-acba-list
-            v-for="item in CaseData"
-            :key="item.id"
-            :data="item"
-            :uploadData="updateData"
-            :head="header"
-            @history="getHistory"
-            @info="getInfo"
-            @file="getFile"
-            :style="cssVar"
-          ></common-acba-list>
+          <div>
+            <common-acba-list
+              v-for="(item, i) in LineData"
+              :key="i"
+              :head="header"
+              :data="item"
+              @history="getHistory"
+              @info="getInfo"
+              @file="getFile"
+              @onCheck="onCheck"
+              @setValue="setValue($event, item.id)"
+              :style="cssVar"
+            ></common-acba-list>
+          </div>
+          <div v-observe-visibility="visibilityChanged"></div>
         </div>
-        <div class="my-auto">
-          <common-button
-            ><div class="bg-19 w-12 h-12 bg-contain bg-no-repeat"></div
-          ></common-button>
-          <common-button
-            ><div class="bg-20 w-12 h-12 bg-contain bg-no-repeat"></div
-          ></common-button>
-        </div>
+      </div>
+      <div class="my-auto">
+        <common-button
+          ><div class="bg-19 w-12 h-12 bg-contain bg-no-repeat"></div
+        ></common-button>
+        <common-button @click="onexport"
+          ><div class="bg-20 w-12 h-12 bg-contain bg-no-repeat"></div
+        ></common-button>
       </div>
     </div>
   </div>
@@ -104,7 +109,8 @@ import CommonAcbaList from "../CommonDebts/CommonAcbaList.vue";
 import CommonShow from "../CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "../BuilderDebts/BuilderDebtsSelectHead.vue";
 import CommonUpdate from "@/common/CommonUpdate.vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
+import BuilderPopup from "@/components/Builder/BuilderPopup.vue";
 
 export default {
   components: {
@@ -117,6 +123,7 @@ export default {
     CommonShow,
     BuilderDebtsSelectHead,
     CommonUpdate,
+    BuilderPopup,
   },
   data() {
     return {
@@ -126,12 +133,26 @@ export default {
       showHistory: false,
       updateData: false,
       loadingPopup: false,
+      count: 1,
       header: [],
       files: [],
+      column: "",
+      ascDesc: "",
+      srchtxt: "",
     };
   },
   computed: {
-    ...mapGetters(["CaseData", "HistoryList", "user", "Acba"]),
+    ...mapGetters(["SubDayCase", "HistoryList", "user", "Acba"]),
+
+    LineData: {
+      get() {
+        return this.SubDayCase;
+      },
+      set(check) {
+        this.SubDayCase.forEach((i) => (i.checked = check));
+      },
+    },
+
     defaultHead() {
       return this.Acba.filter((v) => v.checked);
     },
@@ -145,14 +166,52 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["uploadSubjecDay", "getSubDayData", "sort"]),
+
+    sortColm(e, column) {
+      this.column = column;
+      this.ascDesc = e;
+      this.sort({ params: this.params, column, ascDesc: e });
+    },
+
+    visibilityChanged(isVisible) {
+      if (isVisible) {
+        this.count++;
+        this.getSubDayData({
+          name: "acba",
+          id: this.count,
+          column: this.column,
+          ascDesc: this.ascDesc,
+        });
+      }
+    },
     uploadTableMethod(event) {
-      this.$store.dispatch("uploadSubjecDay", {
-        newTable: event,
-        header: this.Acba,
+      this.loadingPopup = true;
+      this.uploadSubjecDay({ newTable: event, header: this.Acba }).then(() => {
+        this.loadingPopup = false;
       });
     },
-    check(e) {
-      this.CaseData.forEach((i) => (i.checked = e.target.checked));
+    checkAll(e) {
+      this.SubDayCase.forEach((i) => (i.checked = e.target.checked));
+    },
+    onCheck(event) {
+      this.SubDayCase.forEach((i) => {
+        if (i.id === event.id) i.checked = event.value;
+      });
+    },
+    onexport() {
+      let arr = [];
+      let x = this.LineData.filter((v) => v.checked);
+      x.forEach((i) => {
+        let y = [];
+        this.header.forEach((v) => y.push(i[v.column]));
+        arr.push(y);
+      });
+      let data = {
+        header: this.header,
+        exportTable: arr,
+      };
+      this.$store.commit("onexport", data);
     },
     getHistory(id) {
       this.showHistory = true;

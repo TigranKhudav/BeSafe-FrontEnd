@@ -1,6 +1,6 @@
 <template>
   <div class="modal-mask">
-    <div class="py-13 px-18 bg-white-100">
+    <div class="py-12 px-12 bg-white-100">
       <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex">
           <div class="bg-17 w-14 h-14 bg-contain bg-no-repeat me-12"></div>
@@ -13,19 +13,22 @@
           aria-label="Close"
         ></button>
       </div>
-      <ul class="mt-15 p-0">
+      <ul class="mt-10 p-0">
         <li
-          class="bord-top d-flex align-items-center list-style d-flex py-8"
+          class="bord-top d-flex align-items-center list-style d-flex py-4"
           v-for="item in chagesList"
           :key="item.id"
         >
           <div class="bg-2 w-20 h-15 bg-contain bg-no-repeat"></div>
-          <span>{{ item.name }}</span>
+          <span class="ms-4">{{ item.name }}</span>
           <div class="change-bord min-w-35 w-full max-w-37 px-9 mx-12 py-8">
-            <p class="mb-0">{{ item.change }}</p>
+            <span class="mb-0 fs-9 me-5">{{ item.column }}</span>
+            <span class="fs-8 mx-5 text-gray-500">{{ item.old }}</span>
+            <span class="fs-9 mx-3">></span>
+            <span class="fs-8 mx-5 text-gray-500">{{ item.new }}</span>
           </div>
           <div>
-            <span class="text-gray-400 me-12">{{ item.date }}</span>
+            <span class="text-gray-400 me-10">{{ item.date }}</span>
             <span class="text-gray-400">{{ item.hour }}</span>
           </div>
         </li>
@@ -35,9 +38,7 @@
 </template>
 <script>
 export default {
-  props: {
-    chagesList: { type: Array },
-  },
+  props: { chagesList: { type: Array } },
   data() {
     return {
       showModal: true,

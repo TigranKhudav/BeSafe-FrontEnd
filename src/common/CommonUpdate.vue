@@ -25,10 +25,19 @@ export default {
       fileReader.onload = (event) => {
         let data = event.target.result;
         let workbook = xlsx.read(data, { type: "binary" });
-        workbook.SheetNames.forEach((sheet) => {
-          let rowObj = xlsx.utils.sheet_to_json(workbook.Sheets[sheet]);
-          this.$emit("table", rowObj);
+        let rowObj = xlsx.utils.sheet_to_json(
+          workbook.Sheets[workbook.SheetNames[0]],
+          { raw: false }
+        );
+        let keys = Object.keys(rowObj[0]);
+        let arr = [];
+        rowObj.forEach((i) => {
+          let x = keys.map((v) => {
+            return { column: v, value: i[v] };
+          });
+          arr.push(x);
         });
+        this.$emit("table", arr);
       };
     },
   },

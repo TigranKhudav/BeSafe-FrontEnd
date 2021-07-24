@@ -1,3 +1,4 @@
+import router from "@/router"
 import Axios from 'axios'
 
 const axios = Axios.create({ baseURL: process.env.VUE_APP_BASE_URL });
@@ -5,8 +6,10 @@ const axios = Axios.create({ baseURL: process.env.VUE_APP_BASE_URL });
 axios.interceptors.response.use(res => {
     return res.data
 }, err => {
-    console.log(err);
-    return new Promise.reject(err)
+    if (err.response.status === 401) {
+        router.replace('/login')
+        localStorage.clear()
+    }
 })
 
 axios.interceptors.request.use(config => {
@@ -18,7 +21,6 @@ axios.interceptors.request.use(config => {
     }
     return config
 }, err => {
-    console.log(err);
     return new Promise.reject(err)
 })
 

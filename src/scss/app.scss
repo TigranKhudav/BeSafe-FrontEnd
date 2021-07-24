@@ -8,6 +8,13 @@
 .fade-enter, .fade-leave-to{
     opacity: 0;
 }
+.showTxt{
+    position: fixed;
+    z-index: 9998;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .modal-mask {
     position: fixed;
     z-index: 9998;
@@ -26,7 +33,7 @@
 }
 .part-grid {
     display: grid;
-    grid-template-columns: minmax(45px, 1fr) minmax(45px, 1fr) minmax(45px, 1fr) minmax(45px, 1fr) repeat(var(--cols), minmax(300px, 5fr));
+    grid-template-columns: minmax(40px, 1fr) minmax(40px, 1fr) minmax(40px, 1fr) minmax(40px, 1fr) repeat(var(--cols), minmax(400px, 5fr));
   }
   .is-invalid{
       border-bottom: rgb(255, 54, 54) 2px solid !important;
@@ -41,8 +48,8 @@
   .resp-height{
     max-height: 77vh;
 }
-  @media only screen and (min-height: 1000px) {
+  @media only screen and (min-height: 944px) {
     .resp-height{
-        max-height: 83vh;
+        max-height: 80vh;
     }
   }

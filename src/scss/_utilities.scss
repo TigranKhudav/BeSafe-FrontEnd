@@ -59,6 +59,16 @@ $utilities: (
         class: text-dec,
         values: none underline line-through
       ),
+      "text-overflow": (
+        property: text-overflow,
+        class: text-over,
+        values: ellipsis
+      ),
+      "white-space": (
+        property: white-space,
+        class: ws,
+        values: nowrap
+      ),
       "text-align": (
         property: text-align,
         class: text-align,
@@ -184,6 +194,10 @@ $utilities: (
       "overflow-x": (
         property: overflow-x,
         values: auto hidden visible scroll,
+      ),
+      "overflow": (
+        property: overflow,
+        values: hidden,
       ),
       "z-index": (
         property: z-index,

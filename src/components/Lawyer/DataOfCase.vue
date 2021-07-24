@@ -9,7 +9,7 @@
         <span> Ավելացնել</span>
       </div>
     </common-button>
-    <!-- Modals -->
+
     <transition name="fade">
       <builder-add-case
         :prioritys="Prioritys"

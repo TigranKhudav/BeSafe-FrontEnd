@@ -14,33 +14,30 @@
     </common-update>
 
     <common-show
+      v-outside-click="() => (dropdown = false)"
       @click="dropdown = !dropdown"
       :dropdown="dropdown"
     ></common-show>
-    <!-- Modals -->
+
     <transition name="fade">
       <builder-debts-select-head
         v-if="dropdown"
         :selHead="Acba"
         @renderHead="renderHead"
       ></builder-debts-select-head>
-    </transition>
 
-    <transition name="fade">
-      <builder-changes-modal
-        :chagesList="HistoryList"
-        v-if="$store.state.showHistory"
-      ></builder-changes-modal>
-    </transition>
-
-    <transition name="fade">
       <builder-info-modal
         @close="showInfo = false"
         v-if="showInfo"
       ></builder-info-modal>
-    </transition>
 
-    <transition name="fade">
+      <builder-changes-modal
+        @close="historyModal = false"
+        :chagesList="ChangesList"
+        v-if="historyModal"
+        v-outside-click="outsideClick"
+      ></builder-changes-modal>
+
       <common-modal
         @send="exportRepayment"
         v-if="showRepaymentSchedule"
@@ -86,9 +83,7 @@
         </div>
         <template v-slot:sub> Արտահանել </template>
       </common-modal>
-    </transition>
 
-    <transition name="fade">
       <builder-file
         v-if="showFile"
         @close="showFile = false"
@@ -97,9 +92,13 @@
       ></builder-file>
     </transition>
 
-    <div class="d-flex justify-content-center w-full h-full resp-height mt-13">
+    <div v-if="loadData" class="modal-mask">
+      <vue-simple-spinner size="55"></vue-simple-spinner>
+    </div>
+
+    <div class="d-flex justify-content-center w-full h-full resp-height mt-18">
       <div class="d-flex w-full">
-        <div ref="table" class="w-full overflow-x-auto">
+        <div class="w-full overflow-x-auto">
           <div class="part-grid mb-3" :style="cssVar">
             <div class="d-flex p-3 justify-content-center align-items-center">
               <common-checkbox @check="checkAll($event)"></common-checkbox>
@@ -110,6 +109,7 @@
             <common-clients-data-head
               v-for="item in (header = defaultHead)"
               :key="item.id"
+              @sort="sortColm($event, item.column)"
               @search="Search($event, item.column)"
               >{{ item.name }}
             </common-clients-data-head>
@@ -141,17 +141,23 @@
                   <span class="text-white-100 fs-9">Հայցադիմում</span>
                 </li>
                 <li
-                  class="ls-none py-7 ps-10 bg-pink-350 ctx-btn"
+                  class="ls-none py-7 ps-10 bg-pink-350 border-bottom ctx-btn"
                   role="button"
                   @mouseover="showMenu = true"
                 >
                   <span class="text-white-100 fs-9">Պարտավորագիր</span>
                 </li>
-                <li class="ls-none"></li>
+                <li
+                  class="ls-none py-7 ps-10 bg-pink-350 ctx-btn"
+                  role="button"
+                  @click="exportReference"
+                  @mouseover="showMenu = true"
+                >
+                  <span class="text-white-100 fs-9">Տեղեկանք</span>
+                </li>
               </div>
               <div
                 class="ctx-grid"
-                @mouseover="showMenu = true"
                 @mouseleave="showMenu = false"
                 v-if="showMenu"
               >
@@ -167,6 +173,7 @@
                     bg-white-100
                   "
                   role="button"
+                  @click="exportOneTime"
                 >
                   <span class="text-gray-500 fs-8">Մեկանգամյա մարման</span>
                 </li>
@@ -182,14 +189,11 @@
           </div>
           <div v-observe-visibility="visibilityChanged"></div>
         </div>
-        <div class="my-auto">
-          <common-button
-            ><div class="bg-19 w-12 h-12 bg-contain bg-no-repeat"></div
-          ></common-button>
-          <common-button @click="onexport"
-            ><div class="bg-20 w-12 h-12 bg-contain bg-no-repeat"></div
-          ></common-button>
-        </div>
+      </div>
+      <div class="my-auto">
+        <common-button @click="onexport"
+          ><div class="bg-20 w-12 h-12 bg-contain bg-no-repeat"></div
+        ></common-button>
       </div>
     </div>
   </div>
@@ -230,28 +234,35 @@ export default {
       showMenu: false,
       showInfo: false,
       showFile: false,
+      loadData: true,
+      historyModal: false,
       showRepaymentSchedule: false,
-      SearchColumn: "",
-      SearchText: "",
-      params: this.$route.params.id,
       header: [],
-      count: 1,
+      count: 0,
       files: [],
+      ChangesList: [],
       exportFile: null,
       MonthsNum: null,
       ForgivenessPercent: null,
       PrepaymentAmount: null,
+      column: "",
+      ascDesc: "",
+      srchtxt: "",
     };
   },
+  created() {
+    this.getPartData({
+      name: "acba",
+      id: this.count,
+      column: this.column,
+      ascDesc: this.ascDesc,
+    });
+  },
   computed: {
-    ...mapGetters(["CaseData", "HistoryList", "user", "exportLT", "Acba"]),
+    ...mapGetters(["CaseData", "user", "exportLT", "Acba"]),
     LineData: {
       get() {
-        if (this.SearchColumn) {
-          return this.CaseData.filter((v) =>
-            v[this.SearchColumn].includes(this.SearchText)
-          );
-        } else return this.CaseData;
+        return this.CaseData;
       },
       set(check) {
         this.CaseData.forEach((i) => (i.checked = check));
@@ -270,12 +281,29 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["setNewValue", "uploadTable", "exportAcbaWord"]),
+    ...mapActions([
+      "setNewValue",
+      "uploadTable",
+      "exportWord",
+      "searchTable",
+      "getPartData",
+      "sort",
+    ]),
+
+    outsideClick(e) {
+      this.historyModal = true;
+    },
 
     visibilityChanged(isVisible) {
       if (isVisible) {
+        this.loadData = true;
         this.count++;
-        this.$store.dispatch("getPartData", { name: "acba", id: this.count });
+        this.getPartData({
+          name: "acba",
+          id: this.count,
+          column: this.column,
+          ascDesc: this.ascDesc,
+        });
       }
     },
 
@@ -285,23 +313,24 @@ export default {
       });
       let setVal = {
         newValue: data.newValue,
+        oldValue: data.oldValue,
         column: data.column,
         id,
-        params: this.params,
+        params: "acba",
       };
       this.setNewValue(setVal);
     },
     uploadTableMethod(event) {
-      let data = {
-        id: this.params,
-        newTable: event,
-        header: this.Acba,
-      };
-      this.uploadTable(data);
+      this.uploadTable({ id: "acba", newTable: event, header: this.Acba });
+    },
+    sortColm(e, column) {
+      this.column = column;
+      this.ascDesc = e;
+      this.sort({ params: "acba", column, ascDesc: e });
+      this.$store.commit("clearData");
     },
     Search(event, column) {
-      this.SearchColumn = column;
-      this.SearchText = event;
+      this.searchTable({ page: "acba", column, text: event });
     },
     onCheck(event) {
       this.CaseData.forEach((i) => {
@@ -326,8 +355,20 @@ export default {
       this.LineData = e;
     },
     getHistory(id) {
-      console.log(id);
-      this.$store.commit("historyModal", true);
+      let x = this.CaseData.find((v) => v.id === id).archives;
+      this.ChangesList = x.map((v) => {
+        let column = this.Acba.find((i) => i.column === v.data.change).name;
+        return {
+          date: v.data.date,
+          hour: v.data.hour,
+          name: v.data.name,
+          new: v.data.new,
+          old: v.data.old,
+          id: v.id,
+          column,
+        };
+      });
+      this.historyModal = true;
     },
     getFile(id) {
       console.log(id);
@@ -355,9 +396,11 @@ export default {
             : "express_business";
         } else key = loan_key;
       }
-      this.exportAcbaWord(
-        "word-download?name=" +
+      this.exportWord(
+        "acba?name=" +
           this.exportFile.name +
+          "&surname=" +
+          this.exportFile.surname +
           "&client_address=" +
           this.exportFile.client_address +
           "&common_obligations=" +
@@ -375,53 +418,113 @@ export default {
           "&contract_price=" +
           this.exportFile.contract_price +
           "&balance_principal_amount=" +
-          balance_principal_amount +
+          this.exportFile.balance_principal_amount +
+          "&credit_currency=" +
+          this.exportFile.currency +
           "&filename=" +
           key
       );
     },
     exportRepayment() {
-      const item = this.exportFile;
+      let formula;
+      let filename;
       if (!this.ForgivenessPercent) {
-        const formula =
-          (item.amount_collected - this.PrepaymentAmount) / this.MonthsNum;
-        let d = new Date();
-        d.setMonth(this.MonthsNum);
-
-        function getMount(val) {
-          console.log(val);
-          let x = new Date();
-          console.log(x.getMonth());
-          let i = x.getMonth() + val;
-          console.log(i);
-          if (i > 12) {
-            getMount(i - 12);
-          } else return i;
-        }
-
-        let date = `20.${getMount(this.MonthsNum)}.${d.getFullYear()}`;
-        const url =
-          "word-download?branch=" +
-          item.branch +
-          "&name=" +
-          item.name +
-          "&contract_num=" +
-          item.contract_num +
-          "&amount_collected=" +
-          item.amount_collected +
-          "&balance_principal_amount=" +
-          item.balance_principal_amount +
-          "&interest_balance=" +
-          item.interest_balance +
-          "&service_fee=" +
-          item.service_fee +
-          "&fine=" +
-          item.fine +
-          "&chef_dan=" +
-          item.chef_dan +
-          "&filename=by_months";
-        // this.exportAcbaWord(url);
+        formula =
+          (this.exportFile.amount_collected - this.PrepaymentAmount) /
+          this.MonthsNum;
+        filename = "by_months";
       } else {
+        formula =
+          (this.exportFile.amount_collected -
+            (this.PrepaymentAmount * this.ForgivenessPercent) / 100) /
+          this.MonthsNum;
+        filename = "forgiveness_interest_payment_in_the_months";
+      }
+      this.exportWord(
+        "acba?branch=" +
+          this.exportFile.branch +
+          "&name=" +
+          this.exportFile.name +
+          "&surname=" +
+          this.exportFile.surname +
+          "&contract_num=" +
+          this.exportFile.contract_num +
+          "&amount_collected=" +
+          this.exportFile.amount_collected +
+          "&balance_principal_amount=" +
+          this.exportFile.balance_principal_amount +
+          "&interest_balance=" +
+          this.exportFile.interest_balance +
+          "&service_fee=" +
+          this.exportFile.service_fee +
+          "&fine=" +
+          this.exportFile.fine +
+          "&chef_dan=" +
+          this.exportFile.chef_dan +
+          "&procent=" +
+          this.ForgivenessPercent +
+          "&prepayment_amount=" +
+          this.PrepaymentAmount +
+          "&mounts_num=" +
+          this.MonthsNum +
+          "&formula=" +
+          formula +
+          "&filename=" +
+          filename
+      );
+      this.showRepaymentSchedule = false;
+    },
+    exportOneTime() {
+      this.exportWord(
+        "acba?branch=" +
+          this.exportFile.branch +
+          "&name=" +
+          this.exportFile.name +
+          "&surname=" +
+          this.exportFile.surname +
+          "&contract_num=" +
+          this.exportFile.contract_num +
+          "&amount_collected=" +
+          this.exportFile.amount_collected +
+          "&balance_principal_amount=" +
+          this.exportFilebalance_principal_amount +
+          "&interest_balance=" +
+          this.exportFile.interest_balance +
+          "&service_fee=" +
+          this.exportFile.service_fee +
+          "&fine=" +
+          this.exportFile.fine +
+          "&chef_dan=" +
+          this.exportFile.chef_dan +
+          "&filename=one_time_payment"
+      );
+    },
+    exportReference() {
+      this.exportWord(
+        "acba?name=" +
+          this.exportFile.name +
+          "&surname=" +
+          this.exportFile.surname +
+          "&contract_num=" +
+          this.exportFile.contract_num +
+          "&date_transfer_LegalOrgan=" +
+          this.exportFile.date_transfer_LegalOrgan +
+          "&common_obligations=" +
+          this.exportFile.common_obligations +
+          "&balance_principal_amount=" +
+          this.exportFilebalance_principal_amount +
+          "&interest_balance=" +
+          this.exportFile.interest_balance +
+          "&fine=" +
+          this.exportFile.fine +
+          "&filename=information_court"
+      );
+    },
+  },
+  watch: {
+    CaseData() {
+      if (this.CaseData.length !== 0) {
+        this.loadData = false;
       }
     },
   },

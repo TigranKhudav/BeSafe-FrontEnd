@@ -2,15 +2,16 @@
   <div
     class="
       position-absolute
+      z-index-1
       bg-white-100
       shadow-1
-      mt-minus
+      top-24
       w-full
       max-w-36
       right-21
     "
   >
-    <ul class="px-5 pt-5 overflow-y-scroll max-h-37">
+    <ul class="px-5 pt-5 overflow-y-scroll max-h-36">
       <li
         role="button"
         class="ls-none ps-6 py-3 my-3"

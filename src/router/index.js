@@ -1,19 +1,15 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from '../store'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
 function getHead(route) {
-  if (route.params.id !== "acba") {
-    if (route.params.id === 'ucom') return { selHead: store.getters.Ucom, PartName: 'Ucom' }
-    else if (route.params.id === 'global-credit') return { selHead: store.getters.GlobalCredit, PartName: 'GlobalCredit' }
-    else if (route.params.id === 'good-credit') return { selHead: store.getters.GoodCredit, PartName: 'GoodCredit' }
-    else return { selHead: store.getters.newPartner, PartName: store.state.Partners.filter(v => v.key === route.params.id)[0].name }
-  }
+  if (route.params.id === 'ucom') return { selHead: store.getters.Ucom, PartName: 'Ucom' }
+  else if (route.params.id === 'global-credit') return { selHead: store.getters.GlobalCredit, PartName: 'GlobalCredit' }
+  else if (route.params.id === 'good-credit') return { selHead: store.getters.GoodCredit, PartName: 'GoodCredit' }
+  else return { selHead: store.getters.newPartner, PartName: store.state.Partners.filter(v => v.key === route.params.id)[0].name }
 }
-
-let param
 
 const router = new VueRouter({
   mode: 'history',
@@ -80,8 +76,8 @@ const router = new VueRouter({
     {
       path: '/admin',
       component: () => import('@/views/Home.vue'),
-      beforeEnter: async (to, from, next) => {
-        await store.dispatch('getUsers')
+      beforeEnter(to, from, next) {
+        store.dispatch('getUsers')
         next()
       },
       children: [
@@ -110,32 +106,29 @@ const router = new VueRouter({
           path: 'partners',
           name: 'Partners',
           component: () => import('@/components/Debts/DebtsPartners.vue'),
-          beforeEnter: async (to, from, next) => {
-            await store.dispatch('getPartners')
+          beforeEnter(to, from, next) {
+            store.dispatch('getPartners')
+            store.commit('clearData')
             next()
           },
         },
         {
+          path: 'partners/acba',
+          name: 'Acba',
+          component: () => import('@/components/Debts/DebtsAcba.vue')
+        },
+        {
           path: 'partners/:id',
           name: 'Patrner',
+          component: () => import('@/components/Debts/BuilderDebts/BuilderPartnerTable.vue'),
           props: getHead,
-          beforeEnter: async (to, from, next) => {
-            param = to.params.id
-            await store.dispatch('getPartData', { name: to.params.id, id: 0 })
-            next()
-          },
-          component: async () => {
-            if (param === 'acba') {
-              return import('@/components/Debts/DebtsAcba.vue')
-            } else return import('@/components/Debts/BuilderDebts/BuilderPartnerTable.vue')
-          },
         },
         {
           path: 'subjectday',
           name: 'SubjectDay',
           component: () => import('@/components/Debts/SubjectDay/SubjectDay.vue'),
-          beforeEnter: async (to, from, next) => {
-            await store.dispatch('getSubjectDay')
+          beforeEnter: (to, from, next) => {
+            store.dispatch('getSubDayData', { id: 0, column: '', ascDesc: '' })
             next()
           },
         },
@@ -176,18 +169,14 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('besafe')
-  if (token) next()
-  else if (to.path === '/login') next()
-  else next({ name: "Login" })
-})
-
-router.onError((error) => {
-  const pattern = /Loading chunk (\d)+ failed/g;
-  const isChunkLoadFailed = error.message.match(pattern);
-  const targetPath = router.history.pending.fullPath;
-  if (isChunkLoadFailed) {
-    router.replace(targetPath);
+  if (token) {
+    if (store.getters.ucomUser) {
+      console.log("egwrgre");
+      to.path !== '/debts/partners/ucom' ? next({ path: '/debts/partners/ucom' }) : next()
+    } else next()
   }
+  else if (to.path === '/login') next()
+  else next({ name: 'Login' })
 })
 
 export default router

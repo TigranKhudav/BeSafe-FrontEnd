@@ -39,7 +39,7 @@
           v-for="item in Partners"
           :key="item.id"
           v-if="$store.getters.user.partners.some((e) => e.id === item.id)"
-          @click="$router.push({ name: 'Patrner', params: { id: item.key } })"
+          @click="$router.push('/debts/partners/' + item.key)"
           class="bg-part rounded-8 w-full max-w-24 py-13 border-0"
         >
           <span class="fs-10 fw-600 text-white-100">{{ item.name }}</span>

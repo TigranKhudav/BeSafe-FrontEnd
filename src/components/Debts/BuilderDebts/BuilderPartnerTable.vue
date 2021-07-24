@@ -16,31 +16,25 @@
       @click.native="dropdown = !dropdown"
       :dropdown="dropdown"
     ></common-show>
-    <!-- Modals -->
+
     <transition name="fade">
       <builder-debts-select-head
         v-if="dropdown"
         :selHead="selHead"
         @renderHead="renderHead"
       ></builder-debts-select-head>
-    </transition>
 
-    <transition name="fade">
       <builder-changes-modal
         @close="historyModal = false"
         :chagesList="HistoryList"
         v-if="historyModal"
       ></builder-changes-modal>
-    </transition>
 
-    <transition name="fade">
       <builder-info-modal
         @close="showInfo = false"
         v-if="showInfo"
       ></builder-info-modal>
-    </transition>
 
-    <transition name="fade">
       <builder-file
         @close="showFile = false"
         v-if="showFile"
@@ -49,12 +43,16 @@
       ></builder-file>
     </transition>
 
-    <div class="d-flex justify-content-center w-full resp-height mt-13">
+    <div v-if="loadData" class="modal-mask">
+      <vue-simple-spinner size="55"></vue-simple-spinner>
+    </div>
+
+    <div class="d-flex justify-content-center w-full h-full resp-height mt-18">
       <div class="d-flex w-full">
-        <div ref="table" class="w-full overflow-x-auto">
-          <div class="part-grid mb-2" :style="cssVar">
+        <div class="w-full overflow-x-auto">
+          <div class="part-grid mb-3" :style="cssVar">
             <div class="d-flex p-3 justify-content-center align-items-center">
-              <common-checkbox @check="checkAll($event)"> </common-checkbox>
+              <common-checkbox @check="checkAll($event)"></common-checkbox>
             </div>
             <div class="min-w-12"></div>
             <div class="min-w-12"></div>
@@ -62,32 +60,35 @@
             <common-clients-data-head
               v-for="item in (header = defaultHead)"
               :key="item.id"
+              @sort="sortColm($event, item.column)"
               @search="Search($event, item.column)"
               >{{ item.name }}
             </common-clients-data-head>
           </div>
-          <common-acba-list
-            v-for="item in LineData"
-            :key="item.id"
-            :data="item"
-            :head="header"
-            @history="getHistory"
-            @onCheck="onCheck"
-            @info="getInfo"
-            @file="getFile"
-            @setValue="setValue($event, item.id)"
-            :style="cssVar"
-          ></common-acba-list>
+          <div>
+            <common-acba-list
+              v-for="(item, i) in LineData"
+              :key="i"
+              :head="header"
+              :data="item"
+              @history="getHistory"
+              @info="getInfo"
+              @file="getFile"
+              @onCheck="onCheck"
+              @setValue="setValue($event, item.id)"
+              :style="cssVar"
+            ></common-acba-list>
+          </div>
+          <div v-observe-visibility="visibilityChanged"></div>
         </div>
-        <div v-observe-visibility="visibilityChanged"></div>
-        <div class="my-auto">
-          <common-button
-            ><div class="bg-19 w-12 h-12 bg-contain bg-no-repeat"></div
-          ></common-button>
-          <common-button @click="onexport"
-            ><div class="bg-20 w-12 h-12 bg-contain bg-no-repeat"></div
-          ></common-button>
-        </div>
+      </div>
+      <div class="my-auto">
+        <common-button v-if="params === 'ucom'" @click="exportRates">
+          <div class="bg-19 w-12 h-12 bg-contain bg-no-repeat"></div>
+        </common-button>
+        <common-button @click="onexport"
+          ><div class="bg-20 w-12 h-12 bg-contain bg-no-repeat"></div>
+        </common-button>
       </div>
     </div>
   </div>
@@ -103,7 +104,7 @@ import CommonAcbaList from "../CommonDebts/CommonAcbaList.vue";
 import CommonShow from "../CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "./BuilderDebtsSelectHead.vue";
 import CommonUpdate from "@/common/CommonUpdate.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
@@ -125,26 +126,30 @@ export default {
       showMenu: false,
       showInfo: false,
       showFile: false,
-      SearchColumn: "",
-      SearchText: "",
       historyModal: false,
+      loadData: true,
       header: [],
       count: 1,
       exportTable: [],
       params: this.$route.params.id,
-      CaseData: this.$store.getters.CaseData,
-      HistoryList: this.$store.getters.HistoryList,
+      column: "",
+      ascDesc: "",
       files: [],
     };
   },
+  created() {
+    this.getPartData({
+      name: this.params,
+      id: this.count,
+      column: this.column,
+      ascDesc: this.ascDesc,
+    });
+  },
   computed: {
+    ...mapGetters(["CaseData", "HistoryList"]),
     LineData: {
       get() {
-        if (this.SearchColumn) {
-          return this.CaseData.filter((v) =>
-            v[this.SearchColumn].includes(this.SearchText)
-          );
-        } else return this.CaseData;
+        return this.CaseData;
       },
       set(check) {
         this.CaseData.forEach((i) => (i.checked = check));
@@ -165,14 +170,24 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["setNewValue", "uploadTable"]),
+    ...mapActions([
+      "setNewValue",
+      "uploadTable",
+      "getPartData",
+      "exportWord",
+      "sort",
+    ]),
 
     visibilityChanged(isVisible) {
       if (isVisible) {
+        console.log(isVisible);
+        this.loadData = true;
         this.count++;
-        this.$store.dispatch("getPartData", {
+        this.getPartData({
           name: this.params,
           id: this.count,
+          column: this.column,
+          ascDesc: this.ascDesc,
         });
       }
     },
@@ -184,23 +199,29 @@ export default {
       let setVal = {
         newValue: data.newValue,
         column: data.column,
+        oldValue: data.oldValue,
         id,
         params: this.params,
       };
       this.setNewValue(setVal);
     },
     uploadTableMethod(event) {
-      let data = {
+      this.uploadTable({
         id: this.params,
         newTable: event,
         header: this.selHead,
-      };
-      this.uploadTable(data);
+      });
     },
-    Search(event, column) {
-      this.SearchColumn = column;
-      this.SearchText = event;
+    sortColm(e, column) {
+      this.column = column;
+      this.ascDesc = e;
+      this.sort({ params: this.params, column, ascDesc: e });
+      this.$store.commit("clearData");
     },
+    // Search(event, column) {
+    //   this.SearchColumn = column;
+    //   this.SearchText = event;
+    // },
     onCheck(event) {
       this.CaseData.forEach((i) => {
         if (i.id === event.id) i.checked = event.value;
@@ -237,12 +258,19 @@ export default {
       };
       this.$store.commit("onexport", data);
     },
+    exportRates() {
+      let checkedRates = this.CaseData.filter((v) => v.checked === true);
+      if (checkedRates.length === 1) {
+        this.exportWord("ucom?id=" + checkedRates[0].id);
+      }
+    },
+  },
+  watch: {
+    CaseData() {
+      if (this.CaseData.length !== 0) {
+        this.loadData = false;
+      }
+    },
   },
 };
 </script>
-<style scoped>
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 8fr 8fr 8fr 8fr 8fr;
-}
-</style>

@@ -19,7 +19,7 @@
               <input
                 class="w-full border-0 p-0 outline-none"
                 type="text"
-                v-model.trim="$v.userName.$model"
+                v-model="$v.userName.$model"
                 required
               />
             </div>

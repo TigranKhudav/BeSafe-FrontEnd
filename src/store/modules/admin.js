@@ -63,14 +63,14 @@ export default {
         Users: [],
     },
     actions: {
-        createUser({ state }, data) {
+        createUser({ dispatch }, data) {
             axios.post('users', data)
-                .then(res => state.Users.push(res.original))
+                .then(() => dispatch('getUsers'))
                 .catch(err => console.log(err))
         },
-        editUser(_, data) {
-            axios.put('users', data)
-                .then(res => state.Users = res)
+        editUser({ dispatch }, data) {
+            axios.put('users/' + data.id, data)
+                .then(() => dispatch('getUsers'))
                 .catch(err => console.log(err))
         },
         removeUser(_, id) {

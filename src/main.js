@@ -3,17 +3,21 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Vuelidate from 'vuelidate'
+import Spinner from 'vue-simple-spinner'
+import VueObserveVisibility from 'vue-observe-visibility'
 import 'bootstrap'
 
-import VueObserveVisibility from 'vue-observe-visibility'
-Vue.use(VueObserveVisibility)
 
+Vue.component('vue-simple-spinner', Spinner)
+
+Vue.use(VueObserveVisibility)
 Vue.use(Vuelidate)
+
 Vue.config.devtools = true
 // Vue.config.productionTip = true
 
 Vue.directive('outside-click', {
-  bind: function (el, binding, vNode) {
+  bind(el, binding, vNode) {
     if (typeof binding.value !== 'function') {
       const compName = vNode.context.name
       let warn = `[Vue-outside-click:] provided expression '${binding.expression}' is not a function, but has to be`
