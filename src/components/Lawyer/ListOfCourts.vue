@@ -4,85 +4,33 @@
       <div class="position-absolute left-23 top-22">
         <h3 class="fs-12 text-gray-500">Դատարանների ցանկ</h3>
       </div>
-      <div class="px-8 mt-15 max-h-83 overflow-y-scroll">
-        <common-court>
-          <template v-slot:place>Երևան</template>
-          Երևան քաղաքի առաջին ատյանի ընդհանուր իրավասության դատարան
-          <template v-slot:city>ք․ Երևան, Տիգրան Մեծի 23/1</template>
-        </common-court>
-        <common-court>
-          <template v-slot:place>Կոտայք</template>
-          ՀՀ Կոտայքի մարզի առաջին ատյանի ընդհանուր իրավասության դատարան
-          <template v-slot:city
-            >ք. Հրազդան, Միկրոշրջան թաղամաս, 13-րդ փող., 1/1</template
-          >
-        </common-court>
-        <common-court>
-          <template v-slot:place>Վայոց Ձոր</template>
-          ՀՀ Արարատի և Վայոց ձորի մարզերի առաջին ատյանի ընդհանուր իրավասության
-          դատարան
-          <template v-slot:city>ք. Արտաշատ, Շահումյան 19</template>
-        </common-court>
-        <common-court>
-          <template v-slot:place>Արմավիր</template>
-          ՀՀ Արմավիրի մարզի առաջին ատյանի ընդհանուր իրավասության դատարան
-          <template v-slot:city>ք. Արմավիր, Հանրապետության 41</template>
-        </common-court>
-        <common-court>
-          <template v-slot:place>Արագածոտն</template>
-          ՀՀ Արագածոտնի մարզի առաջին ատյանի ընդհանուր իրավասության դատարան
-          <template v-slot:city>ք. Աշտարակ, Էջմիածնի խճուղի 65</template>
-        </common-court>
-        <common-court>
-          <template v-slot:place>Տավուշ</template>
-          ՀՀ Տավուշի մարզի առաջին ատյանի ընդհանուր իրավասության դատարան
-          <template v-slot:city>ք. Իջևան, Նալբանդյան 1/1</template>
-        </common-court>
-        <common-court>
-          <template v-slot:place>Գեղարքունիք</template>
-          ՀՀ Գեղարքունիքի մարզի առաջին ատյանի ընդհանուր իրավասության դատարան
-          <template v-slot:city>ք. Գավառ, Սայադյան 18</template>
-        </common-court>
-        <common-court>
-          <template v-slot:place>Լոռի</template>
-          ՀՀ Լոռու մարզի առաջին ատյանի ընդհանուր իրավասության դատարան
-          <template v-slot:city>ք. Վանաձոր, Մխիթար Գոշի 6</template>
-        </common-court>
-        <common-court>
-          <template v-slot:place>Սյունիք</template>
-          Սյունիքի մարզի առաջին ատյանի ընդհանուր իրավասության դատարան
-          <template v-slot:city>ք. Կապան, Մելիք Ստեփանյան 3/2</template>
-        </common-court>
-        <common-court>
-          <template v-slot:place>Շիրակ</template>
-          ՀՀ Շիրակի մարզի առաջին ատյանի ընդհանուր իրավասության դատարան
-          <template v-slot:city>ք. Գյումրի, Անկախության հրապարակ 7</template>
-        </common-court>
-        <common-court>
-          <template v-slot:place>Արարատ</template>
-          ՀՀ Արարատի և Վայոց ձորի մարզերի առաջին ատյանի ընդհանուր իրավասության
-          դատարան
-          <template v-slot:city>ք. Արտաշատ, Շահումյան 19</template>
-        </common-court>
-        <common-court>
-          <template v-slot:place>ԼՂՀ</template>
-          Արցախի Հանրապետության ընդհանուր իրավասության առաջին ատյանի դատարան
-          <template v-slot:city>ք.Ստեփանակերտ, Ազատամարտիկների 42</template>
-        </common-court>
+      <div class="px-8 mt-15 max-h-39 overflow-y-scroll">
+        <div
+          class="w-full py-6 px-18 bg-gray-100 my-11"
+          v-for="item in CourtsList"
+          :key="item.id"
+        >
+          <div class="d-flex mb-4">
+            <span class="me-27 text-gray-600 fs-10">{{ item.region }}</span>
+            <p class="text-gray-500 fs-10 mb-0">{{ item.court }}</p>
+          </div>
+          <div class="row">
+            <div class="col-7"></div>
+            <div class="col-5">
+              <span class="text-pink-350 fs-10">{{ item.address }}</span>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="my-auto position-absolute top-fifty right-16">
-      <common-button
-        ><div class="bg-19 w-12 h-12 bg-contain bg-no-repeat"></div
-      ></common-button>
-      <common-button
-        ><div class="bg-20 w-12 h-12 bg-contain bg-no-repeat"></div
-      ></common-button>
     </div>
   </div>
 </template>
 <script>
-import CommonButton from "@/common/CommonButton.vue";
-import CommonCourt from "@/common/CommonCourt.vue";
-export default { components: { CommonButton, CommonCourt } };
+export default {
+  computed: {
+    CourtsList() {
+      return this.$store.getters.CourtsList;
+    },
+  },
+};
 </script>

@@ -52,10 +52,12 @@
         @mouseleave="sohwAllText = false"
       >
         <input
+          ref="inp"
           class="edit w-full h-full outline-none bg-indigo-100"
           v-if="edit"
           type="text"
           :value="item.value"
+          @mouseleave="item.value = $event.target.value"
           @keyup.enter="setValue($event.target.value, item.column)"
         />
         <span class="fs-8 text-gray-600" v-else>{{ item.value }}</span>

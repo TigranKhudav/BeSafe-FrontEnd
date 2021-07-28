@@ -180,7 +180,6 @@ export default {
 
     visibilityChanged(isVisible) {
       if (isVisible) {
-        console.log(isVisible);
         this.loadData = true;
         this.count++;
         this.getPartData({
@@ -259,7 +258,7 @@ export default {
       this.$store.commit("onexport", data);
     },
     exportRates() {
-      let checkedRates = this.CaseData.filter((v) => v.checked === true);
+      let checkedRates = this.CaseData.filter((v) => v.checked);
       if (checkedRates.length === 1) {
         this.exportWord("ucom?id=" + checkedRates[0].id);
       }
@@ -269,7 +268,7 @@ export default {
     CaseData() {
       if (this.CaseData.length !== 0) {
         this.loadData = false;
-      }
+      } else this.loadData = false;
     },
   },
 };

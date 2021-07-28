@@ -30,12 +30,10 @@ export default {
           { raw: false }
         );
         let keys = Object.keys(rowObj[0]);
-        let arr = [];
-        rowObj.forEach((i) => {
-          let x = keys.map((v) => {
+        let arr = rowObj.map((i) => {
+          return keys.map((v) => {
             return { column: v, value: i[v] };
           });
-          arr.push(x);
         });
         this.$emit("table", arr);
       };

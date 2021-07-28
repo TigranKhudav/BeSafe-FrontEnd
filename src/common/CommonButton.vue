@@ -20,7 +20,7 @@
 <script>
 export default {};
 </script>
-<style scoped lang="scss">
+<style scoped>
 .hover:hover {
   background-color: rgb(163, 28, 48);
 }

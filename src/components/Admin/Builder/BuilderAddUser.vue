@@ -195,7 +195,7 @@ export default {
           partners: this.filterResPart,
         };
         this.$store.dispatch("createUser", data);
-        this.$emit("close");
+        this.close();
       }
     },
   },

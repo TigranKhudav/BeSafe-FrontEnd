@@ -328,6 +328,7 @@ export default {
             { id: 12, name: "Էքսպրես գյուղատնտեսական վարկ", key: "typical_express_agricultural" },
             { id: 13, name: "Ստանդարտ գյուղատնտեսական վարկ", key: "typical_express_agricultural" },
             { id: 14, name: "Բիզնես վարկ", key: "express_business" },
+            { id: 15, name: "Անշարժ գույքի վերանորոգման հիփոթեքային վարկ", key: "mortgage_loan" }
         ]
     },
     getters: {

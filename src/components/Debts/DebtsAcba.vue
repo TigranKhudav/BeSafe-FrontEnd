@@ -4,6 +4,14 @@
       <h3 class="fs-11 text-gray-500">Acba</h3>
     </div>
 
+    <common-button
+      v-if="adminRemove"
+      @click="removeRows"
+      class="position-absolute left-23 top-22 max-w-28"
+    >
+      Ջնջել ({{ checkedRows.length }})
+    </common-button>
+
     <common-update
       @table="uploadTableMethod"
       v-if="admin"
@@ -37,52 +45,6 @@
         v-if="historyModal"
         v-outside-click="outsideClick"
       ></builder-changes-modal>
-
-      <common-modal
-        @send="exportRepayment"
-        v-if="showRepaymentSchedule"
-        @close="showRepaymentSchedule = false"
-      >
-        <div>
-          <div class="row my-12">
-            <div class="col px-0 me-10">
-              <span class="text-gray-500 fs-8">Ամիսների քանակ</span>
-            </div>
-            <div class="col px-0">
-              <input
-                @input="MonthsNum = $event.target.value"
-                class="max-w-25"
-                type="text"
-              />
-            </div>
-          </div>
-          <div class="row my-12">
-            <div class="col px-0 me-10">
-              <span class="text-gray-500 fs-8">Ներման տոկոս</span>
-            </div>
-            <div class="col px-0">
-              <input
-                @input="ForgivenessPercent = $event.target.value"
-                class="max-w-25"
-                type="text"
-              />
-            </div>
-          </div>
-          <div class="row my-12">
-            <div class="col px-0 me-10">
-              <span class="text-gray-500 fs-8">Կանխավճարի չափ</span>
-            </div>
-            <div class="col px-0">
-              <input
-                @input="PrepaymentAmount = $event.target.value"
-                class="max-w-25"
-                type="text"
-              />
-            </div>
-          </div>
-        </div>
-        <template v-slot:sub> Արտահանել </template>
-      </common-modal>
 
       <builder-file
         v-if="showFile"
@@ -132,57 +94,20 @@
               ref="menu"
               class="position-absolute w-full max-w-36 ps-0 outline-none d-flex"
             >
-              <div class="ctx-grid max-w-29">
+              <div class="w-full max-w-29">
+                <li
+                  class="ls-none py-7 ps-10 bg-pink-350 ctx-btn border-bottom"
+                  role="button"
+                  @click="exportReference"
+                >
+                  <span class="text-white-100 fs-9">Տեղեկանք</span>
+                </li>
                 <li
                   @click="exportLawsuit"
                   class="ls-none py-7 ps-10 bg-pink-350 border-bottom ctx-btn"
                   role="button"
                 >
                   <span class="text-white-100 fs-9">Հայցադիմում</span>
-                </li>
-                <li
-                  class="ls-none py-7 ps-10 bg-pink-350 border-bottom ctx-btn"
-                  role="button"
-                  @mouseover="showMenu = true"
-                >
-                  <span class="text-white-100 fs-9">Պարտավորագիր</span>
-                </li>
-                <li
-                  class="ls-none py-7 ps-10 bg-pink-350 ctx-btn"
-                  role="button"
-                  @click="exportReference"
-                  @mouseover="showMenu = true"
-                >
-                  <span class="text-white-100 fs-9">Տեղեկանք</span>
-                </li>
-              </div>
-              <div
-                class="ctx-grid"
-                @mouseleave="showMenu = false"
-                v-if="showMenu"
-              >
-                <li class="ls-none"></li>
-                <li
-                  class="
-                    ls-none
-                    py-7
-                    ps-10
-                    shadow-1
-                    border-bottom
-                    subMenu
-                    bg-white-100
-                  "
-                  role="button"
-                  @click="exportOneTime"
-                >
-                  <span class="text-gray-500 fs-8">Մեկանգամյա մարման</span>
-                </li>
-                <li
-                  class="ls-none py-7 ps-10 shadow-1 subMenu bg-white-100"
-                  role="button"
-                  @click="showRepaymentSchedule = true"
-                >
-                  <span class="text-gray-500 fs-8">Գրաֆիկով մարման</span>
                 </li>
               </div>
             </vue-context>
@@ -210,7 +135,6 @@ import CommonAcbaList from "./CommonDebts/CommonAcbaList.vue";
 import CommonShow from "./CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "./BuilderDebts/BuilderDebtsSelectHead.vue";
 import CommonUpdate from "@/common/CommonUpdate.vue";
-import CommonModal from "@/common/CommonModal.vue";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -226,19 +150,18 @@ export default {
     CommonShow,
     BuilderDebtsSelectHead,
     CommonUpdate,
-    CommonModal,
+    CommonButton,
+    CommonButton,
   },
   data() {
     return {
       dropdown: false,
-      showMenu: false,
       showInfo: false,
       showFile: false,
       loadData: true,
       historyModal: false,
-      showRepaymentSchedule: false,
       header: [],
-      count: 0,
+      count: 1,
       files: [],
       ChangesList: [],
       exportFile: null,
@@ -248,6 +171,7 @@ export default {
       column: "",
       ascDesc: "",
       srchtxt: "",
+      getData: true,
     };
   },
   created() {
@@ -259,7 +183,7 @@ export default {
     });
   },
   computed: {
-    ...mapGetters(["CaseData", "user", "exportLT", "Acba"]),
+    ...mapGetters(["CaseData", "user", "exportLT", "Acba", "CourtsList"]),
     LineData: {
       get() {
         return this.CaseData;
@@ -271,6 +195,9 @@ export default {
     admin() {
       return this.user.perm.some((v) => v === "addPartnerCustomers");
     },
+    adminRemove() {
+      return this.user.perm.some((v) => v === "removeInfo");
+    },
     defaultHead() {
       return this.Acba.filter((v) => v.checked);
     },
@@ -278,6 +205,9 @@ export default {
       return {
         "--cols": this.header.length,
       };
+    },
+    checkedRows() {
+      return this.LineData.filter((v) => v.checked);
     },
   },
   methods: {
@@ -287,6 +217,7 @@ export default {
       "exportWord",
       "searchTable",
       "getPartData",
+      "deletePartRows",
       "sort",
     ]),
 
@@ -295,9 +226,9 @@ export default {
     },
 
     visibilityChanged(isVisible) {
-      if (isVisible) {
-        this.loadData = true;
+      if (isVisible && this.getData) {
         this.count++;
+        this.loadData = true;
         this.getPartData({
           name: "acba",
           id: this.count,
@@ -330,6 +261,7 @@ export default {
       this.$store.commit("clearData");
     },
     Search(event, column) {
+      this.getData = false;
       this.searchTable({ page: "acba", column, text: event });
     },
     onCheck(event) {
@@ -337,10 +269,13 @@ export default {
         if (i.id === event.id) i.checked = event.value;
       });
     },
+    removeRows() {
+      let ids = this.checkedRows.map((v) => v.id);
+      this.deletePartRows(ids);
+    },
     onexport() {
       let arr = [];
-      let x = this.LineData.filter((v) => v.checked);
-      x.forEach((i) => {
+      this.checkedRows.forEach((i) => {
         let y = [];
         this.header.forEach((v) => y.push(i[v.column]));
         arr.push(y);
@@ -386,16 +321,34 @@ export default {
     },
     exportLawsuit() {
       let key;
+      let loan_key;
       if (this.exportFile.loan_type) {
-        const loan_key = this.exportLT.find(
+        loan_key = this.exportLT.find(
           (v) => v.name === this.exportFile.loan_type
         ).key;
-        if (loan_key === "express_business") {
-          key = this.exportFile.guarantee_contract_num
-            ? "guarantee_express_business"
-            : "express_business";
-        } else key = loan_key;
       }
+      if (loan_key === "express_business") {
+        key = this.exportFile.guarantee_contract_num
+          ? "guarantee_express_business"
+          : "express_business";
+      } else key = loan_key;
+      if (this.exportFile.guarantee_contract_num) {
+        let thre = this.exportFile.loan_type.includes("3");
+        let eleven = this.exportFile.loan_type.includes("11");
+        if (thre) {
+          console.log(thre);
+          key = "guarantee_express_business";
+        }
+        if (eleven) {
+          console.log(eleven);
+          key = "guarantee_standart_payment_card";
+        }
+      }
+
+      let reg = this.exportFile.client_address.split(" ")[0];
+
+      let courtObj = this.CourtsList.find((e) => e.region.includes(reg));
+
       this.exportWord(
         "acba?name=" +
           this.exportFile.name +
@@ -421,82 +374,20 @@ export default {
           this.exportFile.balance_principal_amount +
           "&credit_currency=" +
           this.exportFile.currency +
+          "&authority=" +
+          this.exportFile.authority +
+          "&passport_series=" +
+          this.exportFile.passport_series +
+          "&date_of_issue=" +
+          this.exportFile.date_of_issue +
+          "&service_fee=" +
+          this.exportFile.service_fee +
+          "&court=" +
+          courtObj.court +
+          "&court_address=" +
+          courtObj.address +
           "&filename=" +
           key
-      );
-    },
-    exportRepayment() {
-      let formula;
-      let filename;
-      if (!this.ForgivenessPercent) {
-        formula =
-          (this.exportFile.amount_collected - this.PrepaymentAmount) /
-          this.MonthsNum;
-        filename = "by_months";
-      } else {
-        formula =
-          (this.exportFile.amount_collected -
-            (this.PrepaymentAmount * this.ForgivenessPercent) / 100) /
-          this.MonthsNum;
-        filename = "forgiveness_interest_payment_in_the_months";
-      }
-      this.exportWord(
-        "acba?branch=" +
-          this.exportFile.branch +
-          "&name=" +
-          this.exportFile.name +
-          "&surname=" +
-          this.exportFile.surname +
-          "&contract_num=" +
-          this.exportFile.contract_num +
-          "&amount_collected=" +
-          this.exportFile.amount_collected +
-          "&balance_principal_amount=" +
-          this.exportFile.balance_principal_amount +
-          "&interest_balance=" +
-          this.exportFile.interest_balance +
-          "&service_fee=" +
-          this.exportFile.service_fee +
-          "&fine=" +
-          this.exportFile.fine +
-          "&chef_dan=" +
-          this.exportFile.chef_dan +
-          "&procent=" +
-          this.ForgivenessPercent +
-          "&prepayment_amount=" +
-          this.PrepaymentAmount +
-          "&mounts_num=" +
-          this.MonthsNum +
-          "&formula=" +
-          formula +
-          "&filename=" +
-          filename
-      );
-      this.showRepaymentSchedule = false;
-    },
-    exportOneTime() {
-      this.exportWord(
-        "acba?branch=" +
-          this.exportFile.branch +
-          "&name=" +
-          this.exportFile.name +
-          "&surname=" +
-          this.exportFile.surname +
-          "&contract_num=" +
-          this.exportFile.contract_num +
-          "&amount_collected=" +
-          this.exportFile.amount_collected +
-          "&balance_principal_amount=" +
-          this.exportFilebalance_principal_amount +
-          "&interest_balance=" +
-          this.exportFile.interest_balance +
-          "&service_fee=" +
-          this.exportFile.service_fee +
-          "&fine=" +
-          this.exportFile.fine +
-          "&chef_dan=" +
-          this.exportFile.chef_dan +
-          "&filename=one_time_payment"
       );
     },
     exportReference() {
@@ -512,7 +403,7 @@ export default {
           "&common_obligations=" +
           this.exportFile.common_obligations +
           "&balance_principal_amount=" +
-          this.exportFilebalance_principal_amount +
+          this.exportFile.balance_principal_amount +
           "&interest_balance=" +
           this.exportFile.interest_balance +
           "&fine=" +
@@ -525,20 +416,12 @@ export default {
     CaseData() {
       if (this.CaseData.length !== 0) {
         this.loadData = false;
-      }
+      } else this.loadData = false;
     },
   },
 };
 </script>
 <style scoped>
-.subMenu:hover {
-  background: rgb(247, 157, 187);
-}
-.ctx-grid {
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
-  width: 100%;
-}
 .ctx-btn:hover {
   background-color: rgb(163, 28, 48);
 }

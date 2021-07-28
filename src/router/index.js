@@ -133,17 +133,6 @@ const router = new VueRouter({
           },
         },
         {
-          path: 'archive',
-          name: 'Archive',
-          component: () => import('@/components/Debts/SubjectDay/Archive.vue'),
-        },
-        {
-          path: 'archive/:date',
-          name: 'Archiv',
-          component: () => import('@/components/Debts/SubjectDay/ArchiveDay.vue'),
-          props: { selHead: store.getters.Acba }
-        },
-        {
           path: 'reports',
           name: 'Reports',
           component: () => import('@/components/Debts/Reports/Reports.vue'),
@@ -171,7 +160,6 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('besafe')
   if (token) {
     if (store.getters.ucomUser) {
-      console.log("egwrgre");
       to.path !== '/debts/partners/ucom' ? next({ path: '/debts/partners/ucom' }) : next()
     } else next()
   }

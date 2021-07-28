@@ -14,7 +14,6 @@
       <div class="invalid-feedback">
         Username must not be empty and must have at least 3 letters.
       </div>
-      <!-- @onInput="email = $event" -->
       <textarea
         class="w-full min-h-30 max-h-36 resize-none"
         v-model.trim="$v.textareaData.$model"
@@ -65,9 +64,9 @@ export default {
         email: this.email,
         name: this.clientData.name,
         text: this.textareaData,
-        files: this.files,
+        ...(this.files && { files: this.files }),
       };
-      this.$emit("sendEmail", emailData);
+      this.$store.dispatch("sendEmail", emailData);
     },
     sendUploadFile(event) {
       this.files = event;

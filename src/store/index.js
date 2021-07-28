@@ -10,7 +10,6 @@ import statuses from './modules/statuses'
 import admin from './modules/admin'
 import xlsx from "xlsx";
 
-
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -25,7 +24,7 @@ export default new Vuex.Store({
   state: {
     menu: false,
     errMessig: false,
-    user: JSON.parse(localStorage.getItem('besafe_us')) || '',
+    user: JSON.parse(localStorage.getItem('besafe_us')) || "",
     CaseData: [],
     SubDayCase: [],
     newPartnerHead: [
@@ -85,6 +84,32 @@ export default new Vuex.Store({
     ],
     HistoryList: [],
     Partners: [],
+    ClientsData: [
+      {
+        id: 1,
+        checked: false,
+        info: "",
+        name: "Մուսաելյան Արսեն Ալյոշայի",
+        phone: "055 32 64 85",
+        email: "Arsen877@gmail.com",
+        birthday: "18.06.92",
+        date: "11.06.21",
+      },
+    ],
+    CourtsList: [
+      { id: 1, region: "Երևան", court: "Երևան քաղաքի առաջին ատյանի ընդհանուր իրավասության դատարան", address: "ք․ Երևան, Տիգրան Մեծի 23/1" },
+      { id: 2, region: "Կոտայք", court: "ՀՀ Կոտայքի մարզի առաջին ատյանի ընդհանուր իրավասության դատարան", address: "ք. Հրազդան, Միկրոշրջան թաղամաս, 13-րդ փող., 1/1" },
+      { id: 3, region: "Վայոց Ձոր", court: "ՀՀ Արարատի և Վայոց ձորի մարզերի առաջին ատյանի ընդհանուր իրավասության դատարան", address: "ք. Արտաշատ, Շահումյան 19" },
+      { id: 4, region: "Արմավիր", court: "ՀՀ Արմավիրի մարզի առաջին ատյանի ընդհանուր իրավասության դատարան", address: "ք. Արմավիր, Հանրապետության 41" },
+      { id: 5, region: "Արագածոտն", court: "ՀՀ Արագածոտնի մարզի առաջին ատյանի ընդհանուր իրավասության դատարան", address: "ք. Աշտարակ, Էջմիածնի խճուղի 65" },
+      { id: 6, region: "Տավուշ", court: "ՀՀ Տավուշի մարզի առաջին ատյանի ընդհանուր իրավասության դատարան", address: "ք. Իջևան, Նալբանդյան 1/1" },
+      { id: 7, region: "Գեղարքունիք", court: "ՀՀ Գեղարքունիքի մարզի առաջին ատյանի ընդհանուր իրավասության դատարան", address: "ք. Գավառ, Սայադյան 18" },
+      { id: 8, region: "Լոռի", court: "ՀՀ Լոռու մարզի առաջին ատյանի ընդհանուր իրավասության դատարան", address: "ք. Վանաձոր, Մխիթար Գոշի 6" },
+      { id: 9, region: "Սյունիք", court: "Սյունիքի մարզի առաջին ատյանի ընդհանուր իրավասության դատարան", address: "ք. Կապան, Մելիք Ստեփանյան 3/2" },
+      { id: 10, region: "Շիրակ", court: "ՀՀ Շիրակի մարզի առաջին ատյանի ընդհանուր իրավասության դատարան", address: "ք. Գյումրի, Անկախության հրապարակ 7" },
+      { id: 11, region: "Արարատ", court: "ՀՀ Արարատի և Վայոց ձորի մարզերի առաջին ատյանի ընդհանուր իրավասության դատարան", address: "ք. Արտաշատ, Շահումյան 19" },
+      { id: 12, region: "ԼՂՀ", court: "Արցախի Հանրապետության ընդհանուր իրավասության առաջին ատյանի դատարան", address: "ք.Ստեփանակերտ, Ազատամարտիկների 42" },
+    ]
   },
   mutations: {
     formData(_, files) {
@@ -99,11 +124,58 @@ export default new Vuex.Store({
       xlsx.utils.book_append_sheet(wb, animalWS, "nameUsers");
       xlsx.writeFile(wb, "besafe.xlsx");
     },
+
     setUserData: state => state.user = JSON.parse(localStorage.getItem('besafe_us')),
 
-    clearData: state => state.CaseData = []
+    clearData: state => state.CaseData = [],
+
+    clearSubDayData: state => state.SubDayCase = []
   },
   actions: {
+
+    deletePartRows({ commit, dispatch }, ids) {
+      axios.post('partners/delete-rows', { ids })
+        .then(() => {
+          commit('clearData')
+          dispatch('getPartData', { name: 'acba', id: 1, column: '', ascDesc: '' })
+        })
+        .catch(err => console.log(err))
+    },
+
+    deleteSubjDayRows({ commit, dispatch }, ids) {
+      axios.post('partners/delete-rows', { ids })
+        .then(() => {
+          commit('clearSubDayData')
+          dispatch('getSubDayData', { id: 1, column: '', ascDesc: '' })
+        })
+        .catch(err => console.log(err))
+    },
+
+    uploadCols(_, data) {
+      let today = new Date();
+      let date = today.getFullYear() + "." + today.getMonth() + "." + today.getDate()
+      return data.newTable.map((v) => {
+        let array = [];
+        v.forEach(x => {
+          data.header.forEach((i) => {
+            if (x.column.trim().toLowerCase() === i.name.toLowerCase()) array.push({ value: x.value, column: i.column })
+          });
+        })
+        array.push({ value: date, column: "date_of_entry" })
+        return array
+      });
+    },
+
+    uploadTable({ state, dispatch, commit }, value) {
+      dispatch('uploadCols', { newTable: value.newTable, header: value.header }).then(res => {
+        axios.post('partners/upload-table/' + value.id, { data: res })
+          .then(() => {
+            commit('clearData')
+            dispatch('getPartData', { name: value.id, id: 1, column: '', ascDesc: '' })
+          }).catch(err => console.log(err))
+      })
+    },
+
     sort({ state, commit }, url) {
       axios.get('partners/' + url.params + '?sort=' + url.column + '&ascDesc=' + url.ascDesc)
         .then(res => {
@@ -111,11 +183,11 @@ export default new Vuex.Store({
           state.CaseData = [...res.data]
         }).catch(err => console.log(err))
     },
-    searchTable(_, data) {
+    searchTable({ state, commit }, data) {
       axios.get("partners/" + data.page + "?" + data.column + "=" + data.text)
-        .then(() => {
+        .then((res) => {
           commit('clearData')
-          dispatch('getPartData', { name: url.params, id: 0 })
+          state.CaseData = res.data
         }).catch(err => console.log(err))
     },
     uploadFile({ commit }, data) {
@@ -127,19 +199,19 @@ export default new Vuex.Store({
     },
     sendEmail({ commit }, data) {
       const config = { headers: { 'Content-Type': 'multipart/form-data' } }
-      let dataFiles = commit('formData', data.files);
-      axios.post('users/sendEmail', { ...data, files: dataFiles }, config)
+      let dataFiles = data.files && commit('formData', data.files);
+      axios.post('customers/sendEmail', { ...data, ...(dataFiles && { files: dataFiles }) }, config)
         .then(res => console.log(res))
         .catch(err => console.log(err))
     },
     login({ state, getters }, data) {
       axios.post('login', data).then(res => {
         state.user = res.user
+        localStorage.setItem('besafe', res.access_token)
+        localStorage.setItem('besafe_us', JSON.stringify(res.user))
         if (getters.ucomUser) {
           router.replace('/debts/partners/ucom')
         } else router.replace('/')
-        localStorage.setItem('besafe', res.access_token)
-        localStorage.setItem('besafe_us', JSON.stringify(res.user))
       }).catch(() => state.errMessig = true)
     },
     createPartner({ state }, data) {
@@ -148,11 +220,6 @@ export default new Vuex.Store({
           state.Partners = res.data.Partners
           this.$router.push(data.key);
         })
-        .catch(err => console.log(err))
-    },
-    toArchive(_, data) {
-      axios.post('archiv', data)
-        .then(res => console.log(res))
         .catch(err => console.log(err))
     },
     getPartData({ state }, value) {
@@ -165,33 +232,13 @@ export default new Vuex.Store({
         .then(res => state.Partners = res.partners)
         .catch(err => console.log(err))
     },
-    uploadCols(_, data) {
-      // let today = new Date();
-      // let date = today.getFullYear() + "." + today.getMonth() + "." + today.getDate()
-      let arr = [];
-      data.newTable.forEach((v) => {
-        let array = [];
-        v.forEach(x => {
-          data.header.forEach((i) => {
-            // if (!x[i["date_of_entry"]]) array.push({ value: date, column: "date_of_entry" })
-            if (x.column.trim().toLowerCase() === i.name.toLowerCase()) array.push({ value: x.value, column: i.column })
-          });
-        })
-        if (array.length !== 0) arr.push(array)
-      });
-      return arr;
-    },
+
     uploadSubjecDay({ dispatch }, data) {
-      dispatch('uploadCols', { newTable: data.newTable, header: data.header }).then((res) => {
+      dispatch('uploadCols', {
+        newTable: data.newTable, header: data.header
+      }).then((res) => {
         axios.post('day-subjects', { data: res })
           .then(() => dispatch('getSubDayData', 0))
-          .catch(err => console.log(err))
-      })
-    },
-    uploadTable({ state, dispatch }, value) {
-      dispatch('uploadCols', { newTable: value.newTable, header: value.header }).then(res => {
-        axios.post('partners/upload-table/' + value.id, { data: res })
-          .then(res => state.CaseData = [...state.CaseData, ...res.data])
           .catch(err => console.log(err))
       })
     },
@@ -240,9 +287,11 @@ export default new Vuex.Store({
     Partners: state => state.Partners,
     menu: state => state.menu,
     CaseData: state => state.CaseData,
+    ClientsData: state => state.ClientsData,
     SubDayCase: state => state.SubDayCase,
     Prioritys: state => state.Prioritys,
     HistoryList: state => state.HistoryList,
+    CourtsList: state => state.CourtsList,
     user: state => state.user,
     ucomUser: state => state.user ? state.user.partners.length === 1 && state.user.partners[0].key === "ucom" : false
   }

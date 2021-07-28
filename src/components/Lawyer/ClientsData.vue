@@ -9,11 +9,13 @@
         <span>Ներմուծել հաճախորդ</span>
       </div>
     </common-button>
-    <!-- Modals -->
 
-    <!-- Add Client -->
     <transition name="fade">
-      <common-modal v-if="showModal" @close="showModal = false">
+      <common-modal
+        v-if="showModal"
+        @close="showModal = false"
+        @send="addClient"
+      >
         <div class="w-full max-w-35">
           <common-input
             class="my-10"
@@ -84,7 +86,7 @@
           </div>
           <common-client-data-list
             :data="item"
-            v-for="item in clientsData"
+            v-for="item in LineData"
             :key="item.id"
             @history="getHistory"
             @info="getInfo"
@@ -135,23 +137,29 @@ export default {
         name: "",
         email: "",
       },
-      clientsData: [
-        {
-          id: 1,
-          checked: false,
-          info: "",
-          name: "Մուսաելյան Արսեն Ալյոշայի",
-          phone: "055 32 64 85",
-          email: "Arsen877@gmail.com",
-          birthday: "18.06.92",
-          date: "11.06.21",
-        },
-      ],
     };
+  },
+  computed: {
+    ClientsData() {
+      return this.$store.getters.ClientsData;
+    },
+    LineData: {
+      get() {
+        return this.ClientsData;
+      },
+      set() {
+        this.ClientsData.forEach((i) => (i.checked = check));
+      },
+    },
   },
   methods: {
     check(e) {
-      this.clientsData.forEach((client) => (client.checked = e.target.checked));
+      this.ClientsData.forEach((client) => (client.checked = e.target.checked));
+    },
+    onCheck(event) {
+      this.ClientsData.forEach((i) => {
+        if (i.id === event.id) i.checked = event.value;
+      });
     },
     getHistory(id) {
       console.log(id);
@@ -165,6 +173,7 @@ export default {
       this.sendEmailData.name = userInfo.name;
       this.sendEmailData.email = userInfo.email;
     },
+    addClient() {},
   },
 };
 </script>
