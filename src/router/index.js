@@ -52,11 +52,6 @@ const router = new VueRouter({
           component: () => import('@/components/Debts/DebtsHomeModal.vue'),
         },
         {
-          path: 'clientsdata',
-          name: 'ClientsData',
-          component: () => import('@/components/Lawyer/ClientsData.vue'),
-        },
-        {
           path: 'dataofcase',
           name: 'DataOfCase',
           component: () => import('@/components/Lawyer/DataOfCase.vue'),

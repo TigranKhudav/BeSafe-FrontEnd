@@ -62,19 +62,18 @@ export default {
       lawyer: {
         title: "Փաստաբանական բաժին",
         menuItems: [
-          { id: 1, name: "Հաճախորդների բազա", path: "clientsdata" },
           {
-            id: 2,
+            id: 1,
             name: "Գործերի բազա",
             path: "dataofcase",
           },
           {
-            id: 3,
+            id: 2,
             name: "Նիստերի ցանկ",
             path: "list-of-sessions",
           },
           {
-            id: 4,
+            id: 3,
             name: "Դատարանների ցանկ",
             path: "list-of-courts",
           },
