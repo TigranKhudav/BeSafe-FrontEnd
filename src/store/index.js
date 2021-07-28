@@ -129,7 +129,9 @@ export default new Vuex.Store({
 
     clearData: state => state.CaseData = [],
 
-    clearSubDayData: state => state.SubDayCase = []
+    clearSubDayData: state => state.SubDayCase = [],
+
+    updateState: (state, value) => state.CaseData = value
   },
   actions: {
 
@@ -187,7 +189,7 @@ export default new Vuex.Store({
       axios.get("partners/" + data.page + "?" + data.column + "=" + data.text)
         .then((res) => {
           commit('clearData')
-          state.CaseData = res.data
+          commit('updateState', res.data)
         }).catch(err => console.log(err))
     },
     uploadFile({ commit }, data) {

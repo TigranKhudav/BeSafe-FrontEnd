@@ -47,15 +47,6 @@
           <router-link class="text-dec-none" :to="{ name: 'AdminUsers' }">
             <common-button class="py-5"> Օգտագործողներ </common-button>
           </router-link>
-          <div class="w-full px-10">
-            <div class="h-1 bg-white"></div>
-          </div>
-          <router-link
-            class="text-dec-none"
-            :to="{ name: 'SubjectToApproval' }"
-          >
-            <common-button class="py-5"> Հաստատման ենթակա </common-button>
-          </router-link>
         </div>
       </div>
     </div>
@@ -94,10 +85,8 @@ export default {
         menuItems: [
           { id: 1, name: "Գործընկերներ", path: "partners" },
           { id: 2, name: "Օրվա ենթակա", path: "subjectday" },
-          { id: 3, name: "Հաշվետվություններ", path: "reports" },
-          { id: 4, name: "Կարգավիճակներ", path: "statuses" },
-          { id: 5, name: "Դատարաններ", path: "list-of-courts" },
-          { id: 6, name: "Շաբլոններ", path: "templates" },
+          { id: 3, name: "Կարգավիճակներ", path: "statuses" },
+          { id: 4, name: "Դատարաններ", path: "list-of-courts" },
         ],
       },
     };

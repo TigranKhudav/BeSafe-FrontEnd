@@ -42,8 +42,8 @@
 
     <div
       class="bord p-3 h-15 position-relative"
-      v-for="(item, i) in cols"
-      :key="i"
+      v-for="item in cols"
+      :key="item.id"
       @click="onEdit(item.value)"
     >
       <div
@@ -83,7 +83,6 @@ export default {
       sohwAllText: false,
       edit: false,
       oldValue: "",
-      lineData: this.data,
       showFile: false,
       files: [],
     };
@@ -95,11 +94,11 @@ export default {
     cols: {
       get() {
         return this.head.map((i) => {
-          return { id: i.id, value: this.lineData[i.column], column: i.column };
+          return { id: i.id, value: this.data[i.column], column: i.column };
         });
       },
       set(param) {
-        this.lineData[param.column] = param.value;
+        this.data[param.column] = param.value;
       },
     },
     admin() {

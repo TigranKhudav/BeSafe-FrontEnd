@@ -7,7 +7,6 @@ import Spinner from 'vue-simple-spinner'
 import VueObserveVisibility from 'vue-observe-visibility'
 import 'bootstrap'
 
-
 Vue.component('vue-simple-spinner', Spinner)
 
 Vue.use(VueObserveVisibility)

@@ -86,11 +86,6 @@ const router = new VueRouter({
           name: 'AdminUsers',
           component: () => import('@/components/Admin/AdminUsers.vue'),
         },
-        {
-          path: 'subject-to-approval',
-          name: 'SubjectToApproval',
-          component: () => import('@/components/Admin/SubjectToApproval.vue'),
-        }
       ]
     },
     {
@@ -133,11 +128,6 @@ const router = new VueRouter({
           },
         },
         {
-          path: 'reports',
-          name: 'Reports',
-          component: () => import('@/components/Debts/Reports/Reports.vue'),
-        },
-        {
           path: 'list-of-courts',
           component: () => import('@/components/Lawyer/ListOfCourts.vue'),
         },
@@ -145,12 +135,7 @@ const router = new VueRouter({
           path: 'statuses',
           name: 'Statuses',
           component: () => import('@/components/Debts/DebtsStatuses.vue'),
-        },
-        {
-          path: 'templates',
-          name: 'Templates',
-          component: () => import('@/components/Debts/DebtsTemplates.vue'),
-        },
+        }
       ]
     },
   ]

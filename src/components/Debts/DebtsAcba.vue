@@ -61,22 +61,33 @@
     <div class="d-flex justify-content-center w-full h-full resp-height mt-18">
       <div class="d-flex w-full">
         <div class="w-full overflow-x-auto">
-          <div class="part-grid mb-3" :style="cssVar">
-            <div class="d-flex p-3 justify-content-center align-items-center">
-              <common-checkbox @check="checkAll($event)"></common-checkbox>
-            </div>
-            <div class="min-w-12"></div>
-            <div class="min-w-12"></div>
-            <div class="min-w-12"></div>
-            <common-clients-data-head
-              v-for="item in (header = defaultHead)"
-              :key="item.id"
-              @sort="sortColm($event, item.column)"
-              @search="Search($event, item.column)"
-              >{{ item.name }}
-            </common-clients-data-head>
-          </div>
           <div>
+            <div
+              class="
+                part-grid
+                mb-3
+                position-sticky
+                top-0
+                bg-white-100
+                z-index-4
+                w-min-cont
+              "
+              :style="cssVar"
+            >
+              <div class="d-flex p-3 justify-content-center align-items-center">
+                <common-checkbox @check="checkAll($event)"></common-checkbox>
+              </div>
+              <div class="min-w-12"></div>
+              <div class="min-w-12"></div>
+              <div class="min-w-12"></div>
+              <common-clients-data-head
+                v-for="item in (header = defaultHead)"
+                :key="item.id"
+                @sort="sortColm($event, item.column)"
+                @search="Search($event, item.column)"
+                >{{ item.name }}
+              </common-clients-data-head>
+            </div>
             <common-acba-list
               v-for="(item, i) in LineData"
               :key="i"
