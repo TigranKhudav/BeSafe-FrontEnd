@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div
-      class="w-full max-w-33 position-absolute top-23 z-index-1"
+      class="w-full max-w-33 position-absolute top-23 z-index-2"
       v-if="$store.state.menu"
     >
       <div class="w-full bg-white-100" @click="$store.state.menu = false">

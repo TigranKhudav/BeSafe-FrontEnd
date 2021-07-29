@@ -27,6 +27,8 @@ export default new Vuex.Store({
     user: JSON.parse(localStorage.getItem('besafe_us')) || "",
     CaseData: [],
     SubDayCase: [],
+    AcbaNotifys: [],
+    Notifycations: [],
     newPartnerHead: [
       {
         id: 1,
@@ -188,7 +190,6 @@ export default new Vuex.Store({
     searchTable({ state, commit }, data) {
       axios.get("partners/" + data.page + "?" + data.column + "=" + data.text)
         .then((res) => {
-          commit('clearData')
           commit('updateState', res.data)
         }).catch(err => console.log(err))
     },
@@ -222,6 +223,16 @@ export default new Vuex.Store({
           state.Partners = res.data.Partners
           this.$router.push(data.key);
         })
+        .catch(err => console.log(err))
+    },
+    getNotify({ state }) {
+      axios.get('get-all-notifications')
+        .then(res => state.Notifycations = res.notifications)
+        .catch(err => console.log(err))
+    },
+    getAcbaNotify({ state }) {
+      axios.get('get-unread-notifications')
+        .then(res => state.AcbaNotifys = res.notifications)
         .catch(err => console.log(err))
     },
     getPartData({ state }, value) {
@@ -295,6 +306,8 @@ export default new Vuex.Store({
     HistoryList: state => state.HistoryList,
     CourtsList: state => state.CourtsList,
     user: state => state.user,
+    AcbaNotifys: state => state.AcbaNotifys,
+    Notifycations: state => state.Notifycations,
     ucomUser: state => state.user ? state.user.partners.length === 1 && state.user.partners[0].key === "ucom" : false
   }
 })

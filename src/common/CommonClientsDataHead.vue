@@ -1,10 +1,7 @@
 <template>
-  <div
-    class="d-flex align-items-center ms-6"
-    v-outside-click="OutsideSearch"
-    @keyup.enter="searchFunc"
-  >
+  <div class="d-flex align-items-center ms-6" @keyup.enter="searchFunc">
     <div
+      v-outside-click="OutsideSearch"
       role="button"
       @click="$emit('sort', 'asc')"
       class="bg-13 w-9 h-9 bg-contain bg-no-repeat"
@@ -61,9 +58,15 @@ export default {
         }
       }
     },
-    OutsideSearch() {
-      this.searchTxt = "";
-      this.search = false;
+    OutsideSearch(e) {
+      console.log("gegw");
+      let executed = false;
+      if (!executed) {
+        console.log(e);
+        this.searchTxt = "";
+        this.search = false;
+      }
+      executed = true;
     },
   },
 };

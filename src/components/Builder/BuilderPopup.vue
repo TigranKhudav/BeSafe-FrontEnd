@@ -1,6 +1,6 @@
 <template>
   <div class="modal-mask">
-    <div class="py-12 px-16 bg-white">
+    <div class="py-12 px-16 bg-white-100">
       <div class="d-flex justify-content-end">
         <button
           @click="$emit('close')"

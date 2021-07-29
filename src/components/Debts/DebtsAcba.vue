@@ -52,6 +52,22 @@
         :files="files"
         :modal="'fileModal'"
       ></builder-file>
+
+      <builder-popup
+        v-if="severalWarningPopup"
+        @close="severalWarningPopup = false"
+      >
+        <template v-slot:img>
+          <div class="bg-33 w-22 h-20 bg-no-repeat bg-contain"></div>
+        </template>
+        <div class="max-w-35">
+          <div class="mb-6" v-for="item in AcbaNotifys" :key="item.id">
+            <span class="text-gray-500">
+              {{ item.message }}
+            </span>
+          </div>
+        </div>
+      </builder-popup>
     </transition>
 
     <div v-if="loadData" class="modal-mask">
@@ -69,7 +85,7 @@
                 position-sticky
                 top-0
                 bg-white-100
-                z-index-4
+                z-index-1
                 w-min-cont
               "
               :style="cssVar"
@@ -146,6 +162,7 @@ import CommonAcbaList from "./CommonDebts/CommonAcbaList.vue";
 import CommonShow from "./CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "./BuilderDebts/BuilderDebtsSelectHead.vue";
 import CommonUpdate from "@/common/CommonUpdate.vue";
+import BuilderPopup from "@/components/Builder/BuilderPopup.vue";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -163,6 +180,7 @@ export default {
     CommonUpdate,
     CommonButton,
     CommonButton,
+    BuilderPopup,
   },
   data() {
     return {
@@ -171,6 +189,7 @@ export default {
       showFile: false,
       loadData: true,
       historyModal: false,
+      severalWarningPopup: false,
       header: [],
       count: 1,
       files: [],
@@ -193,8 +212,20 @@ export default {
       ascDesc: this.ascDesc,
     });
   },
+  mounted() {
+    if (this.AcbaNotifys.length > 0) {
+      this.severalWarningPopup = true;
+    }
+  },
   computed: {
-    ...mapGetters(["CaseData", "user", "exportLT", "Acba", "CourtsList"]),
+    ...mapGetters([
+      "CaseData",
+      "user",
+      "exportLT",
+      "Acba",
+      "CourtsList",
+      "AcbaNotifys",
+    ]),
     LineData: {
       get() {
         return this.CaseData;

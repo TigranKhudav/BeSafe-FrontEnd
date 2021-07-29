@@ -32,6 +32,7 @@ const router = new VueRouter({
       component: () => import('@/views/Home.vue'),
       beforeEnter: (to, from, next) => {
         store.state.menu = true
+        store.dispatch('getNotify')
         next()
       },
       children: [
@@ -105,7 +106,11 @@ const router = new VueRouter({
         {
           path: 'partners/acba',
           name: 'Acba',
-          component: () => import('@/components/Debts/DebtsAcba.vue')
+          component: () => import('@/components/Debts/DebtsAcba.vue'),
+          beforeEnter(to, from, next) {
+            store.dispatch('getAcbaNotify')
+            next()
+          },
         },
         {
           path: 'partners/:id',

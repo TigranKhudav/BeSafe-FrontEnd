@@ -33,6 +33,7 @@
         </div>
         <div
           @click="notify = !notify"
+          v-outside-click="() => (notify = false)"
           role="button"
           class="bg-7 w-12 h-12 bg-no-repeat bg-contain position-relative ms-9"
         >
@@ -45,12 +46,14 @@
               right-minus
               top-2
               bg-pink-350
-              w-9
-              h-9
+              w-10
+              h-10
               rounded-fifty
             "
           >
-            <span>{{ notifyCount }}</span>
+            <span class="text-white-100 fw-700 fs-10">{{
+              Notifycations.length
+            }}</span>
           </div>
         </div>
       </div>
@@ -90,22 +93,22 @@
         <div
           class="
             position-absolute
-            right-15
+            right-20
             w-full
             max-w-34 max-h-34
             overflow-y-auto
-            mt-35
-            bg-white
+            top-19
+            bg-white-100
             shadow-1
-            z-index-1
+            z-index-2
           "
           v-if="notify"
         >
           <ul class="px-5 mb-0">
             <li
-              class="bord-li ls-none d-flex py-11"
+              class="bord-li ls-none d-flex py-8"
               role="button"
-              v-for="item in notifycations"
+              v-for="item in Notifycations"
               :key="item.id"
             >
               <div
@@ -120,7 +123,7 @@
                   me-11
                 "
               ></div>
-              <span>{{ item.name }}</span>
+              <span class="fs-8 text-gray-500">{{ item.message }}</span>
             </li>
           </ul>
         </div>
@@ -133,15 +136,16 @@
 import CommonButton from "@/common/CommonButton.vue";
 export default {
   components: { CommonButton },
-  props: {
-    notifyCount: { type: Number },
-    notifycations: { type: Array },
-  },
   data() {
     return {
       dropdown: false,
       notify: false,
     };
+  },
+  computed: {
+    Notifycations() {
+      return this.$store.getters.Notifycations;
+    },
   },
   methods: {
     logOut() {
