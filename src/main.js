@@ -18,12 +18,10 @@ Vue.config.devtools = true
 Vue.directive('outside-click', {
   bind(el, binding, vNode) {
     if (typeof binding.value !== 'function') {
-      const compName = vNode.context.name
-      let warn = `[Vue-outside-click:] provided expression '${binding.expression}' is not a function, but has to be`
-      warn += compName && `Found in component '${compName}'`
+      console.warn('[Vue-click-outside:] provided expression', binding.expression, 'is not a function.')
+      return false
     }
-    const bubble = binding.modifiers.bubble
-    const handler = (e) => (bubble || (!el.contains(e.target) && el !== e.target)) && binding.value(e)
+    const handler = (e) => (binding.modifiers.bubble || (!el.contains(e.target) && el !== e.target)) && binding.value(e)
     el.__vueClickOutside__ = handler
     document.addEventListener('click', handler)
   },
@@ -31,8 +29,8 @@ Vue.directive('outside-click', {
     document.removeEventListener('click', el.__vueClickOutside__)
     el.__vueClickOutside__ = null
   },
-  stopProp(event) { event.stopPropagation() }
 })
+
 new Vue({
   router,
   store,

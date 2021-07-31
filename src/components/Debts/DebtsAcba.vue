@@ -101,7 +101,9 @@
                 :key="item.id"
                 @sort="sortColm($event, item.column)"
                 @search="Search($event, item.column)"
-                >{{ item.name }}
+                @getAll="getAll"
+              >
+                {{ item.name }}
               </common-clients-data-head>
             </div>
             <common-acba-list
@@ -265,6 +267,15 @@ export default {
 
     outsideClick(e) {
       this.historyModal = true;
+    },
+    getAll() {
+      this.$store.commit("clearData");
+      this.getPartData({
+        name: "acba",
+        id: this.count,
+        column: this.column,
+        ascDesc: this.ascDesc,
+      });
     },
 
     visibilityChanged(isVisible) {
