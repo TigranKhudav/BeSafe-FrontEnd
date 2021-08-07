@@ -1,8 +1,8 @@
 <template>
   <div
     class="part-grid"
-    v-outside-click="outsideEdit"
     @contextmenu.prevent="$emit('ctxmenu', $event)"
+    v-outside-click="outsideEdit"
   >
     <div class="bord p-3 d-flex justify-content-center align-items-center">
       <common-checkbox @check="onCheck" :value="checked"></common-checkbox>
@@ -44,7 +44,7 @@
       class="bord p-3 h-15 position-relative"
       v-for="item in cols"
       :key="item.id"
-      @click="onEdit(item.value)"
+      @click="onEdit($event, item.value)"
     >
       <div
         class="text-over-ellipsis ws-nowrap overflow-hidden"
@@ -52,7 +52,6 @@
         @mouseleave="sohwAllText = false"
       >
         <input
-          ref="inp"
           class="edit w-full h-full outline-none bg-indigo-100"
           v-if="edit"
           type="text"
@@ -109,10 +108,11 @@ export default {
     onCheck(event) {
       this.$emit("onCheck", { id: this.data.id, value: event });
     },
-    onEdit(value) {
+    onEdit(e, value) {
       this.oldValue = value;
       if (!value || this.admin) {
         this.edit = true;
+        this.$nextTick(() => e.currentTarget.firstChild.firstChild.focus());
       } else return;
     },
     getHistort() {
@@ -137,7 +137,10 @@ export default {
       this.$store.dispatch("uploadFile", { id: this.data.id, files });
     },
     outsideEdit() {
-      this.edit = false;
+      if (this.edit) {
+        console.log("efdwewfe");
+        this.edit = false;
+      }
     },
   },
 };

@@ -33,6 +33,7 @@ const router = new VueRouter({
       beforeEnter: (to, from, next) => {
         store.state.menu = true
         store.dispatch('getNotify')
+        store.dispatch('getPartners')
         next()
       },
       children: [
@@ -98,7 +99,6 @@ const router = new VueRouter({
           name: 'Partners',
           component: () => import('@/components/Debts/DebtsPartners.vue'),
           beforeEnter(to, from, next) {
-            store.dispatch('getPartners')
             store.commit('clearData')
             next()
           },

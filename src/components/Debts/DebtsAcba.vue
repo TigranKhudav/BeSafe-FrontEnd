@@ -73,7 +73,6 @@
     <div v-if="loadData" class="modal-mask">
       <vue-simple-spinner size="55"></vue-simple-spinner>
     </div>
-
     <div class="d-flex justify-content-center w-full h-full resp-height mt-18">
       <div class="d-flex w-full">
         <div class="w-full overflow-x-auto">
@@ -166,6 +165,7 @@ import BuilderDebtsSelectHead from "./BuilderDebts/BuilderDebtsSelectHead.vue";
 import CommonUpdate from "@/common/CommonUpdate.vue";
 import BuilderPopup from "@/components/Builder/BuilderPopup.vue";
 import { mapActions, mapGetters } from "vuex";
+import PartnersHandler from "@/mixins/PartnersHandler.js";
 
 export default {
   components: {
@@ -204,16 +204,10 @@ export default {
       ascDesc: "",
       srchtxt: "",
       getData: true,
+      params: "acba",
     };
   },
-  created() {
-    this.getPartData({
-      name: "acba",
-      id: this.count,
-      column: this.column,
-      ascDesc: this.ascDesc,
-    });
-  },
+  mixins: [PartnersHandler],
   mounted() {
     if (this.AcbaNotifys.length > 0) {
       this.severalWarningPopup = true;
@@ -228,14 +222,6 @@ export default {
       "CourtsList",
       "AcbaNotifys",
     ]),
-    LineData: {
-      get() {
-        return this.CaseData;
-      },
-      set(check) {
-        this.CaseData.forEach((i) => (i.checked = check));
-      },
-    },
     admin() {
       return this.user.perm.some((v) => v === "addPartnerCustomers");
     },
@@ -244,14 +230,6 @@ export default {
     },
     defaultHead() {
       return this.Acba.filter((v) => v.checked);
-    },
-    cssVar() {
-      return {
-        "--cols": this.header.length,
-      };
-    },
-    checkedRows() {
-      return this.LineData.filter((v) => v.checked);
     },
   },
   methods: {
@@ -264,84 +242,18 @@ export default {
       "deletePartRows",
       "sort",
     ]),
-
+    //bug
     outsideClick(e) {
       this.historyModal = true;
     },
-    getAll() {
-      this.$store.commit("clearData");
-      this.getPartData({
-        name: "acba",
-        id: this.count,
-        column: this.column,
-        ascDesc: this.ascDesc,
-      });
-    },
-
-    visibilityChanged(isVisible) {
-      if (isVisible && this.getData) {
-        this.count++;
-        this.loadData = true;
-        this.getPartData({
-          name: "acba",
-          id: this.count,
-          column: this.column,
-          ascDesc: this.ascDesc,
-        });
-      }
-    },
-
-    setValue(data, id) {
-      this.CaseData.forEach((v) => {
-        if (v.id === id) v[data.column] = data.newValue;
-      });
-      let setVal = {
-        newValue: data.newValue,
-        oldValue: data.oldValue,
-        column: data.column,
-        id,
-        params: "acba",
-      };
-      this.setNewValue(setVal);
-    },
     uploadTableMethod(event) {
       this.uploadTable({ id: "acba", newTable: event, header: this.Acba });
-    },
-    sortColm(e, column) {
-      this.column = column;
-      this.ascDesc = e;
-      this.sort({ params: "acba", column, ascDesc: e });
-      this.$store.commit("clearData");
-    },
-    Search(event, column) {
-      this.getData = false;
-      this.searchTable({ page: "acba", column, text: event });
-    },
-    onCheck(event) {
-      this.CaseData.forEach((i) => {
-        if (i.id === event.id) i.checked = event.value;
-      });
     },
     removeRows() {
       let ids = this.checkedRows.map((v) => v.id);
       this.deletePartRows(ids);
     },
-    onexport() {
-      let arr = [];
-      this.checkedRows.forEach((i) => {
-        let y = [];
-        this.header.forEach((v) => y.push(i[v.column]));
-        arr.push(y);
-      });
-      let data = {
-        header: this.header,
-        exportTable: arr,
-      };
-      this.$store.commit("onexport", data);
-    },
-    checkAll(e) {
-      this.LineData = e;
-    },
+    //
     getHistory(id) {
       let x = this.CaseData.find((v) => v.id === id).archives;
       this.ChangesList = x.map((v) => {
@@ -463,13 +375,6 @@ export default {
           this.exportFile.fine +
           "&filename=information_court"
       );
-    },
-  },
-  watch: {
-    CaseData() {
-      if (this.CaseData.length !== 0) {
-        this.loadData = false;
-      } else this.loadData = false;
     },
   },
 };

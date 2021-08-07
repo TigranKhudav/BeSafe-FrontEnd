@@ -46,11 +46,21 @@
     <div v-if="loadData" class="modal-mask">
       <vue-simple-spinner size="55"></vue-simple-spinner>
     </div>
-
     <div class="d-flex justify-content-center w-full h-full resp-height mt-18">
       <div class="d-flex w-full">
         <div class="w-full overflow-x-auto">
-          <div class="part-grid mb-3" :style="cssVar">
+          <div
+            class="
+              part-grid
+              mb-3
+              position-sticky
+              top-0
+              bg-white-100
+              z-index-1
+              w-min-cont
+            "
+            :style="cssVar"
+          >
             <div class="d-flex p-3 justify-content-center align-items-center">
               <common-checkbox @check="checkAll($event)"></common-checkbox>
             </div>
@@ -62,6 +72,7 @@
               :key="item.id"
               @sort="sortColm($event, item.column)"
               @search="Search($event, item.column)"
+              @getAll="getAll"
               >{{ item.name }}
             </common-clients-data-head>
           </div>
@@ -105,6 +116,7 @@ import CommonShow from "../CommonDebts/CommonShow.vue";
 import BuilderDebtsSelectHead from "./BuilderDebtsSelectHead.vue";
 import CommonUpdate from "@/common/CommonUpdate.vue";
 import { mapActions, mapGetters } from "vuex";
+import PartnersHandler from "@/mixins/PartnersHandler.js";
 
 export default {
   components: {
@@ -135,33 +147,14 @@ export default {
       column: "",
       ascDesc: "",
       files: [],
+      getData: true,
     };
   },
-  created() {
-    this.getPartData({
-      name: this.params,
-      id: this.count,
-      column: this.column,
-      ascDesc: this.ascDesc,
-    });
-  },
+  mixins: [PartnersHandler],
   computed: {
     ...mapGetters(["CaseData", "HistoryList"]),
-    LineData: {
-      get() {
-        return this.CaseData;
-      },
-      set(check) {
-        this.CaseData.forEach((i) => (i.checked = check));
-      },
-    },
     defaultHead() {
       return this.selHead.filter((v) => v.checked);
-    },
-    cssVar() {
-      return {
-        "--cols": this.header.length,
-      };
     },
     admin() {
       return this.$store.getters.user.perm.some(
@@ -175,35 +168,9 @@ export default {
       "uploadTable",
       "getPartData",
       "exportWord",
+      "searchTable",
       "sort",
     ]),
-
-    visibilityChanged(isVisible) {
-      if (isVisible) {
-        this.loadData = true;
-        this.count++;
-        this.getPartData({
-          name: this.params,
-          id: this.count,
-          column: this.column,
-          ascDesc: this.ascDesc,
-        });
-      }
-    },
-
-    setValue(data, id) {
-      this.CaseData.forEach((v) => {
-        if (v.id === id) v[data.column] = data.newValue;
-      });
-      let setVal = {
-        newValue: data.newValue,
-        column: data.column,
-        oldValue: data.oldValue,
-        id,
-        params: this.params,
-      };
-      this.setNewValue(setVal);
-    },
     uploadTableMethod(event) {
       this.uploadTable({
         id: this.params,
@@ -211,26 +178,8 @@ export default {
         header: this.selHead,
       });
     },
-    sortColm(e, column) {
-      this.column = column;
-      this.ascDesc = e;
-      this.sort({ params: this.params, column, ascDesc: e });
-      this.$store.commit("clearData");
-    },
-    // Search(event, column) {
-    //   this.SearchColumn = column;
-    //   this.SearchText = event;
-    // },
-    onCheck(event) {
-      this.CaseData.forEach((i) => {
-        if (i.id === event.id) i.checked = event.value;
-      });
-    },
-    checkAll(e) {
-      this.LineData = e;
-    },
+
     getHistory(id) {
-      console.log(id);
       this.historyModal = true;
     },
     getFile(id) {
@@ -243,32 +192,11 @@ export default {
     renderHead(item) {
       this.header = item;
     },
-    onexport() {
-      let arr = [];
-      let x = this.LineData.filter((v) => v.checked);
-      x.forEach((i) => {
-        let y = [];
-        this.header.forEach((v) => y.push(i[v.column]));
-        arr.push(y);
-      });
-      let data = {
-        header: this.header,
-        exportTable: arr,
-      };
-      this.$store.commit("onexport", data);
-    },
     exportRates() {
       let checkedRates = this.CaseData.filter((v) => v.checked);
       if (checkedRates.length === 1) {
         this.exportWord("ucom?id=" + checkedRates[0].id);
       }
-    },
-  },
-  watch: {
-    CaseData() {
-      if (this.CaseData.length !== 0) {
-        this.loadData = false;
-      } else this.loadData = false;
     },
   },
 };

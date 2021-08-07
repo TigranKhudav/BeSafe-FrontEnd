@@ -231,9 +231,7 @@ export default new Vuex.Store({
         .catch(err => console.log(err))
     },
     getAcbaNotify({ state }) {
-      axios.get('get-unread-notifications')
-        .then(res => state.AcbaNotifys = res.notifications)
-        .catch(err => console.log(err))
+      axios.get('get-unread-notifications').then(res => state.AcbaNotifys = res.notifications)
     },
     getPartData({ state }, value) {
       axios.get('partners/' + value.name + '?page=' + value.id + '&sort=' + value.column + '&ascDesc=' + value.ascDesc)
